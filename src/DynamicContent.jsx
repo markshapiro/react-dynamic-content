@@ -437,34 +437,4 @@ class DynamicContent extends Component {
     if( typeof window !== 'undefined' ) window.removeEventListener('resize', this.repositionDebounced.bind(this))
   }
 }
-
 export default DynamicContent;
-
-
-/*
-
-import React, { Component } from 'react';
-
-
-import test from './utils.js';
-
-test();
-
-class DynamicContent extends Component {
-
-  constructor(props){
-    super(props)
-    this.state={test:"state prop"}
-  }
-
-  render() {
-    return (
-      <div>
-        {this.state.test}
-       </div>
-    );
-  }
-}
-
-export default DynamicContent;
-*/
