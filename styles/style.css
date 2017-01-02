@@ -1,0 +1,30 @@
+.CustomContentWrapper > *{
+
+  position:absolute;
+}
+.CustomContentWrapper > .forceVisible{
+
+}
+.CustomContentWrapper > .fadeIn{
+  animation-name: CustomContentFadeInAnimation;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+}
+@keyframes CustomContentFadeInAnimation {
+  0% {
+	opacity:0;
+  }
+  100% {
+	opacity:1;
+  }
+}
+.CustomContentWrapper > .autoTransition{
+  transition: left 0.15s linear,top 0.15s linear;
+  -webkit-transition: left 0.15s linear,top 0.15s linear;
+  -moz-transition: left 0.15s linear,top 0.15s linear;
+  -o-transition: left 0.15s linear,top 0.15s linear;
+}
+.CustomContentWrapper > .draggingMode{
+  z-index: 1;
+}
