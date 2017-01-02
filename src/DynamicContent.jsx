@@ -91,7 +91,8 @@ class InlineElement extends Component {
   componentWillReceiveProps(nextProps){
     this.props.elmData.getRenderedElm().then(elm=>{
       var newClassList = nextProps.className.trim().split(/\s+/g);
-      ['forceVisible','autoTransition','draggingMode','fadeIn'].forEach(cname=>elm.classList.toggle(cname, newClassList.indexOf(cname)>=0));
+      ['forceVisible','autoTransition','draggingMode','fadeIn'].forEach(cname=>elm.classList
+                                                                        .toggle(cname, newClassList.indexOf(cname)>=0));
     });
   }
   render() {
@@ -175,7 +176,7 @@ class DynamicContent extends Component {
             .then(promRes=>({data, res:promRes}))
             .catch(()=>false))
             :Rx.Observable.from([{data, res}]))
-          //all later results (that were pushed after) should cancel all deferring (promise) results that were pushed before
+      //all later results (that were pushed after) should cancel all deferring (promise) results that were pushed before
             .takeUntil(event2resultOfConfirmDrag$
                 .flatMap(({data, res})=>utils.isPromise(res)
                     ?Rx.Observable.fromPromise(res
@@ -368,7 +369,9 @@ class DynamicContent extends Component {
                                            onEventMobile={e=>this.elmEventMobile(e, elm)}
                                            className={`${ elm.isVisible() && 'forceVisible' }
                                 ${ (new Date() - elm.startRenderAt<1000) && 'fadeIn' }
-                                ${ elm.isDragging ? 'draggingMode' : (new Date() - elm.startRenderAt > 200) && 'autoTransition' }`}>
+                                ${ elm.isDragging
+                                ? 'draggingMode'
+                                : (new Date() - elm.startRenderAt > 200) && 'autoTransition' }`}>
           </InlineElement>)}</div>;
   }
 
@@ -419,7 +422,9 @@ class DynamicContent extends Component {
       should = should  ||
           (   this.state.data[ind]
               && (this.state.data[ind].ref !== prevState.data[ind].ref
-              || (this.state.data[ind].state !== prevState.data[ind].state && !( prevState.data[ind].state===imgState.NOT_POSITIONED && this.state.data[ind].state===imgState.FINISHED ) )
+              || (this.state.data[ind].state !== prevState.data[ind].state
+                && !( prevState.data[ind].state===imgState.NOT_POSITIONED
+                && this.state.data[ind].state===imgState.FINISHED ) )
               || (this.state.data[ind].isDragging !== prevState.data[ind].isDragging))
           ) || !this.state.data[ind];
     });
