@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git://github.com/markshapiro/react-dynamic-content.git"
   },
   "keywords": [
   ],
