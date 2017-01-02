@@ -1,9 +1,9 @@
 .CustomContentWrapper > *{
-
+  visibility: hidden;
   position:absolute;
 }
 .CustomContentWrapper > .forceVisible{
-
+  visibility: visible !important;
 }
 .CustomContentWrapper > .fadeIn{
   animation-name: CustomContentFadeInAnimation;
@@ -13,10 +13,10 @@
 }
 @keyframes CustomContentFadeInAnimation {
   0% {
-	opacity:0;
+    opacity:0;
   }
   100% {
-	opacity:1;
+    opacity:1;
   }
 }
 .CustomContentWrapper > .autoTransition{
