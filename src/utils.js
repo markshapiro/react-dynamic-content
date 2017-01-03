@@ -21,7 +21,7 @@ export function repositionCascadingLayout(elements, props){
     var mhor=props.horizontalMargin || 0;
     var columnWidth = props.columnWidth !== undefined ? props.columnWidth : ((props.parentWidth-(props.numOfColumns-1)*mhor) / props.numOfColumns - 0.3);
     var count = 0, sums = [], spacings={},
-        numOfColumns = props.numOfColumns !== undefined ? props.numOfColumns : Math.floor((props.parentWidth+mhor) / (props.getImagesLayoutSizes+mhor));
+        numOfColumns = props.numOfColumns !== undefined ? props.numOfColumns : Math.floor((props.parentWidth+mhor) / (props.columnWidth+mhor));
     for(var i=0;i<numOfColumns;i++){
         sums.push(0);
     }

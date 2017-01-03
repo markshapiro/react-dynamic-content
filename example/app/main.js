@@ -1,13 +1,14 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-
 var DynamicContent = require('../../dist/react-dynamic-content.min.js');
-
 require('../../styles/style.css');
 
 
 
-var colors=['green','yellow', 'pink','black','grey', 'magenta', 'cyan', 'purple', 'violet', 'orange','blue', 'pink', 'red'];
+
+var Image = (props) => {
+  return <img style={{'border':'10px solid blue', borderWidth:'10px 10px 10px 10px'  ,  boxSizing:'border-box'    }} src=""  ></img>;
+};
 
 
 var PlainOnlineImage = () => {
@@ -129,6 +130,8 @@ var Content = React.createClass({
 
     //"http://lorempixel.com/"+width+"/"+height;
 
+    /*
+
     elements.push(<div className="captionImg">
       <img src="https://placehold.it/300x200"/>
       <div className="cover"><div className="captionImgTxt">Image Caption</div></div>
@@ -161,12 +164,25 @@ var Content = React.createClass({
       <div className="texxt">lorem ipsum...</div>
     </div>)
 
+    */
 
+    elements.push(<img src="https://placehold.it/300x200"/>)
+    elements.push(<img src="https://placehold.it/200x250"/>)
+    elements.push(<img src="https://placehold.it/600x240"/>)
+    elements.push(<img src="https://placehold.it/300x500"/>)
+    elements.push(<img src="https://placehold.it/300x400"/>)
+    elements.push(<img src="https://placehold.it/500x200"/>)
+    elements.push(<img src="https://placehold.it/300x200"/>)
+    elements.push(<img src="https://placehold.it/200x250"/>)
+    elements.push(<img src="https://placehold.it/600x240"/>)
+    elements.push(<img src="https://placehold.it/300x500"/>)
+    elements.push(<img src="https://placehold.it/300x400"/>)
+    elements.push(<img src="https://placehold.it/500x200"/>)
 
 
     return {
       elements:elements,
-      layoutToggle:false
+      layoutToggle:true
     }
   },
 
@@ -207,8 +223,8 @@ var Content = React.createClass({
 
                 layout={this.state.layoutToggle?"cascading":"images"}
 
-                numOfColumns={6}
-                //columnWidth={150}
+                //numOfColumns={6}
+                columnWidth={150}
                 maxHeight={250}
 
                 verticalMargin={10}

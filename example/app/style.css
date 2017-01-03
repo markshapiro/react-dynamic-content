@@ -151,4 +151,23 @@ body{
 }
 
 
+.aspRatioContent{
+  position:relative;
+  background:grey;
+  width:300px;
+}
+.aspRatioContent:before{
+  content:'';
+  display:block;
+  padding-top:70%;
+}
+
+.texxt{
+  position:absolute;
+  top:0px;
+  left:0px;
+  color:white;
+}
+
+
 

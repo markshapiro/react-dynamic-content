@@ -53,7 +53,9 @@
 
 	__webpack_require__(167);
 
-	var colors = ['green', 'yellow', 'pink', 'black', 'grey', 'magenta', 'cyan', 'purple', 'violet', 'orange', 'blue', 'pink', 'red'];
+	var Image = function Image(props) {
+	  return React.createElement('img', { style: { 'border': '10px solid blue', borderWidth: '10px 10px 10px 10px', boxSizing: 'border-box' }, src: '' });
+	};
 
 	var PlainOnlineImage = function PlainOnlineImage() {
 	  var height = Math.ceil(Math.random() * 300) + 200;
@@ -166,52 +168,41 @@
 
 	    //"http://lorempixel.com/"+width+"/"+height;
 
-	    elements.push(React.createElement(
-	      'div',
-	      { className: 'captionImg' },
-	      React.createElement('img', { src: 'https://placehold.it/300x200' }),
-	      React.createElement(
-	        'div',
-	        { className: 'cover' },
-	        React.createElement(
-	          'div',
-	          { className: 'captionImgTxt' },
-	          'Image Caption'
-	        )
-	      )
-	    ));
+	    /*
+	     elements.push(<div className="captionImg">
+	      <img src="https://placehold.it/300x200"/>
+	      <div className="cover"><div className="captionImgTxt">Image Caption</div></div>
+	    </div>)
+	      elements.push(<img className="imgBorder3" style={{margin:'1%'}}   src="test.jpeg"/>)
+	     elements.push(<img className="imgBorder2" src="http://lorempixel.com/130/300"/>)
+	      elements.push(OnlineImage3D())
+	     elements.push(<img className="imgBorder1" src="http://lorempixel.com/400/500"/>)
+	     elements.push(OnlineImage3D())
+	     elements.push(<img className="imgBorder2" src="http://lorempixel.com/440/200"/>)
+	     elements.push(<img className="imgBorder2" src="http://lorempixel.com/130/300"/>)
+	     elements.push(OnlineImage3D())
+	      elements.push(<img className="imgBorder1" src="http://lorempixel.com/400/500"/>)
+	       elements.push(<div className="aspRatioContent"  style={{margin:'1%',   boxSizing:'content-box'}}>
+	      <div className="texxt">lorem ipsum...</div>
+	    </div>)
+	     */
 
-	    elements.push(React.createElement('img', { className: 'imgBorder3', style: { margin: '1%' }, src: 'test.jpeg' }));
-
-	    elements.push(React.createElement('img', { className: 'imgBorder2', src: 'http://lorempixel.com/130/300' }));
-
-	    elements.push(OnlineImage3D());
-
-	    elements.push(React.createElement('img', { className: 'imgBorder1', src: 'http://lorempixel.com/400/500' }));
-
-	    elements.push(OnlineImage3D());
-
-	    elements.push(React.createElement('img', { className: 'imgBorder2', src: 'http://lorempixel.com/440/200' }));
-
-	    elements.push(React.createElement('img', { className: 'imgBorder2', src: 'http://lorempixel.com/130/300' }));
-
-	    elements.push(OnlineImage3D());
-
-	    elements.push(React.createElement('img', { className: 'imgBorder1', src: 'http://lorempixel.com/400/500' }));
-
-	    elements.push(React.createElement(
-	      'div',
-	      { className: 'aspRatioContent', style: { margin: '1%', boxSizing: 'content-box' } },
-	      React.createElement(
-	        'div',
-	        { className: 'texxt' },
-	        'lorem ipsum...'
-	      )
-	    ));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x200' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/200x250' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/600x240' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x500' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x400' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/500x200' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x200' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/200x250' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/600x240' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x500' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x400' }));
+	    elements.push(React.createElement('img', { src: 'https://placehold.it/500x200' }));
 
 	    return {
 	      elements: elements,
-	      layoutToggle: false
+	      layoutToggle: true
 	    };
 	  },
 
@@ -256,11 +247,11 @@
 	          //confirmElementDrag={longclick}
 	          , confirmElementDrag: click,
 
-	          layout: this.state.layoutToggle ? "cascading" : "images",
+	          layout: this.state.layoutToggle ? "cascading" : "images"
 
-	          numOfColumns: 6
-	          //columnWidth={150}
-	          , maxHeight: 250,
+	          //numOfColumns={6}
+	          , columnWidth: 150,
+	          maxHeight: 250,
 
 	          verticalMargin: 10,
 	          horizontalMargin: 10
