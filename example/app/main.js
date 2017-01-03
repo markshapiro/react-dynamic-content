@@ -23,17 +23,56 @@ var PlainOnlineImage = () => {
 
   var src = "http://lorempixel.com/"+width+"/"+height;
 
-  var b1 = Math.ceil(Math.random()*20)
-  var b2 = Math.ceil(Math.random()*20)
-  var b3 = Math.ceil(Math.random()*20)
-  var b4 = Math.ceil(Math.random()*20)
+  var b1 = Math.ceil(Math.random()*25)
+  var b2 = Math.ceil(Math.random()*25)
+  var b3 = Math.ceil(Math.random()*25)
+  var b4 = Math.ceil(Math.random()*25)
 
-  var col = colors[  Math.floor(colors.length * Math.random())  ];
 
   return <img
-    style={{'border':'10px solid '+col,    borderWidth:`${b1}px ${b2}px ${b3}px ${b4}px`,  margin:'0.5%',  boxSizing:'border-box'    }}
+    style={{'border':'10px solid  ', 'borderColor':'orange yellow',    borderWidth:`${b1}px ${b2}px ${b3}px ${b4}px`,  margin:'0.5%',  boxSizing:'border-box'    }}
     src={src}  ></img>;
 };
+
+
+
+
+var OnlineImage3D = () => {
+
+
+  var height = Math.ceil(Math.random()*300)+200
+  var width = Math.ceil(Math.random()*300)+200
+
+
+  var decColor =
+    (Math.ceil(Math.random()*16))*16*16
+    +
+    (Math.ceil(Math.random()*16))*16
+    +
+    (Math.ceil(Math.random()*16));
+
+
+  var hexString = (decColor).toString(16);
+
+  var hexInvertedString = (  1*16*16*16 -   decColor).toString(16);
+
+  var img = "http://lorempixel.com/"+width+"/"+height;
+
+  return <div className="flip-container">
+    <img className="hiddenFrame" src={img} ></img>
+    <div className="flipper">
+      <img className="front" src={img}></img>
+      <div className="back">
+        {width} - {height}
+      </div>
+    </div>
+  </div>;
+};
+
+
+
+
+
 
 
 
@@ -73,9 +112,57 @@ var Content = React.createClass({
 
     var elements = [];
 
-    for(var i=0;i<20;i++){
-      elements.push(<PlainOnlineImage></PlainOnlineImage>)
-    }
+    //for(var i=0;i<20;i++){
+    //  elements.push(PlainOnlineImage())
+    //
+    //}
+
+
+    //elements.push(
+    //
+    //  <div style={{border:'3px solid red'}}>
+    //
+    //    <iframe width="90%" height='100%' src="https://www.youtube.com/embed/XGSy3_Czz8k"></iframe>
+    //  </div>
+    //
+    //)
+
+    //"http://lorempixel.com/"+width+"/"+height;
+
+    elements.push(<div className="captionImg">
+      <img src="https://placehold.it/300x200"/>
+      <div className="cover"><div className="captionImgTxt">Image Caption</div></div>
+    </div>)
+
+
+    elements.push(<img className="imgBorder3" style={{margin:'1%'}}   src="test.jpeg"/>)
+
+    elements.push(<img className="imgBorder2" src="http://lorempixel.com/130/300"/>)
+
+
+    elements.push(OnlineImage3D())
+
+    elements.push(<img className="imgBorder1" src="http://lorempixel.com/400/500"/>)
+
+    elements.push(OnlineImage3D())
+
+    elements.push(<img className="imgBorder2" src="http://lorempixel.com/440/200"/>)
+
+    elements.push(<img className="imgBorder2" src="http://lorempixel.com/130/300"/>)
+
+    elements.push(OnlineImage3D())
+
+
+    elements.push(<img className="imgBorder1" src="http://lorempixel.com/400/500"/>)
+
+
+
+    elements.push(<div className="aspRatioContent"  style={{margin:'1%',   boxSizing:'content-box'}}>
+      <div className="texxt">lorem ipsum...</div>
+    </div>)
+
+
+
 
     return {
       elements:elements,
@@ -86,7 +173,22 @@ var Content = React.createClass({
   render: function() {
         return (
           <div>
-            <section style={{position:'relative', background:'lightgrey', width:'80%', height:'700px', left:'60px',  'WebkitOverflowScrolling': 'touch', top:'30px' ,display:'inline-block', overflow:'scroll'}} >
+
+            <button
+
+              className="switchBtn"
+
+              onClick={()=>{
+
+
+                this.setState({
+                    layoutToggle:!this.state.layoutToggle
+                })
+
+            }} >switch to {this.state.layoutToggle?"google images":"cascading"} layout</button>
+
+
+            <div className="contentWrapper" >
               <DynamicContent
                 elements={this.state.elements}
 
@@ -105,24 +207,17 @@ var Content = React.createClass({
 
                 layout={this.state.layoutToggle?"cascading":"images"}
 
-                numOfColumns={5}
-                //columnWidth={100}
-                maxHeight={150}
+                numOfColumns={6}
+                //columnWidth={150}
+                maxHeight={250}
 
-                verticalMargin={0}
-                horizontalMargin={0}
+                verticalMargin={10}
+                horizontalMargin={10}
 
                 ></DynamicContent>
-            </section>
-
-            <button onClick={()=>{
+            </div>
 
 
-                this.setState({
-                    layoutToggle:!this.state.layoutToggle
-                })
-
-            }} style={{verticalAlign:'top'}}>switch</button>
 
 
 
