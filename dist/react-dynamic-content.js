@@ -671,35 +671,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	exports.default = DynamicContent;
-
-	/*
-
-	import React, { Component } from 'react';
-
-
-	import test from './utils.js';
-
-	test();
-
-	class DynamicContent extends Component {
-
-	  constructor(props){
-	    super(props)
-	    this.state={test:"state prop"}
-	  }
-
-	  render() {
-	    return (
-	      <div>
-	        {this.state.test}
-	       </div>
-	    );
-	  }
-	}
-
-	export default DynamicContent;
-	*/
-
 	module.exports = exports['default'];
 
 /***/ },
@@ -765,7 +736,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var count = 0,
 	        sums = [],
 	        spacings = {},
-	        numOfColumns = props.numOfColumns !== undefined ? props.numOfColumns : Math.floor((props.parentWidth + mhor) / (props.getImagesLayoutSizes + mhor));
+	        numOfColumns = props.numOfColumns !== undefined ? props.numOfColumns : Math.floor((props.parentWidth + mhor) / (props.columnWidth + mhor));
 	    for (var i = 0; i < numOfColumns; i++) {
 	        sums.push(0);
 	    }

@@ -130,7 +130,7 @@ var Content = React.createClass({
 
     //"http://lorempixel.com/"+width+"/"+height;
 
-    /*
+   // /*
 
     elements.push(<div className="captionImg">
       <img src="https://placehold.it/300x200"/>
@@ -158,13 +158,14 @@ var Content = React.createClass({
 
     elements.push(<img className="imgBorder1" src="http://lorempixel.com/400/500"/>)
 
+//*/
 
 
     elements.push(<div className="aspRatioContent"  style={{margin:'1%',   boxSizing:'content-box'}}>
       <div className="texxt">lorem ipsum...</div>
     </div>)
 
-    */
+/*
 
     elements.push(<img src="https://placehold.it/300x200"/>)
     elements.push(<img src="https://placehold.it/200x250"/>)
@@ -178,6 +179,8 @@ var Content = React.createClass({
     elements.push(<img src="https://placehold.it/300x500"/>)
     elements.push(<img src="https://placehold.it/300x400"/>)
     elements.push(<img src="https://placehold.it/500x200"/>)
+
+    */
 
 
     return {
@@ -227,8 +230,8 @@ var Content = React.createClass({
                 columnWidth={150}
                 maxHeight={250}
 
-                verticalMargin={10}
-                horizontalMargin={10}
+                verticalMargin={1}
+                horizontalMargin={1}
 
                 ></DynamicContent>
             </div>

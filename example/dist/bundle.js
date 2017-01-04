@@ -48,9 +48,7 @@
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
-
 	var DynamicContent = __webpack_require__(159);
-
 	__webpack_require__(167);
 
 	var Image = function Image(props) {
@@ -168,37 +166,70 @@
 
 	    //"http://lorempixel.com/"+width+"/"+height;
 
-	    /*
-	     elements.push(<div className="captionImg">
-	      <img src="https://placehold.it/300x200"/>
-	      <div className="cover"><div className="captionImgTxt">Image Caption</div></div>
-	    </div>)
-	      elements.push(<img className="imgBorder3" style={{margin:'1%'}}   src="test.jpeg"/>)
-	     elements.push(<img className="imgBorder2" src="http://lorempixel.com/130/300"/>)
-	      elements.push(OnlineImage3D())
-	     elements.push(<img className="imgBorder1" src="http://lorempixel.com/400/500"/>)
-	     elements.push(OnlineImage3D())
-	     elements.push(<img className="imgBorder2" src="http://lorempixel.com/440/200"/>)
-	     elements.push(<img className="imgBorder2" src="http://lorempixel.com/130/300"/>)
-	     elements.push(OnlineImage3D())
-	      elements.push(<img className="imgBorder1" src="http://lorempixel.com/400/500"/>)
-	       elements.push(<div className="aspRatioContent"  style={{margin:'1%',   boxSizing:'content-box'}}>
-	      <div className="texxt">lorem ipsum...</div>
-	    </div>)
-	     */
+	    // /*
 
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x200' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/200x250' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/600x240' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x500' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x400' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/500x200' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x200' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/200x250' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/600x240' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x500' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/300x400' }));
-	    elements.push(React.createElement('img', { src: 'https://placehold.it/500x200' }));
+	    elements.push(React.createElement(
+	      'div',
+	      { className: 'captionImg' },
+	      React.createElement('img', { src: 'https://placehold.it/300x200' }),
+	      React.createElement(
+	        'div',
+	        { className: 'cover' },
+	        React.createElement(
+	          'div',
+	          { className: 'captionImgTxt' },
+	          'Image Caption'
+	        )
+	      )
+	    ));
+
+	    elements.push(React.createElement('img', { className: 'imgBorder3', style: { margin: '1%' }, src: 'test.jpeg' }));
+
+	    elements.push(React.createElement('img', { className: 'imgBorder2', src: 'http://lorempixel.com/130/300' }));
+
+	    elements.push(OnlineImage3D());
+
+	    elements.push(React.createElement('img', { className: 'imgBorder1', src: 'http://lorempixel.com/400/500' }));
+
+	    elements.push(OnlineImage3D());
+
+	    elements.push(React.createElement('img', { className: 'imgBorder2', src: 'http://lorempixel.com/440/200' }));
+
+	    elements.push(React.createElement('img', { className: 'imgBorder2', src: 'http://lorempixel.com/130/300' }));
+
+	    elements.push(OnlineImage3D());
+
+	    elements.push(React.createElement('img', { className: 'imgBorder1', src: 'http://lorempixel.com/400/500' }));
+
+	    //*/
+
+
+	    elements.push(React.createElement(
+	      'div',
+	      { className: 'aspRatioContent', style: { margin: '1%', boxSizing: 'content-box' } },
+	      React.createElement(
+	        'div',
+	        { className: 'texxt' },
+	        'lorem ipsum...'
+	      )
+	    ));
+
+	    /*
+	    
+	        elements.push(<img src="https://placehold.it/300x200"/>)
+	        elements.push(<img src="https://placehold.it/200x250"/>)
+	        elements.push(<img src="https://placehold.it/600x240"/>)
+	        elements.push(<img src="https://placehold.it/300x500"/>)
+	        elements.push(<img src="https://placehold.it/300x400"/>)
+	        elements.push(<img src="https://placehold.it/500x200"/>)
+	        elements.push(<img src="https://placehold.it/300x200"/>)
+	        elements.push(<img src="https://placehold.it/200x250"/>)
+	        elements.push(<img src="https://placehold.it/600x240"/>)
+	        elements.push(<img src="https://placehold.it/300x500"/>)
+	        elements.push(<img src="https://placehold.it/300x400"/>)
+	        elements.push(<img src="https://placehold.it/500x200"/>)
+	    
+	        */
 
 	    return {
 	      elements: elements,
@@ -253,8 +284,8 @@
 	          , columnWidth: 150,
 	          maxHeight: 250,
 
-	          verticalMargin: 10,
-	          horizontalMargin: 10
+	          verticalMargin: 1,
+	          horizontalMargin: 1
 
 	        })
 	      )
@@ -20058,7 +20089,7 @@
 	    }(f.Component),
 	        W = function (e) {
 	      function t(e) {
-	        u(this, t);var n = a(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e));return S.call(n), n.state = { data: [] }, n;
+	        u(this, t);var n = a(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e));return q.call(n), n.state = { data: [] }, n;
 	      }return s(t, e), l(t, [{ key: "componentWillMount", value: function value() {
 	          var e = this,
 	              t = this.imgLoaded$.scan(function (e, t) {
@@ -20240,7 +20271,7 @@
 	        return "cascading" === e.layout && void 0 === e.numOfColumns && void 0 === e.columnWidth ? new Error('either numOfColumns or columnWidth required with "cacading" layout') : "images" === e.layout && void 0 === e.maxHeight ? new Error('maxHeight required with "images" layout') : e.elements.reduce(function (e, t) {
 	          return d.default.isValidElement(t) ? e : new Error('"elements" prop arr must have only react elements');
 	        }, void 0);
-	      } };var S = function S() {
+	      } };var q = function q() {
 	      this.imgLoaded$ = new E.default.Subject(), this.elmEvent$ = new E.default.Subject(), this.initialCss = {}, this.repositionThrottled = h.default.throttle(this.reposition, 100), this.repositionDebounced = h.default.debounce(this.reposition, 100);
 	    };t.default = W, e.exports = t.default;
 	  }, function (t, n) {
@@ -20255,7 +20286,7 @@
 	        n[e] = Number(t.getPropertyValue("padding-" + e).replace("px", "")) + Number(t.getPropertyValue("border-" + e + "-width").replace("px", "")), n.margin[e] = Number(t.getPropertyValue("margin-" + e).replace("px", ""));
 	      }), n.boxSizing = t.getPropertyValue("box-sizing"), n;
 	    }function o(e, t) {
-	      for (var n = t.verticalMargin || 0, r = t.horizontalMargin || 0, o = void 0 !== t.columnWidth ? t.columnWidth : (t.parentWidth - (t.numOfColumns - 1) * r) / t.numOfColumns - .3, a = 0, s = [], u = {}, l = void 0 !== t.numOfColumns ? t.numOfColumns : Math.floor((t.parentWidth + r) / (t.getImagesLayoutSizes + r)), f = 0; f < l; f++) {
+	      for (var n = t.verticalMargin || 0, r = t.horizontalMargin || 0, o = void 0 !== t.columnWidth ? t.columnWidth : (t.parentWidth - (t.numOfColumns - 1) * r) / t.numOfColumns - .3, a = 0, s = [], u = {}, l = void 0 !== t.numOfColumns ? t.numOfColumns : Math.floor((t.parentWidth + r) / (t.columnWidth + r)), f = 0; f < l; f++) {
 	        s.push(0);
 	      }d.default.each(e, function (e, t) {
 	        var f = 0,
