@@ -207,10 +207,10 @@
 	          onChange: function onChange(elements) {},
 	          allowDraggingMobile: true,
 	          allowDraggingDesktop: true,
-	          layout: this.state.layoutToggle ? "cascading" : "images"
-	          //numOfColumns={6}
-	          , columnWidth: 250,
-	          maxHeight: 250,
+	          layout: this.state.layoutToggle ? "cascading" : "images",
+	          numOfColumns: 4
+	          //columnWidth={250}
+	          , maxHeight: 250,
 	          verticalMargin: 10,
 	          horizontalMargin: 10 })
 	      )
