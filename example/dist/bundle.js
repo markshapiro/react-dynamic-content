@@ -46,6 +46,14 @@
 
 	'use strict';
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 	var DynamicContent = __webpack_require__(159);
@@ -56,11 +64,12 @@
 	    'div',
 	    { className: 'video' },
 	    React.createElement('img', { src: 'imgs/move.png', className: 'dragHandle' }),
-	    React.createElement('iframe', { src: link })
+	    React.createElement('iframe', { width: '100%', height: '100%', src: link })
 	  );
 	};
 
-	var aspRatioContent = function aspRatioContent(percent, elm) {
+	var aspRatioContent = function aspRatioContent(percent, elm, clsName) {
+
 	  return React.createElement(
 	    'div',
 	    { className: 'aspRatioContent' },
@@ -81,11 +90,74 @@
 	  );
 	};
 
+	var slidingImg = function slidingImg(src) {
+	  return React.createElement(
+	    'div',
+	    { className: 'captionImg' },
+	    React.createElement('img', { src: src }),
+	    React.createElement(
+	      'div',
+	      { className: 'cover' },
+	      React.createElement(
+	        'div',
+	        { className: 'captionImgTxt' },
+	        'Image Caption'
+	      )
+	    )
+	  );
+	};
+
+	var LoadingImg = function (_React$Component) {
+	  _inherits(LoadingImg, _React$Component);
+
+	  function LoadingImg(props) {
+	    _classCallCheck(this, LoadingImg);
+
+	    var _this = _possibleConstructorReturn(this, (LoadingImg.__proto__ || Object.getPrototypeOf(LoadingImg)).call(this, props));
+
+	    _this.state = { visible: false };
+	    setTimeout(function () {
+	      _this.setState({ src: "http://lorempixel.com/100/75" });
+	    }, 1);
+	    return _this;
+	  }
+
+	  _createClass(LoadingImg, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      return aspRatioContent(75, React.createElement(
+	        'div',
+	        null,
+	        React.createElement('div', { className: 'loadingBg' }),
+	        React.createElement('img', { className: 'withLoader', style: { visibility: this.state.visible ? 'visible' : 'hidden', border: '', width: '100%', position: 'absolute', left: '0px', top: '0px' }, onLoad: function onLoad() {
+	            setTimeout(function () {
+	              return _this2.setState({ visible: true });
+	            }, 5000);
+	          }, src: this.state.src })
+	      ));
+	    }
+	  }]);
+
+	  return LoadingImg;
+	}(React.Component);
+
 	var Content = React.createClass({
 	  displayName: 'Content',
 
 	  getInitialState: function getInitialState() {
 	    var elements = [];
+
+	    elements.push(slidingImg("http://lorempixel.com/300/400"));
+	    elements.push(slidingImg("http://lorempixel.com/200/150"));
+	    elements.push(slidingImg("http://lorempixel.com/500/700"));
+
+	    elements.push(React.createElement(LoadingImg, null));
+	    elements.push(React.createElement(LoadingImg, null));
+	    elements.push(React.createElement(LoadingImg, null));
+
+	    elements.push(React.createElement('img', { className: 'imgBorderMd', src: 'http://lorempixel.com/300/400' }));
 
 	    elements.push(video("https://www.youtube.com/embed/vO2Su3erRIA"));
 	    elements.push(video("https://www.youtube.com/embed/kszLwBaC4Sw"));
@@ -109,7 +181,7 @@
 	  },
 
 	  render: function render() {
-	    var _this = this;
+	    var _this3 = this;
 
 	    return React.createElement(
 	      'div',
@@ -119,8 +191,8 @@
 	        {
 	          className: 'switchBtn',
 	          onClick: function onClick() {
-	            _this.setState({
-	              layoutToggle: !_this.state.layoutToggle
+	            _this3.setState({
+	              layoutToggle: !_this3.state.layoutToggle
 	            });
 	          } },
 	        'switch to ',
@@ -146,101 +218,6 @@
 	  }
 	});
 	ReactDOM.render(React.createElement(Content, null), document.getElementById('content'));
-
-	/*
-
-	 elements.push(<div className="captionImg">
-	 <img src="https://placehold.it/300x200"/>
-	 <div className="cover"><div className="captionImgTxt">Image Caption</div></div>
-	 </div>)
-
-
-	 elements.push(<img className="imgBorderLg" style={{margin:'1%'}}   src="test.jpeg"/>)
-
-	 elements.push(<img className="imgBorderMd" src="http://lorempixel.com/130/300"/>)
-
-
-	 elements.push(OnlineImage3D())
-
-	 elements.push(<img className="imgBorderSm" src="http://lorempixel.com/400/500"/>)
-
-	 elements.push(OnlineImage3D())
-	 elements.push(<img className="imgBorderMd" src="http://lorempixel.com/440/200"/>)
-	 elements.push(<img className="imgBorderMd" src="http://lorempixel.com/130/300"/>)
-	 elements.push(OnlineImage3D())
-	 elements.push(<img className="imgBorderSm" src="http://lorempixel.com/400/500"/>)
-
-	 */
-
-	/*
-
-
-	var Image = (props) => {
-	  return <img style={{'border':'10px solid blue', borderWidth:'10px 10px 10px 10px'  ,  boxSizing:'border-box'    }} src=""  ></img>;
-	};
-
-
-	var PlainOnlineImage = () => {
-	  var height = Math.ceil(Math.random()*300)+200
-	  var width = Math.ceil(Math.random()*300)+200
-
-	  var decColor =
-	    (Math.ceil(Math.random()*16))*16*16
-	    +
-	    (Math.ceil(Math.random()*16))*16
-	    +
-	    (Math.ceil(Math.random()*16));
-
-	  var src = "http://lorempixel.com/"+width+"/"+height;
-
-	  var b1 = Math.ceil(Math.random()*25)
-	  var b2 = Math.ceil(Math.random()*25)
-	  var b3 = Math.ceil(Math.random()*25)
-	  var b4 = Math.ceil(Math.random()*25)
-
-
-	  return <img
-	    style={{'border':'10px solid  ', 'borderColor':'orange yellow',    borderWidth:`${b1}px ${b2}px ${b3}px ${b4}px`,  margin:'0.5%',  boxSizing:'border-box'    }}
-	    src={src}  ></img>;
-	};
-
-
-
-
-	var OnlineImage3D = () => {
-
-
-	  var height = Math.ceil(Math.random()*300)+200
-	  var width = Math.ceil(Math.random()*300)+200
-
-
-	  var decColor =
-	    (Math.ceil(Math.random()*16))*16*16
-	    +
-	    (Math.ceil(Math.random()*16))*16
-	    +
-	    (Math.ceil(Math.random()*16));
-
-
-	  var hexString = (decColor).toString(16);
-
-	  var hexInvertedString = (  1*16*16*16 -   decColor).toString(16);
-
-	  var img = "http://lorempixel.com/"+width+"/"+height;
-
-	  return <div className="flip-container">
-	    <img className="hiddenFrame" src={img} ></img>
-	    <div className="flipper">
-	      <img className="front" src={img}></img>
-	      <div className="back">
-	        {width} - {height}
-	      </div>
-	    </div>
-	  </div>;
-	};
-
-
-	*/
 
 /***/ },
 /* 1 */

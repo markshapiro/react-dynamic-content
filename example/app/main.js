@@ -10,7 +10,8 @@ var video = (link) => {
   </div>;
 };
 
-var aspRatioContent = (percent,elm) => {
+var aspRatioContent = (percent,elm, clsName) => {
+
   return <div className="aspRatioContent">
     <div className="filler" style={{ paddingTop:percent+'%' }}></div>
     {elm}
@@ -23,9 +24,56 @@ var text = (text) => {
   </div>;
 };
 
+
+var slidingImg = (src)=>{
+  return <div className="captionImg">
+    <img src={src}/>
+    <div className="cover"><div className="captionImgTxt">Image Caption</div></div>
+  </div>
+}
+
+
+class LoadingImg extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={visible:false};
+    setTimeout(()=>{
+      this.setState({src:"http://lorempixel.com/100/75"})
+    },1);
+  }
+
+  render() {
+    return aspRatioContent(75, <div>
+      <div className="loadingBg"></div>
+      <img className="withLoader" style={{visibility:this.state.visible?'visible':'hidden', border:'',  width:'100%', position:'absolute',left:'0px', top:'0px'}} onLoad={()=>{
+        setTimeout(()=>this.setState({visible:true}),5000)
+     }} src={this.state.src}/></div>)
+  }
+}
+
+
+
+
+
 var Content = React.createClass({
   getInitialState: function () {
     var elements = [];
+
+
+
+    elements.push(slidingImg("http://lorempixel.com/300/400"))
+    elements.push(slidingImg("http://lorempixel.com/200/150"))
+    elements.push(slidingImg("http://lorempixel.com/500/700"))
+
+
+
+
+    elements.push(<LoadingImg></LoadingImg>);
+    elements.push(<LoadingImg></LoadingImg>);
+    elements.push(<LoadingImg></LoadingImg>);
+
+    elements.push(<img className="imgBorderMd" src="http://lorempixel.com/300/400"/>);
+
 
     elements.push(video("https://www.youtube.com/embed/vO2Su3erRIA"));
     elements.push(video("https://www.youtube.com/embed/kszLwBaC4Sw"));
@@ -42,6 +90,7 @@ var Content = React.createClass({
     elements.push(aspRatioContent(70,text('Id et mauris pellentesque aliquam, justo aenean dolor tortor consectetuer id consequat, imperdiet lectus vestibulum')))
     elements.push(aspRatioContent(70,text('Lorem ipsum dolor sit amet, dignissim non arcu tempus, accumsan et, venenatis aenean, vitae molestiae ligula vivamus morbi dictum, semper scelerisque amet rutrum felis tempus nullam.')))
     elements.push(aspRatioContent(70,text('Eleifend metus vitae urna felis eu ac, sociis consequat magna neque vel, enim at lectus vestibulum dolor. Eu porttitor lorem aliquet sociosqu quisque. Malesuada wisi dapibus nec porttitor aenean, sodales class erat torquent eu dis ut, sapien nunc ac vestibulum, vestibulum non fringilla erat hac. Integer massa sagittis luctus tortor. Mauris massa in libero, ipsum metus, nec pretium minus. Viverra quis wisi varius morbi orci, leo felis cum. Cras purus urna diam velit mauris, lacinia morbi suscipit. Voluptatem eget mi morbi hymenaeos, lectus quis dui felis convallis nec sed. Pariatur morbi sagittis curabitur dictum, conubia molestie,')))
+
 
     return {
       elements:elements,
@@ -77,105 +126,3 @@ var Content = React.createClass({
     }
 });
 ReactDOM.render(<Content />, document.getElementById('content'));
-
-
-
-
-
-
-/*
-
- elements.push(<div className="captionImg">
- <img src="https://placehold.it/300x200"/>
- <div className="cover"><div className="captionImgTxt">Image Caption</div></div>
- </div>)
-
-
- elements.push(<img className="imgBorderLg" style={{margin:'1%'}}   src="test.jpeg"/>)
-
- elements.push(<img className="imgBorderMd" src="http://lorempixel.com/130/300"/>)
-
-
- elements.push(OnlineImage3D())
-
- elements.push(<img className="imgBorderSm" src="http://lorempixel.com/400/500"/>)
-
- elements.push(OnlineImage3D())
- elements.push(<img className="imgBorderMd" src="http://lorempixel.com/440/200"/>)
- elements.push(<img className="imgBorderMd" src="http://lorempixel.com/130/300"/>)
- elements.push(OnlineImage3D())
- elements.push(<img className="imgBorderSm" src="http://lorempixel.com/400/500"/>)
-
- */
-
-
-
-/*
-
-
-var Image = (props) => {
-  return <img style={{'border':'10px solid blue', borderWidth:'10px 10px 10px 10px'  ,  boxSizing:'border-box'    }} src=""  ></img>;
-};
-
-
-var PlainOnlineImage = () => {
-  var height = Math.ceil(Math.random()*300)+200
-  var width = Math.ceil(Math.random()*300)+200
-
-  var decColor =
-    (Math.ceil(Math.random()*16))*16*16
-    +
-    (Math.ceil(Math.random()*16))*16
-    +
-    (Math.ceil(Math.random()*16));
-
-  var src = "http://lorempixel.com/"+width+"/"+height;
-
-  var b1 = Math.ceil(Math.random()*25)
-  var b2 = Math.ceil(Math.random()*25)
-  var b3 = Math.ceil(Math.random()*25)
-  var b4 = Math.ceil(Math.random()*25)
-
-
-  return <img
-    style={{'border':'10px solid  ', 'borderColor':'orange yellow',    borderWidth:`${b1}px ${b2}px ${b3}px ${b4}px`,  margin:'0.5%',  boxSizing:'border-box'    }}
-    src={src}  ></img>;
-};
-
-
-
-
-var OnlineImage3D = () => {
-
-
-  var height = Math.ceil(Math.random()*300)+200
-  var width = Math.ceil(Math.random()*300)+200
-
-
-  var decColor =
-    (Math.ceil(Math.random()*16))*16*16
-    +
-    (Math.ceil(Math.random()*16))*16
-    +
-    (Math.ceil(Math.random()*16));
-
-
-  var hexString = (decColor).toString(16);
-
-  var hexInvertedString = (  1*16*16*16 -   decColor).toString(16);
-
-  var img = "http://lorempixel.com/"+width+"/"+height;
-
-  return <div className="flip-container">
-    <img className="hiddenFrame" src={img} ></img>
-    <div className="flipper">
-      <img className="front" src={img}></img>
-      <div className="back">
-        {width} - {height}
-      </div>
-    </div>
-  </div>;
-};
-
-
-*/
