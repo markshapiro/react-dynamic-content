@@ -56,7 +56,7 @@
 	    'div',
 	    { className: 'video' },
 	    React.createElement('img', { src: 'imgs/move.png', className: 'dragHandle' }),
-	    React.createElement('iframe', { width: '100%', height: '100%', src: link })
+	    React.createElement('iframe', { src: link })
 	  );
 	};
 

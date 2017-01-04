@@ -111,7 +111,7 @@ export function repositionImagesLayout(elements, props){
                 current.style.width=prevValue;                  //then try changing height
                 current.style.height=finalHeight+"px";
                 aspRatio = current.clientHeight!==0 ? current.clientWidth/current.clientHeight : 0;
-                if(Math.abs(aspectRatio[k] - aspRatio)>0.1){    //if still not, force both height & width
+                if(Math.abs(aspectRatio[k] - aspRatio)>0.05){    //if still not, force both height & width
                     current.style.width=finalWidth+"px";
                 }
             }
