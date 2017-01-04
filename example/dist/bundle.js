@@ -130,7 +130,11 @@
 	      return aspRatioContent(75, React.createElement(
 	        'div',
 	        null,
-	        React.createElement('div', { className: 'loadingBg' }),
+	        React.createElement(
+	          'div',
+	          { className: 'loadingBg' },
+	          'deferred loading example'
+	        ),
 	        React.createElement('img', { className: 'withLoader', style: { visibility: this.state.visible ? 'visible' : 'hidden', border: '', width: '100%', position: 'absolute', left: '0px', top: '0px' }, onLoad: function onLoad() {
 	            setTimeout(function () {
 	              return _this2.setState({ visible: true });

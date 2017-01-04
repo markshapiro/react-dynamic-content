@@ -172,4 +172,8 @@ body{
   background-position: center;
   background-size: 30px;
   box-sizing: border-box;
+  color:white;
+  font-family:arial;
+  padding-left:15px;
+  padding-top:15px;
 }

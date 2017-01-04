@@ -44,7 +44,7 @@ class LoadingImg extends React.Component {
 
   render() {
     return aspRatioContent(75, <div>
-      <div className="loadingBg"></div>
+      <div className="loadingBg">deferred loading example</div>
       <img className="withLoader" style={{visibility:this.state.visible?'visible':'hidden', border:'',  width:'100%', position:'absolute',left:'0px', top:'0px'}} onLoad={()=>{
         setTimeout(()=>this.setState({visible:true}),5000)
      }} src={this.state.src}/></div>)
