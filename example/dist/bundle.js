@@ -141,95 +141,73 @@
 	  return e.type === "mousedown" || e.type === "touchstart";
 	};
 
+	var video = function video(link) {
+	  return React.createElement(
+	    'div',
+	    { className: 'video' },
+	    React.createElement('img', { src: 'imgs/move.png', className: 'dragHandle' }),
+	    React.createElement('iframe', { width: '100%', height: '100%', src: link })
+	  );
+	};
+
+	var aspRatioContent = function aspRatioContent(percent, elm) {
+	  return React.createElement(
+	    'div',
+	    { className: 'aspRatioContent' },
+	    React.createElement('div', { className: 'filler', style: { paddingTop: percent + '%' } }),
+	    elm
+	  );
+	};
+
+	var text = function text(_text) {
+	  return React.createElement(
+	    'div',
+	    { className: 'contentText' },
+	    React.createElement(
+	      'div',
+	      { style: { margin: '15px 20px' } },
+	      _text
+	    )
+	  );
+	};
+
 	var Content = React.createClass({
 	  displayName: 'Content',
 
-
 	  getInitialState: function getInitialState() {
-
 	    var elements = [];
 
-	    //for(var i=0;i<20;i++){
-	    //  elements.push(PlainOnlineImage())
-	    //
-	    //}
+	    elements.push(video("https://www.youtube.com/embed/vO2Su3erRIA"));
+	    elements.push(video("https://www.youtube.com/embed/kszLwBaC4Sw"));
+	    elements.push(video("https://www.youtube.com/embed/pUncXbXAiV0"));
+	    elements.push(video("https://www.youtube.com/embed/5zmIrFDksUM"));
+	    elements.push(video("https://www.youtube.com/embed/PN0RPWII7gY"));
 
+	    elements.push(React.createElement('img', { className: 'imgBorderMd', src: 'http://lorempixel.com/300/400' }));
+	    elements.push(React.createElement('img', { src: 'http://lorempixel.com/100/200' }));
+	    elements.push(React.createElement('img', { className: 'imgBorderLg', src: 'http://lorempixel.com/300/200' }));
+	    elements.push(React.createElement('img', { src: 'http://lorempixel.com/400/500' }));
+	    elements.push(React.createElement('img', { className: 'imgBorderSm', src: 'http://lorempixel.com/500/600' }));
 
-	    //elements.push(
-	    //
-	    //  <div style={{border:'3px solid red'}}>
-	    //
-	    //    <iframe width="90%" height='100%' src="https://www.youtube.com/embed/XGSy3_Czz8k"></iframe>
-	    //  </div>
-	    //
-	    //)
-
-	    //"http://lorempixel.com/"+width+"/"+height;
-
-	    // /*
-
-	    elements.push(React.createElement(
-	      'div',
-	      { className: 'captionImg' },
-	      React.createElement('img', { src: 'https://placehold.it/300x200' }),
-	      React.createElement(
-	        'div',
-	        { className: 'cover' },
-	        React.createElement(
-	          'div',
-	          { className: 'captionImgTxt' },
-	          'Image Caption'
-	        )
-	      )
-	    ));
-
-	    elements.push(React.createElement('img', { className: 'imgBorder3', style: { margin: '1%' }, src: 'test.jpeg' }));
-
-	    elements.push(React.createElement('img', { className: 'imgBorder2', src: 'http://lorempixel.com/130/300' }));
-
-	    elements.push(OnlineImage3D());
-
-	    elements.push(React.createElement('img', { className: 'imgBorder1', src: 'http://lorempixel.com/400/500' }));
-
-	    elements.push(OnlineImage3D());
-
-	    elements.push(React.createElement('img', { className: 'imgBorder2', src: 'http://lorempixel.com/440/200' }));
-
-	    elements.push(React.createElement('img', { className: 'imgBorder2', src: 'http://lorempixel.com/130/300' }));
-
-	    elements.push(OnlineImage3D());
-
-	    elements.push(React.createElement('img', { className: 'imgBorder1', src: 'http://lorempixel.com/400/500' }));
-
-	    //*/
-
-
-	    elements.push(React.createElement(
-	      'div',
-	      { className: 'aspRatioContent', style: { margin: '1%', boxSizing: 'content-box' } },
-	      React.createElement(
-	        'div',
-	        { className: 'texxt' },
-	        'lorem ipsum...'
-	      )
-	    ));
+	    elements.push(aspRatioContent(70, text('Id et mauris pellentesque aliquam, justo aenean dolor tortor consectetuer id consequat, imperdiet lectus vestibulum')));
+	    elements.push(aspRatioContent(70, text('Lorem ipsum dolor sit amet, dignissim non arcu tempus, accumsan et, venenatis aenean, vitae molestiae ligula vivamus morbi dictum, semper scelerisque amet rutrum felis tempus nullam.')));
+	    elements.push(aspRatioContent(70, text('Eleifend metus vitae urna felis eu ac, sociis consequat magna neque vel, enim at lectus vestibulum dolor. Eu porttitor lorem aliquet sociosqu quisque. Malesuada wisi dapibus nec porttitor aenean, sodales class erat torquent eu dis ut, sapien nunc ac vestibulum, vestibulum non fringilla erat hac. Integer massa sagittis luctus tortor. Mauris massa in libero, ipsum metus, nec pretium minus. Viverra quis wisi varius morbi orci, leo felis cum. Cras purus urna diam velit mauris, lacinia morbi suscipit. Voluptatem eget mi morbi hymenaeos, lectus quis dui felis convallis nec sed. Pariatur morbi sagittis curabitur dictum, conubia molestie,')));
 
 	    /*
-	    
-	        elements.push(<img src="https://placehold.it/300x200"/>)
-	        elements.push(<img src="https://placehold.it/200x250"/>)
-	        elements.push(<img src="https://placehold.it/600x240"/>)
-	        elements.push(<img src="https://placehold.it/300x500"/>)
-	        elements.push(<img src="https://placehold.it/300x400"/>)
-	        elements.push(<img src="https://placehold.it/500x200"/>)
-	        elements.push(<img src="https://placehold.it/300x200"/>)
-	        elements.push(<img src="https://placehold.it/200x250"/>)
-	        elements.push(<img src="https://placehold.it/600x240"/>)
-	        elements.push(<img src="https://placehold.it/300x500"/>)
-	        elements.push(<img src="https://placehold.it/300x400"/>)
-	        elements.push(<img src="https://placehold.it/500x200"/>)
-	    
-	        */
+	     elements.push(<div className="captionImg">
+	      <img src="https://placehold.it/300x200"/>
+	      <div className="cover"><div className="captionImgTxt">Image Caption</div></div>
+	    </div>)
+	      elements.push(<img className="imgBorderLg" style={{margin:'1%'}}   src="test.jpeg"/>)
+	     elements.push(<img className="imgBorderMd" src="http://lorempixel.com/130/300"/>)
+	      elements.push(OnlineImage3D())
+	     elements.push(<img className="imgBorderSm" src="http://lorempixel.com/400/500"/>)
+	     elements.push(OnlineImage3D())
+	    elements.push(<img className="imgBorderMd" src="http://lorempixel.com/440/200"/>)
+	    elements.push(<img className="imgBorderMd" src="http://lorempixel.com/130/300"/>)
+	    elements.push(OnlineImage3D())
+	    elements.push(<img className="imgBorderSm" src="http://lorempixel.com/400/500"/>)
+	    */
 
 	    return {
 	      elements: elements,
@@ -246,11 +224,8 @@
 	      React.createElement(
 	        'button',
 	        {
-
 	          className: 'switchBtn',
-
 	          onClick: function onClick() {
-
 	            _this.setState({
 	              layoutToggle: !_this.state.layoutToggle
 	            });
@@ -264,30 +239,19 @@
 	        { className: 'contentWrapper' },
 	        React.createElement(DynamicContent, {
 	          elements: this.state.elements,
-
+	          onChange: function onChange(elements) {},
 	          allowDraggingMobile: true,
-	          allowDraggingDesktop: true,
-
-	          onChange: function onChange(elements) {
-
-	            //this.setState({elements})
-	          }
-
+	          allowDraggingDesktop: true
 	          //confirmElementDrag={swipe}
 	          //confirmElementDrag={dblclick}
 	          //confirmElementDrag={longclick}
 	          , confirmElementDrag: click,
-
 	          layout: this.state.layoutToggle ? "cascading" : "images"
-
 	          //numOfColumns={6}
-	          , columnWidth: 150,
+	          , columnWidth: 250,
 	          maxHeight: 250,
-
-	          verticalMargin: 1,
-	          horizontalMargin: 1
-
-	        })
+	          verticalMargin: 10,
+	          horizontalMargin: 10 })
 	      )
 	    );
 	  }

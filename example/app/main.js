@@ -107,30 +107,75 @@ const click = (e=>e.type==="mousedown" || e.type ==="touchstart");
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var video = (link) => {
+  return <div className="video">
+    <img src="imgs/move.png" className="dragHandle"/>
+    <iframe width="100%" height="100%" src={link}></iframe>
+  </div>;
+};
+
+
+var aspRatioContent = (percent,elm) => {
+  return <div className="aspRatioContent">
+    <div className="filler" style={{ paddingTop:percent+'%' }}></div>
+    {elm}
+  </div>;
+};
+
+var text = (text) => {
+  return <div className="contentText">
+    <div style={{margin:'15px 20px'}}>{text}</div>
+  </div>;
+};
+
 var Content = React.createClass({
-
   getInitialState: function () {
-
     var elements = [];
 
-    //for(var i=0;i<20;i++){
-    //  elements.push(PlainOnlineImage())
-    //
-    //}
 
 
-    //elements.push(
-    //
-    //  <div style={{border:'3px solid red'}}>
-    //
-    //    <iframe width="90%" height='100%' src="https://www.youtube.com/embed/XGSy3_Czz8k"></iframe>
-    //  </div>
-    //
-    //)
 
-    //"http://lorempixel.com/"+width+"/"+height;
 
-   // /*
+    elements.push(video("https://www.youtube.com/embed/vO2Su3erRIA"));
+    elements.push(video("https://www.youtube.com/embed/kszLwBaC4Sw"));
+    elements.push(video("https://www.youtube.com/embed/pUncXbXAiV0"));
+    elements.push(video("https://www.youtube.com/embed/5zmIrFDksUM"));
+    elements.push(video("https://www.youtube.com/embed/PN0RPWII7gY"));
+
+
+    elements.push(<img className="imgBorderMd" src="http://lorempixel.com/300/400"/>);
+    elements.push(<img src="http://lorempixel.com/100/200"/>);
+    elements.push(<img className="imgBorderLg" src="http://lorempixel.com/300/200"/>);
+    elements.push(<img src="http://lorempixel.com/400/500"/>);
+    elements.push(<img className="imgBorderSm" src="http://lorempixel.com/500/600"/>);
+
+
+    elements.push(aspRatioContent(70,text('Id et mauris pellentesque aliquam, justo aenean dolor tortor consectetuer id consequat, imperdiet lectus vestibulum')))
+    elements.push(aspRatioContent(70,text('Lorem ipsum dolor sit amet, dignissim non arcu tempus, accumsan et, venenatis aenean, vitae molestiae ligula vivamus morbi dictum, semper scelerisque amet rutrum felis tempus nullam.')))
+    elements.push(aspRatioContent(70,text('Eleifend metus vitae urna felis eu ac, sociis consequat magna neque vel, enim at lectus vestibulum dolor. Eu porttitor lorem aliquet sociosqu quisque. Malesuada wisi dapibus nec porttitor aenean, sodales class erat torquent eu dis ut, sapien nunc ac vestibulum, vestibulum non fringilla erat hac. Integer massa sagittis luctus tortor. Mauris massa in libero, ipsum metus, nec pretium minus. Viverra quis wisi varius morbi orci, leo felis cum. Cras purus urna diam velit mauris, lacinia morbi suscipit. Voluptatem eget mi morbi hymenaeos, lectus quis dui felis convallis nec sed. Pariatur morbi sagittis curabitur dictum, conubia molestie,')))
+
+
+    /*
 
     elements.push(<div className="captionImg">
       <img src="https://placehold.it/300x200"/>
@@ -138,49 +183,30 @@ var Content = React.createClass({
     </div>)
 
 
-    elements.push(<img className="imgBorder3" style={{margin:'1%'}}   src="test.jpeg"/>)
+    elements.push(<img className="imgBorderLg" style={{margin:'1%'}}   src="test.jpeg"/>)
 
-    elements.push(<img className="imgBorder2" src="http://lorempixel.com/130/300"/>)
+    elements.push(<img className="imgBorderMd" src="http://lorempixel.com/130/300"/>)
 
 
     elements.push(OnlineImage3D())
 
-    elements.push(<img className="imgBorder1" src="http://lorempixel.com/400/500"/>)
+    elements.push(<img className="imgBorderSm" src="http://lorempixel.com/400/500"/>)
 
     elements.push(OnlineImage3D())
-
-    elements.push(<img className="imgBorder2" src="http://lorempixel.com/440/200"/>)
-
-    elements.push(<img className="imgBorder2" src="http://lorempixel.com/130/300"/>)
-
+    elements.push(<img className="imgBorderMd" src="http://lorempixel.com/440/200"/>)
+    elements.push(<img className="imgBorderMd" src="http://lorempixel.com/130/300"/>)
     elements.push(OnlineImage3D())
+    elements.push(<img className="imgBorderSm" src="http://lorempixel.com/400/500"/>)
+
+*/
 
 
-    elements.push(<img className="imgBorder1" src="http://lorempixel.com/400/500"/>)
-
-//*/
 
 
-    elements.push(<div className="aspRatioContent"  style={{margin:'1%',   boxSizing:'content-box'}}>
-      <div className="texxt">lorem ipsum...</div>
-    </div>)
 
-/*
 
-    elements.push(<img src="https://placehold.it/300x200"/>)
-    elements.push(<img src="https://placehold.it/200x250"/>)
-    elements.push(<img src="https://placehold.it/600x240"/>)
-    elements.push(<img src="https://placehold.it/300x500"/>)
-    elements.push(<img src="https://placehold.it/300x400"/>)
-    elements.push(<img src="https://placehold.it/500x200"/>)
-    elements.push(<img src="https://placehold.it/300x200"/>)
-    elements.push(<img src="https://placehold.it/200x250"/>)
-    elements.push(<img src="https://placehold.it/600x240"/>)
-    elements.push(<img src="https://placehold.it/300x500"/>)
-    elements.push(<img src="https://placehold.it/300x400"/>)
-    elements.push(<img src="https://placehold.it/500x200"/>)
 
-    */
+
 
 
     return {
@@ -192,54 +218,30 @@ var Content = React.createClass({
   render: function() {
         return (
           <div>
-
             <button
-
               className="switchBtn"
-
               onClick={()=>{
-
-
                 this.setState({
                     layoutToggle:!this.state.layoutToggle
                 })
-
-            }} >switch to {this.state.layoutToggle?"google images":"cascading"} layout</button>
-
-
+            }}>switch to {this.state.layoutToggle?"google images":"cascading"} layout</button>
             <div className="contentWrapper" >
               <DynamicContent
                 elements={this.state.elements}
-
+                onChange={elements=>{}}
                 allowDraggingMobile={true}
                 allowDraggingDesktop={true}
-
-                onChange={elements=>{
-
-                        //this.setState({elements})
-                    }}
-
                 //confirmElementDrag={swipe}
                 //confirmElementDrag={dblclick}
                 //confirmElementDrag={longclick}
                 confirmElementDrag={click}
-
                 layout={this.state.layoutToggle?"cascading":"images"}
-
                 //numOfColumns={6}
-                columnWidth={150}
+                columnWidth={250}
                 maxHeight={250}
-
-                verticalMargin={1}
-                horizontalMargin={1}
-
-                ></DynamicContent>
+                verticalMargin={10}
+                horizontalMargin={10}></DynamicContent>
             </div>
-
-
-
-
-
           </div>
         );
     }
