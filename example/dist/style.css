@@ -67,23 +67,6 @@ body{
   font-family: arial;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*  FRAME BORDERS  */
 
 .imgBorderLg{
@@ -138,15 +121,23 @@ body{
 }
 .video:hover .dragHandle{
   opacity:1.0 !important;
+  border-radius:10px 10px 10px 10px !important;
 }
 .dragHandle{
   opacity:0.4;
   position:absolute;
-  right:25px;
-  top:15px;
-  border-radius:10px;
+  right:0px;
+  top:0px;
+  border-radius:10px 10px 10px 70px;
+
+  transition: opacity 0.2s linear,border-radius 0.2s linear;
+  -webkit-transition: opacity 0.2s linear,border-radius 0.2s linear;
+  -moz-transition: opacity 0.2s linear,border-radius 0.2s linear;
+  -o-transition: opacity 0.2s linear,border-radius 0.2s linear;
+
+
   padding:3px;
-  height:30px;
+  height:35px;
   background: repeating-linear-gradient(
     45deg,
     lightgrey,

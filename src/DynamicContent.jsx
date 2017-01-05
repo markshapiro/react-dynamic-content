@@ -409,10 +409,12 @@ class DynamicContent extends Component {
   }
 
   elmEventDesktop(e, elm){
+    if(_.findIndex(this.state.data,elm=>elm.isDragging)>=0){return;}
     this.props.allowDraggingDesktop? this.elmEvent$.onNext({e, ref:elm.ref}) : null;
   }
 
   elmEventMobile(e, elm){
+    if(_.findIndex(this.state.data,elm=>elm.isDragging)>=0){return;}
     this.props.allowDraggingMobile? this.elmEvent$.onNext({e:_.extend(e,e.touches[0]), ref:elm.ref}) : null;
   }
 

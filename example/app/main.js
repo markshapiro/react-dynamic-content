@@ -51,15 +51,50 @@ class LoadingImg extends React.Component {
   }
 }
 
+var randomBorder = (src)=>{
 
+  var b1 = Math.ceil(Math.random()*30)
+  var b2 = Math.ceil(Math.random()*30)
+  var b3 = Math.ceil(Math.random()*30)
+  var b4 = Math.ceil(Math.random()*30)
 
+  return <img style={{'border':'10px solid red',    borderColor:'orange yellow',    borderWidth:`${b1}px ${b2}px ${b3}px ${b4}px`}} src={src}/>
+}
 
+const click = e=>e.type==="mousedown" || e.type ==="touchstart";
+
+var lastClick=0;
+const dblclick = (e,ind)=>{
+  if(e.type==="mousedown" || e.type==="touchstart"){
+    if(new Date() - lastClick <400){ return true; }
+    lastClick=new Date();
+  }
+};
+
+const longclick = e=>{
+  if(e.type==="mousedown" || e.type==="touchstart"){
+    return new Promise((resolve, reject)=> setTimeout(()=>resolve(true), 600));
+  }
+};
+
+var isMouseDown=false;
+const swipe = e=>{
+  isMouseDown = (e.type==="mousedown" || e.type==="touchstart")
+    ?true:((e.type==="mouseup" || e.type==="touchend")?false:isMouseDown);
+  if((e.type==="mousemove" || e.type==="touchmove") && isMouseDown){
+    return new Promise((resolve, reject)=> setTimeout(()=>resolve(true), 600));
+  }
+};
 
 var Content = React.createClass({
   getInitialState: function () {
     var elements = [];
 
 
+
+    elements.push(randomBorder("https://placeholdit.imgix.net/~text?txtsize=120&txtclr=3498db&bg=9b59b6&txt=RANDOM%20BORDER&w=380&h=600&txttrack=0"))
+    elements.push(randomBorder("https://placeholdit.imgix.net/~text?txtsize=120&txtclr=3498db&bg=9b59b6&txt=RANDOM%20BORDER&w=480&h=500&txttrack=0"))
+    elements.push(randomBorder("https://placeholdit.imgix.net/~text?txtsize=120&txtclr=3498db&bg=9b59b6&txt=RANDOM%20BORDER&w=480&h=550&txttrack=0"))
 
     elements.push(slidingImg("http://lorempixel.com/300/400"))
     elements.push(slidingImg("http://lorempixel.com/200/150"))
@@ -118,6 +153,10 @@ var Content = React.createClass({
                 numOfColumns={4}
                 //columnWidth={250}
                 maxHeight={250}
+                confirmElementDrag={click}
+                //confirmElementDrag={dblclick}
+                //confirmElementDrag={longclick}
+                //confirmElementDrag={swipe}
                 verticalMargin={10}
                 horizontalMargin={10}></DynamicContent>
             </div>

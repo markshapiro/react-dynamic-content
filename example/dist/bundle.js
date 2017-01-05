@@ -147,11 +147,61 @@
 	  return LoadingImg;
 	}(React.Component);
 
+	var randomBorder = function randomBorder(src) {
+
+	  var b1 = Math.ceil(Math.random() * 30);
+	  var b2 = Math.ceil(Math.random() * 30);
+	  var b3 = Math.ceil(Math.random() * 30);
+	  var b4 = Math.ceil(Math.random() * 30);
+
+	  return React.createElement('img', { style: { 'border': '10px solid red', borderColor: 'orange yellow', borderWidth: b1 + 'px ' + b2 + 'px ' + b3 + 'px ' + b4 + 'px' }, src: src });
+	};
+
+	var click = function click(e) {
+	  return e.type === "mousedown" || e.type === "touchstart";
+	};
+
+	var lastClick = 0;
+	var dblclick = function dblclick(e, ind) {
+	  if (e.type === "mousedown" || e.type === "touchstart") {
+	    if (new Date() - lastClick < 400) {
+	      return true;
+	    }
+	    lastClick = new Date();
+	  }
+	};
+
+	var longclick = function longclick(e) {
+	  if (e.type === "mousedown" || e.type === "touchstart") {
+	    return new Promise(function (resolve, reject) {
+	      return setTimeout(function () {
+	        return resolve(true);
+	      }, 600);
+	    });
+	  }
+	};
+
+	var isMouseDown = false;
+	var swipe = function swipe(e) {
+	  isMouseDown = e.type === "mousedown" || e.type === "touchstart" ? true : e.type === "mouseup" || e.type === "touchend" ? false : isMouseDown;
+	  if ((e.type === "mousemove" || e.type === "touchmove") && isMouseDown) {
+	    return new Promise(function (resolve, reject) {
+	      return setTimeout(function () {
+	        return resolve(true);
+	      }, 600);
+	    });
+	  }
+	};
+
 	var Content = React.createClass({
 	  displayName: 'Content',
 
 	  getInitialState: function getInitialState() {
 	    var elements = [];
+
+	    elements.push(randomBorder("https://placeholdit.imgix.net/~text?txtsize=120&txtclr=3498db&bg=9b59b6&txt=RANDOM%20BORDER&w=380&h=600&txttrack=0"));
+	    elements.push(randomBorder("https://placeholdit.imgix.net/~text?txtsize=120&txtclr=3498db&bg=9b59b6&txt=RANDOM%20BORDER&w=480&h=500&txttrack=0"));
+	    elements.push(randomBorder("https://placeholdit.imgix.net/~text?txtsize=120&txtclr=3498db&bg=9b59b6&txt=RANDOM%20BORDER&w=480&h=550&txttrack=0"));
 
 	    elements.push(slidingImg("http://lorempixel.com/300/400"));
 	    elements.push(slidingImg("http://lorempixel.com/200/150"));
@@ -215,7 +265,11 @@
 	          numOfColumns: 4
 	          //columnWidth={250}
 	          , maxHeight: 250,
-	          verticalMargin: 10,
+	          confirmElementDrag: click
+	          //confirmElementDrag={dblclick}
+	          //confirmElementDrag={longclick}
+	          //confirmElementDrag={swipe}
+	          , verticalMargin: 10,
 	          horizontalMargin: 10 })
 	      )
 	    );
@@ -20183,9 +20237,13 @@
 	            n.renderedElmResult || (n.assignRenderedElm(t[r]), e.initialCss[n.ref] = { height: t[r].style.height, width: t[r].style.width, position: t[r].style.position });
 	          });
 	        } }, { key: "elmEventDesktop", value: function value(e, t) {
-	          this.props.allowDraggingDesktop ? this.elmEvent$.onNext({ e: e, ref: t.ref }) : null;
+	          h.default.findIndex(this.state.data, function (e) {
+	            return e.isDragging;
+	          }) >= 0 || (this.props.allowDraggingDesktop ? this.elmEvent$.onNext({ e: e, ref: t.ref }) : null);
 	        } }, { key: "elmEventMobile", value: function value(e, t) {
-	          this.props.allowDraggingMobile ? this.elmEvent$.onNext({ e: h.default.extend(e, e.touches[0]), ref: t.ref }) : null;
+	          h.default.findIndex(this.state.data, function (e) {
+	            return e.isDragging;
+	          }) >= 0 || (this.props.allowDraggingMobile ? this.elmEvent$.onNext({ e: h.default.extend(e, e.touches[0]), ref: t.ref }) : null);
 	        } }, { key: "shouldReposition", value: function value(e, t) {
 	          var n = this,
 	              r = !1;return h.default.each(t.data, function (e, i) {
@@ -20241,7 +20299,7 @@
 	              D = e[y],
 	              w = i(e[y]),
 	              x = w.margin.top + w.margin.bottom,
-	              O = w.margin.left + w.margin.right;"content-box" === w.boxSizing ? (x += w.top + w.bottom, O += w.left + w.right, b = u - x, E = b * o[y]) : (b = u - x, E = (b - (w.top + w.bottom)) * o[y] + w.left + w.right);var N = D.style.width;D.style.width = E + "px";var P = 0 !== D.clientHeight ? D.clientWidth / D.clientHeight : 0;Math.abs(o[y] - P) > .05 && (D.style.width = N, D.style.height = b + "px", P = 0 !== D.clientHeight ? D.clientWidth / D.clientHeight : 0, Math.abs(o[y] - P) > .1 && (D.style.width = E + "px")), D.style.position = "absolute", D.style.top = f + "px", D.style.left = c + "px", c += D.offsetWidth + r + w.margin.left + w.margin.right;
+	              O = w.margin.left + w.margin.right;"content-box" === w.boxSizing ? (x += w.top + w.bottom, O += w.left + w.right, b = u - x, E = b * o[y]) : (b = u - x, E = (b - (w.top + w.bottom)) * o[y] + w.left + w.right);var N = D.style.width;D.style.width = E + "px";var P = 0 !== D.clientHeight ? D.clientWidth / D.clientHeight : 0;Math.abs(o[y] - P) > .05 && (D.style.width = N, D.style.height = b + "px", P = 0 !== D.clientHeight ? D.clientWidth / D.clientHeight : 0, Math.abs(o[y] - P) > .05 && (D.style.width = E + "px")), D.style.position = "absolute", D.style.top = f + "px", D.style.left = c + "px", c += D.offsetWidth + r + w.margin.left + w.margin.right;
 	        }f += u + n, c = 0, l = p;
 	      }
 	    }function s(e) {

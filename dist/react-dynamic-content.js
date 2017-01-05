@@ -598,11 +598,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'elmEventDesktop',
 	    value: function elmEventDesktop(e, elm) {
+	      if (_lodash2.default.findIndex(this.state.data, function (elm) {
+	        return elm.isDragging;
+	      }) >= 0) {
+	        return;
+	      }
 	      this.props.allowDraggingDesktop ? this.elmEvent$.onNext({ e: e, ref: elm.ref }) : null;
 	    }
 	  }, {
 	    key: 'elmEventMobile',
 	    value: function elmEventMobile(e, elm) {
+	      if (_lodash2.default.findIndex(this.state.data, function (elm) {
+	        return elm.isDragging;
+	      }) >= 0) {
+	        return;
+	      }
 	      this.props.allowDraggingMobile ? this.elmEvent$.onNext({ e: _lodash2.default.extend(e, e.touches[0]), ref: elm.ref }) : null;
 	    }
 	  }, {
@@ -833,7 +843,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                current.style.width = prevValue; //then try changing height
 	                current.style.height = finalHeight + "px";
 	                aspRatio = current.clientHeight !== 0 ? current.clientWidth / current.clientHeight : 0;
-	                if (Math.abs(aspectRatio[k] - aspRatio) > 0.1) {
+	                if (Math.abs(aspectRatio[k] - aspRatio) > 0.05) {
 	                    //if still not, force both height & width
 	                    current.style.width = finalWidth + "px";
 	                }
