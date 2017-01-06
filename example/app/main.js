@@ -38,15 +38,15 @@ class LoadingImg extends React.Component {
     super(props);
     this.state={visible:false};
     setTimeout(()=>{
-      this.setState({src:"http://lorempixel.com/100/75"})
+      this.setState({src:props.src})
     },1);
   }
 
   render() {
-    return aspRatioContent(75, <div>
+    return aspRatioContent(this.props.aspRatio, <div>
       <div className="loadingBg">deferred loading example</div>
       <img className="withLoader" style={{visibility:this.state.visible?'visible':'hidden', border:'',  width:'100%', position:'absolute',left:'0px', top:'0px'}} onLoad={()=>{
-        setTimeout(()=>this.setState({visible:true}),5000)
+        setTimeout(()=>this.setState({visible:true}),6000)
      }} src={this.state.src}/></div>)
   }
 }
@@ -94,41 +94,31 @@ var Content = React.createClass({
   getInitialState: function () {
     var elements = [];
 
-
-
-    elements.push(randomBorder("https://placeholdit.imgix.net/~text?txtsize=120&txtclr=3498db&bg=9b59b6&txt=RANDOM%20BORDER&w=380&h=600&txttrack=0"))
-    elements.push(randomBorder("https://placeholdit.imgix.net/~text?txtsize=120&txtclr=3498db&bg=9b59b6&txt=RANDOM%20BORDER&w=480&h=500&txttrack=0"))
-    elements.push(randomBorder("https://placeholdit.imgix.net/~text?txtsize=120&txtclr=3498db&bg=9b59b6&txt=RANDOM%20BORDER&w=480&h=550&txttrack=0"))
-
-    elements.push(slidingImg("http://lorempixel.com/300/400"))
-    elements.push(slidingImg("http://lorempixel.com/200/150"))
-    elements.push(slidingImg("http://lorempixel.com/500/700"))
-
-
-
-
-    elements.push(<LoadingImg></LoadingImg>);
-    elements.push(<LoadingImg></LoadingImg>);
-    elements.push(<LoadingImg></LoadingImg>);
-
-    elements.push(<img className="imgBorderMd" src="http://lorempixel.com/300/400"/>);
-
-
-    elements.push(video("https://www.youtube.com/embed/vO2Su3erRIA"));
+    elements.push(randomBorder("imgs/r1.png"))
     elements.push(video("https://www.youtube.com/embed/kszLwBaC4Sw"));
+    elements.push(<LoadingImg aspRatio={112} src={"imgs/4.jpg"}></LoadingImg>);
+    elements.push(slidingImg("imgs/1.jpg"))
+    elements.push(<img className="imgBorderSm" src="imgs/2.jpg"/>);
     elements.push(video("https://www.youtube.com/embed/pUncXbXAiV0"));
+    elements.push(aspRatioContent(70,text('Lorem ipsum dolor sit amet, dignissim non arcu tempus, accumsan et, venenatis aenean, vitae molestiae ligula vivamus morbi dictum, semper scelerisque amet rutrum felis tempus nullam.')))
+    elements.push(<LoadingImg aspRatio={129} src={"imgs/3.jpg"}></LoadingImg>);
+    elements.push(<img src="imgs/9.jpg"/>);
+    elements.push(<LoadingImg aspRatio={75}  src={"imgs/5.jpg"}></LoadingImg>);
+    elements.push(slidingImg("imgs/2.jpg"))
+    elements.push(aspRatioContent(70,text('Eleifend metus vitae urna felis eu ac, sociis consequat magna neque vel, enim at lectus vestibulum dolor. Eu porttitor lorem aliquet sociosqu quisque. Malesuada wisi dapibus nec porttitor aenean, sodales class erat torquent eu dis ut, sapien nunc ac vestibulum, vestibulum non fringilla erat hac. Integer massa sagittis luctus tortor. Mauris massa in libero, ipsum metus, nec pretium minus. Viverra quis wisi varius morbi orci, leo felis cum. Cras purus urna diam velit mauris, lacinia morbi suscipit. Voluptatem eget mi morbi hymenaeos, lectus quis dui felis convallis nec sed. Pariatur morbi sagittis curabitur dictum, conubia molestie,')))
+    elements.push(<LoadingImg aspRatio={81} src={"imgs/6.jpg"}></LoadingImg>);
+    elements.push(<img className="imgBorderLg" src="imgs/8.jpg"/>);
+    elements.push(video("https://www.youtube.com/embed/vO2Su3erRIA"));
+    elements.push(<img className="imgBorderMd" src="imgs/10.jpg"/>);
+    elements.push(aspRatioContent(70,text('Eleifend metus vitae urna felis eu ac, sociis consequat magna neque vel, enim at lectus vestibulum dolor. Eu porttitor lorem aliquet sociosqu quisque. Malesuada wisi dapibus nec porttitor aenean, sodales class erat torquent eu dis ut, sapien nunc ac vestibulum, vestibulum non fringilla erat hac. Integer massa sagittis luctus tortor. Mauris massa in libero, ipsum metus, nec pretium minus. Viverra quis wisi varius morbi orci, leo felis cum. Cras purus urna diam velit mauris, lacinia morbi suscipit. Voluptatem eget mi morbi hymenaeos, lectus quis dui felis convallis nec sed. Pariatur morbi sagittis curabitur dictum, conubia molestie,')))
+    elements.push(<img src="imgs/7.jpg"/>);
+    elements.push(<img className="imgBorderMd" src="imgs/11.jpg"/>);
+    elements.push(slidingImg("imgs/6.jpg"))
+    elements.push(aspRatioContent(70,text('Id et mauris pellentesque aliquam, justo aenean dolor tortor consectetuer id consequat, imperdiet lectus vestibulum')))
+    elements.push(randomBorder("imgs/r2.png"))
     elements.push(video("https://www.youtube.com/embed/5zmIrFDksUM"));
 
-    elements.push(<img className="imgBorderMd" src="http://lorempixel.com/300/400"/>);
-    elements.push(<img src="http://lorempixel.com/100/200"/>);
-    elements.push(<img className="imgBorderLg" src="http://lorempixel.com/300/200"/>);
-    elements.push(<img src="http://lorempixel.com/400/500"/>);
-    elements.push(<img className="imgBorderSm" src="http://lorempixel.com/500/600"/>);
 
-
-    elements.push(aspRatioContent(70,text('Id et mauris pellentesque aliquam, justo aenean dolor tortor consectetuer id consequat, imperdiet lectus vestibulum')))
-    elements.push(aspRatioContent(70,text('Lorem ipsum dolor sit amet, dignissim non arcu tempus, accumsan et, venenatis aenean, vitae molestiae ligula vivamus morbi dictum, semper scelerisque amet rutrum felis tempus nullam.')))
-    elements.push(aspRatioContent(70,text('Eleifend metus vitae urna felis eu ac, sociis consequat magna neque vel, enim at lectus vestibulum dolor. Eu porttitor lorem aliquet sociosqu quisque. Malesuada wisi dapibus nec porttitor aenean, sodales class erat torquent eu dis ut, sapien nunc ac vestibulum, vestibulum non fringilla erat hac. Integer massa sagittis luctus tortor. Mauris massa in libero, ipsum metus, nec pretium minus. Viverra quis wisi varius morbi orci, leo felis cum. Cras purus urna diam velit mauris, lacinia morbi suscipit. Voluptatem eget mi morbi hymenaeos, lectus quis dui felis convallis nec sed. Pariatur morbi sagittis curabitur dictum, conubia molestie,')))
 
 
     return {
@@ -175,7 +165,7 @@ var Content = React.createClass({
                 allowDraggingMobile={true}
                 allowDraggingDesktop={true}
                 layout={this.state.layoutToggle?"cascading":"images"}
-                numOfColumns={4}
+                numOfColumns={5}
                 //columnWidth={250}
                 maxHeight={250}
                 confirmElementDrag={dragConfirmations[this.state.dragConfIndex]}
