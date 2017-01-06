@@ -157,12 +157,12 @@
 	  return React.createElement('img', { style: { 'border': '10px solid red', borderColor: 'orange yellow', borderWidth: b1 + 'px ' + b2 + 'px ' + b3 + 'px ' + b4 + 'px' }, src: src });
 	};
 
-	var click = function click(e) {
+	var mousedown = function mousedown(e) {
 	  return e.type === "mousedown" || e.type === "touchstart";
 	};
 
 	var lastClick = 0;
-	var dblclick = function dblclick(e, ind) {
+	var clickAndHold = function clickAndHold(e, ind) {
 	  if (e.type === "mousedown" || e.type === "touchstart") {
 	    if (new Date() - lastClick < 400) {
 	      return true;
@@ -171,7 +171,7 @@
 	  }
 	};
 
-	var longclick = function longclick(e) {
+	var longHold = function longHold(e) {
 	  if (e.type === "mousedown" || e.type === "touchstart") {
 	    return new Promise(function (resolve, reject) {
 	      return setTimeout(function () {
@@ -188,10 +188,14 @@
 	    return new Promise(function (resolve, reject) {
 	      return setTimeout(function () {
 	        return resolve(true);
-	      }, 600);
+	      }, 400);
 	    });
 	  }
 	};
+
+	var dragConfirmations = [mousedown, clickAndHold, longHold, swipe];
+
+	var dragConfirmationsNames = ["mousedown", "click & hold", "long hold", "swipe"];
 
 	var Content = React.createClass({
 	  displayName: 'Content',
@@ -230,7 +234,8 @@
 
 	    return {
 	      elements: elements,
-	      layoutToggle: true
+	      layoutToggle: true,
+	      dragConfIndex: 0
 	    };
 	  },
 
@@ -241,17 +246,31 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        'button',
-	        {
-	          className: 'switchBtn',
-	          onClick: function onClick() {
-	            _this3.setState({
-	              layoutToggle: !_this3.state.layoutToggle
-	            });
-	          } },
-	        'switch to ',
-	        this.state.layoutToggle ? "google images" : "cascading",
-	        ' layout'
+	        'span',
+	        { className: 'currentDrags' },
+	        'currently starting drags with ',
+	        dragConfirmationsNames[this.state.dragConfIndex % dragConfirmations.length],
+	        React.createElement(
+	          'button',
+	          { className: 'switchBtn', onClick: function onClick() {
+	              _this3.setState({
+	                dragConfIndex: (_this3.state.dragConfIndex + 1) % dragConfirmations.length
+	              });
+	            } },
+	          'switch to ',
+	          dragConfirmationsNames[(this.state.dragConfIndex + 1) % dragConfirmations.length]
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'switchBtn', onClick: function onClick() {
+	              _this3.setState({
+	                layoutToggle: !_this3.state.layoutToggle
+	              });
+	            } },
+	          'switch to ',
+	          this.state.layoutToggle ? "google images" : "cascading",
+	          ' layout'
+	        )
 	      ),
 	      React.createElement(
 	        'div',
@@ -265,11 +284,8 @@
 	          numOfColumns: 4
 	          //columnWidth={250}
 	          , maxHeight: 250,
-	          confirmElementDrag: click
-	          //confirmElementDrag={dblclick}
-	          //confirmElementDrag={longclick}
-	          //confirmElementDrag={swipe}
-	          , verticalMargin: 10,
+	          confirmElementDrag: dragConfirmations[this.state.dragConfIndex],
+	          verticalMargin: 10,
 	          horizontalMargin: 10 })
 	      )
 	    );

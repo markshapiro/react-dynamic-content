@@ -59,19 +59,19 @@ var randomBorder = (src)=>{
   var b4 = Math.ceil(Math.random()*30)
 
   return <img style={{'border':'10px solid red',    borderColor:'orange yellow',    borderWidth:`${b1}px ${b2}px ${b3}px ${b4}px`}} src={src}/>
-}
+};
 
-const click = e=>e.type==="mousedown" || e.type ==="touchstart";
+const mousedown = e=>e.type==="mousedown" || e.type ==="touchstart";
 
 var lastClick=0;
-const dblclick = (e,ind)=>{
+const clickAndHold = (e,ind)=>{
   if(e.type==="mousedown" || e.type==="touchstart"){
     if(new Date() - lastClick <400){ return true; }
     lastClick=new Date();
   }
 };
 
-const longclick = e=>{
+const longHold = e=>{
   if(e.type==="mousedown" || e.type==="touchstart"){
     return new Promise((resolve, reject)=> setTimeout(()=>resolve(true), 600));
   }
@@ -82,9 +82,13 @@ const swipe = e=>{
   isMouseDown = (e.type==="mousedown" || e.type==="touchstart")
     ?true:((e.type==="mouseup" || e.type==="touchend")?false:isMouseDown);
   if((e.type==="mousemove" || e.type==="touchmove") && isMouseDown){
-    return new Promise((resolve, reject)=> setTimeout(()=>resolve(true), 600));
+    return new Promise((resolve, reject)=> setTimeout(()=>resolve(true), 400));
   }
 };
+
+var dragConfirmations = [mousedown, clickAndHold, longHold, swipe,];
+
+var dragConfirmationsNames = ["mousedown", "click & hold", "long hold",  "swipe",];
 
 var Content = React.createClass({
   getInitialState: function () {
@@ -129,20 +133,41 @@ var Content = React.createClass({
 
     return {
       elements:elements,
-      layoutToggle:true
+      layoutToggle:true,
+      dragConfIndex:0
     }
   },
 
   render: function() {
         return (
           <div>
-            <button
-              className="switchBtn"
-              onClick={()=>{
-                this.setState({
-                    layoutToggle:!this.state.layoutToggle
-                })
-            }}>switch to {this.state.layoutToggle?"google images":"cascading"} layout</button>
+
+
+
+            <span className="currentDrags">
+
+              currently starting drags with {dragConfirmationsNames[(this.state.dragConfIndex)%dragConfirmations.length]}
+
+
+              <button className="switchBtn"  onClick={()=>{
+                  this.setState({
+                      dragConfIndex:(this.state.dragConfIndex+1)%dragConfirmations.length
+                  });
+              }}>switch to {dragConfirmationsNames[(this.state.dragConfIndex+1)%dragConfirmations.length]}</button>
+
+
+
+              <button className="switchBtn"  onClick={()=>{
+                  this.setState({
+                      layoutToggle:!this.state.layoutToggle
+                  })
+              }}>switch to {this.state.layoutToggle?"google images":"cascading"} layout</button>
+
+
+            </span>
+
+
+
             <div className="contentWrapper" >
               <DynamicContent
                 elements={this.state.elements}
@@ -153,10 +178,7 @@ var Content = React.createClass({
                 numOfColumns={4}
                 //columnWidth={250}
                 maxHeight={250}
-                confirmElementDrag={click}
-                //confirmElementDrag={dblclick}
-                //confirmElementDrag={longclick}
-                //confirmElementDrag={swipe}
+                confirmElementDrag={dragConfirmations[this.state.dragConfIndex]}
                 verticalMargin={10}
                 horizontalMargin={10}></DynamicContent>
             </div>
