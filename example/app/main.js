@@ -64,7 +64,7 @@ var randomBorder = (src)=>{
 const mousedown = e=>e.type==="mousedown" || e.type ==="touchstart";
 
 var lastClick=0;
-const clickAndHold = (e,ind)=>{
+const clickAndMouseDown = (e,ind)=>{
   if(e.type==="mousedown" || e.type==="touchstart"){
     if(new Date() - lastClick <400){ return true; }
     lastClick=new Date();
@@ -86,19 +86,19 @@ const swipe = e=>{
   }
 };
 
-var dragConfirmations = [mousedown, clickAndHold, longHold, swipe,];
+var dragConfirmations = [mousedown, clickAndMouseDown, longHold, swipe,];
 
-var dragConfirmationsNames = ["mousedown", "click & hold", "long hold",  "swipe",];
+var dragConfirmationsNames = ["mousedown", "click & mousedown", "long hold",  "swipe",];
 
 var Content = React.createClass({
   getInitialState: function () {
     var elements = [];
 
-    elements.push(randomBorder("imgs/r1.png"))
     elements.push(video("https://www.youtube.com/embed/kszLwBaC4Sw"));
     elements.push(<LoadingImg aspRatio={112} src={"imgs/4.jpg"}></LoadingImg>);
-    elements.push(slidingImg("imgs/1.jpg"))
-    elements.push(<img className="imgBorderSm" src="imgs/2.jpg"/>);
+    elements.push(slidingImg("imgs/12.jpg"))
+    elements.push(aspRatioContent(70,text('Eleifend metus vitae urna felis eu ac, sociis consequat magna neque vel, enim at lectus vestibulum dolor. Eu porttitor lorem aliquet sociosqu quisque. Malesuada wisi dapibus nec porttitor aenean, sodales class erat torquent eu dis ut, sapien nunc ac vestibulum, vestibulum non fringilla erat hac. Integer massa sagittis luctus tortor. Mauris massa in libero, ipsum metus, nec pretium minus. Viverra quis wisi varius morbi orci, leo felis cum. Cras purus urna diam velit mauris, lacinia morbi suscipit. Voluptatem eget mi morbi hymenaeos, lectus quis dui felis convallis nec sed. Pariatur morbi sagittis curabitur dictum, conubia molestie,')))
+    elements.push(<img className="imgBorderSm" src="imgs/1.jpg"/>);
     elements.push(video("https://www.youtube.com/embed/pUncXbXAiV0"));
     elements.push(aspRatioContent(70,text('Lorem ipsum dolor sit amet, dignissim non arcu tempus, accumsan et, venenatis aenean, vitae molestiae ligula vivamus morbi dictum, semper scelerisque amet rutrum felis tempus nullam.')))
     elements.push(<LoadingImg aspRatio={129} src={"imgs/3.jpg"}></LoadingImg>);
@@ -107,6 +107,7 @@ var Content = React.createClass({
     elements.push(slidingImg("imgs/2.jpg"))
     elements.push(aspRatioContent(70,text('Eleifend metus vitae urna felis eu ac, sociis consequat magna neque vel, enim at lectus vestibulum dolor. Eu porttitor lorem aliquet sociosqu quisque. Malesuada wisi dapibus nec porttitor aenean, sodales class erat torquent eu dis ut, sapien nunc ac vestibulum, vestibulum non fringilla erat hac. Integer massa sagittis luctus tortor. Mauris massa in libero, ipsum metus, nec pretium minus. Viverra quis wisi varius morbi orci, leo felis cum. Cras purus urna diam velit mauris, lacinia morbi suscipit. Voluptatem eget mi morbi hymenaeos, lectus quis dui felis convallis nec sed. Pariatur morbi sagittis curabitur dictum, conubia molestie,')))
     elements.push(<LoadingImg aspRatio={81} src={"imgs/6.jpg"}></LoadingImg>);
+    elements.push(randomBorder("imgs/r1.png"))
     elements.push(<img className="imgBorderLg" src="imgs/8.jpg"/>);
     elements.push(video("https://www.youtube.com/embed/vO2Su3erRIA"));
     elements.push(<img className="imgBorderMd" src="imgs/10.jpg"/>);
@@ -143,7 +144,7 @@ var Content = React.createClass({
                   this.setState({
                       dragConfIndex:(this.state.dragConfIndex+1)%dragConfirmations.length
                   });
-              }}>switch to {dragConfirmationsNames[(this.state.dragConfIndex+1)%dragConfirmations.length]}</button>
+              }}>switch to {dragConfirmationsNames[(this.state.dragConfIndex+1)%dragConfirmations.length]} to drag</button>
 
 
 
