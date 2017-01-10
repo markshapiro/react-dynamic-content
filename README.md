@@ -26,6 +26,7 @@ npm install --save react-dynamic-content
 
 ```jsx
 import DynamicContent from 'react-dynamic-content';
+require('react-dynamic-content/styles/style.css');
 
 class MyComponent extends React.Component {
   render() {
@@ -46,8 +47,9 @@ class MyComponent extends React.Component {
       <DynamicContent
         elements={content}
         layout={'cascading'}
-         numOfColumns={3}
-        />
+        numOfColumns={3}
+        allowDraggingMobile={true}
+        allowDraggingDesktop={true}/>
     );
   }
 
