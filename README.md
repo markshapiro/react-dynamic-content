@@ -1,4 +1,4 @@
-React Dynamic Content
+# React Dynamic Content
 
 ## Live Demo
 Live demo: [`__DEMO_LINK__`](__DEMO_LINK__)
