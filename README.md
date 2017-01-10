@@ -46,8 +46,10 @@ class MyComponent extends React.Component {
       
       <img src="http://lorempixel.com/500/550" />,
       
-      <div style={{background:'white', fontSize:'22px', padding:'10px', border:'2px solid grey', borderRadius:'15px'}}>
-        Lorem ipsum dolor sit amet, melius consequat mea te. His dicat suscipit sadipscing an. Probo saepe eu vix. Nam cu clita deserunt.
+      <div style={{background:'white', fontSize:'22px', padding:'10px', 
+      border:'2px solid grey', borderRadius:'15px'}}>
+        Lorem ipsum dolor sit amet, melius consequat mea te. His dicat suscipit sadipscing an.
+        Probo saepe eu vix. Nam cu clita deserunt.
         Cum et choro solet quodsi. Unum temporibus sit id. Eam fierent conclusionemque cu,
         ei euismod moderatius interpretaris nec, te movet nullam tincidunt vis.
       </div>,
