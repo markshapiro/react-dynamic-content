@@ -72,5 +72,5 @@ class MyComponent extends React.Component {
 
 Property	|	Type		|	Default		|	Description
 :-----------------------|:--------------|:--------------|:--------------------------------
-backdropClosesModal	|	bool	|	false	|	Allow users to exit the lightbox by clicking the backdrop
-closeButtonTitle | string | ' Close (Esc) ' | Customize close esc title
+aaaa	|	bool	|	false	| bbbbb
+ccccc	|	bool	|	false	| dddd
