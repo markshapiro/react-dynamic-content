@@ -16,7 +16,7 @@ Features of `react-dynamic-content`
 * Customization of drag initiation (for exampe if you want drag start with long click/swipe)
 * Mobile friendly
 
-**NOTE**: it is highly recomended that you provide responsive content (whose height changes when width changes or opposite), and if you plan using "google images" layout then please provide content that maintains aspect ratio within inner width/height (client width/height), for example plain <img>, you can still provide any margins/borders you want.
+**NOTE**: it is highly recomended that you provide responsive content (whose height changes when width changes or opposite), and if you plan using "google images" layout then please provide content that maintains aspect ratio within inner width/height (client width/height), for example plain `<img>`, you can still provide any margins/borders you want.
 
 ### Quick start
 
