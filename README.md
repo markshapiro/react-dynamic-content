@@ -40,7 +40,6 @@ class MyComponent extends React.Component {
       <img src="http://lorempixel.com/1000/1200" />,
       <img src="http://lorempixel.com/400/500" />,
       <iframe src={"https://www.youtube.com/embed/vO2Su3erRIA"}></iframe>
-      
     ]
 
     return (
