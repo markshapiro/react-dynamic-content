@@ -1,4 +1,84 @@
-# react-dynamic-content
+React Image Gallery
+===================
+
+Component to organize custom html content using layouts and reposition by dragging.
+
+
+## Live Demo (try it on mobile for swipe support)
+Live demo: [`linxtion.com/demo/react-image-gallery`](http://linxtion.com/demo/react-image-gallery)
+
+![demo gif](https://github.com/xiaolin/react-image-gallery/raw/master/static/image_gallery.gif)
+
+React image gallery is a React component for building image galleries and carousels
+
+Features of `react-image-gallery`
+* Mobile friendly
+* Responsive design
+
+## Getting started
+
+
+
+
+
+
+### Quick start
+
+```bash
+npm install --save react-images
+```
+
+```jsx
+import DynamicContent from 'react-image-gallery';
+
+class MyComponent extends React.Component {
+  render() {
+    const content = [
+      <img src="http://lorempixel.com/1000/600 />,
+      <img src="http://lorempixel.com/1000/600" />,
+      <div>
+        text
+        <br/>texttext
+        <br/>text
+      </div>,
+      <img src="http://lorempixel.com/1000/1200" />,
+      <img src="http://lorempixel.com/400/500" />,
+      
+    ]
+
+    return (
+      <DynamicContent
+        elements={content}
+        layout={'cascading'}
+         numOfColumns={3}
+        />
+    );
+  }
+
+}
+``
+
+## Demo 
+
+Live demo: [jossmac.github.io/react-images](http://jossmac.github.io/react-images/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Component to organize custom html content using layouts and reposition by dragging.
 content can be organized using cascading and google images layout, the elements that come earlier in input array are loaded & displayed first.
