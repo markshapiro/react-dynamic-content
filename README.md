@@ -18,11 +18,21 @@ Features of `react-dynamic-content`
 
 **NOTE**: it is highly recomended that you provide responsive content (whose height changes when width changes or opposite), and if you plan using "google images" layout then please provide content that maintains aspect ratio within inner width/height (client width/height), for example plain `<img>`, you can still provide any margins/borders you want regardless of aspect ratio.
 
-### Quick start
+### Getting Started
 
 ```bash
 npm install --save react-dynamic-content
 ```
+
+### Style import
+
+```
+import "react-image-gallery/styles/css/image-gallery.css";    //for css
+import "react-image-gallery/styles/css/image-gallery.scss";   //for lscss
+import "react-image-gallery/styles/css/image-gallery.less";   //for less
+```
+
+### Example
 
 ```jsx
 import DynamicContent from 'react-dynamic-content';
