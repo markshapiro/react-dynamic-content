@@ -27,16 +27,16 @@ npm install --save react-dynamic-content
 ### Style import
 
 ```
-import "react-image-gallery/styles/css/image-gallery.css";    //for css
-import "react-image-gallery/styles/css/image-gallery.scss";   //for lscss
-import "react-image-gallery/styles/css/image-gallery.less";   //for less
+import "react-image-gallery/styles/image-gallery.css";    //for css
+import "react-image-gallery/styles/image-gallery.scss";   //for lscss
+import "react-image-gallery/styles/image-gallery.less";   //for less
 ```
 
 ### Example
 
 ```jsx
 import DynamicContent from 'react-dynamic-content';
-import "react-image-gallery/styles/css/image-gallery.css"; 
+import "react-image-gallery/styles/image-gallery.css"; 
 
 class MyComponent extends React.Component {
   render() {
