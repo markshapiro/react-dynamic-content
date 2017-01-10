@@ -254,7 +254,7 @@ class DynamicContent extends Component {
     elmRecent.renderedElmResult.classList.toggle('draggingMode',false);
     elmRecent.renderedElmResult.classList.toggle('autoTransition',true);
     this.setState({data});
-    if(otherRef){
+    if(otherRef && this.props.onChange){
       this.props.onChange(data.map(w=>w.elm));
     }
   }
