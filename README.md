@@ -37,7 +37,7 @@ import "react-dynamic-content/styles/style.less";   //for less
 
 ```jsx
 import DynamicContent from 'react-dynamic-content';
-import "react-image-gallery/styles/style.css"; 
+import "react-dynamic-content/styles/style.css"; 
 
 class MyComponent extends React.Component {
   render() {
