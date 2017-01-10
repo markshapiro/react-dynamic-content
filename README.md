@@ -30,7 +30,7 @@ import DynamicContent from 'react-dynamic-content';
 class MyComponent extends React.Component {
   render() {
     const content = [
-      <img src="http://lorempixel.com/1000/600 />,
+      <img src="http://lorempixel.com/1000/600" />,
       <img src="http://lorempixel.com/110/80" />,
       <div>
         text
