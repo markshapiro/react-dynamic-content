@@ -401,7 +401,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      elmRecent.renderedElmResult.classList.toggle('draggingMode', false);
 	      elmRecent.renderedElmResult.classList.toggle('autoTransition', true);
 	      this.setState({ data: data });
-	      if (otherRef) {
+	      if (otherRef && this.props.onChange) {
 	        this.props.onChange(data.map(function (w) {
 	          return w.elm;
 	        }));
