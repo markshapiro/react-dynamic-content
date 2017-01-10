@@ -28,7 +28,7 @@ npm install --save react-dynamic-content
 
 ```
 import "react-image-gallery/styles/style.css";    //for css
-import "react-image-gallery/styles/style.scss";   //for lscss
+import "react-image-gallery/styles/style.scss";   //for scss
 import "react-image-gallery/styles/style.less";   //for less
 ```
 
