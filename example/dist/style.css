@@ -169,7 +169,8 @@ body{
   height:100%;
   border:1px solid black;
   border-radius:15px;
-  background: url(imgs/loader.gif);
+  background-color: #eee;
+  background-image: url(imgs/loader.gif);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 30px;
