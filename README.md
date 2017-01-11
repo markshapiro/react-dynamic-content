@@ -5,7 +5,7 @@ Live demo: [`__DEMO_LINK__`](__DEMO_LINK__)
 
 ![demo gif](__GIF_LINK__)
 
-React dynamic content is a React component to organize custom html content using layouts and reposition by dragging.
+React dynamic content is a component to organize custom html content using layouts and reposition by dragging.
 
 Features of `react-dynamic-content`
 * Content organization using "cascading" or "google images" layouts that **resize** elements to fit columns and rows
