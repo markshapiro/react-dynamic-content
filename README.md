@@ -8,11 +8,11 @@ Live demo: [`__DEMO_LINK__`](__DEMO_LINK__)
 React dynamic content is a React component to organize custom html content using layouts and reposition by dragging.
 
 Features of `react-dynamic-content`
+* Content organization using "cascading" or "google images" layouts that **resize** elements to fit columns and rows
 * Support for any kind of content and not just images (can be text, video, complex elements)
-* Organization using "cascading" or "google images" layouts that **resize** elements to fit rows or columns
 * Customization of layout method (you can provide you own layout positioning method)
-* Elements reposition from place to place using mouse/touch drags
-* Customization of drag initiation (for exampe if you want drag start with long click/swipe)
+* Changing order of elements by moving them with mouse/touch events, and receiving callback with new setting
+* Customization of drag initiation (for example if you want to start drag with swipe or long click)
 * Mobile friendly
 
 **NOTE #1**: it is recomended that you provide responsive content, and if you plan using "google images" layout then please provide content that maintains aspect ratio within inner width/height (client width/height), for example plain `<img>`, you can still provide any margins/borders you want regardless of aspect ratio.
