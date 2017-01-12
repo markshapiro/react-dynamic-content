@@ -132,7 +132,7 @@ var Content = React.createClass({
 
             <span className="currentDrags">
 
-              currently starting drags with {dragConfirmationsNames[(this.state.dragConfIndex)%dragConfirmations.length]}
+              <u>currently starting drags with {dragConfirmationsNames[(this.state.dragConfIndex)%dragConfirmations.length]}</u>
 
 
               <button className="switchBtn"  onClick={()=>{

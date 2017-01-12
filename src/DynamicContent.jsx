@@ -8,12 +8,12 @@ import $ from 'jquery';
 require('jquery.waitforimages');
 
 const mouseUp$ = Rx.Observable.merge(
-        Rx.Observable.fromEvent(document, "mouseup"),
-        Rx.Observable.fromEvent(document, "touchend")),
-    mouseMoves$ = Rx.Observable.merge(
-        Rx.Observable.fromEvent(document, "mousemove"),
-        Rx.Observable.fromEvent(document, "touchmove")
-            .map(e=>_.extend(e,e.touches[0])));
+    Rx.Observable.fromEvent(document, "mouseup"),
+    Rx.Observable.fromEvent(document, "touchend")),
+  mouseMoves$ = Rx.Observable.merge(
+    Rx.Observable.fromEvent(document, "mousemove"),
+    Rx.Observable.fromEvent(document, "touchmove")
+      .map(e=>_.extend(e,e.touches[0])));
 
 const imgState={
   PENDING:        'PENDING',          //pending to start loading (not queued for loading yet)
@@ -23,9 +23,9 @@ const imgState={
   FINISHED:       'FINISHED'          //final phase (positioned and is should be displayed)
 };
 
-const IMAGES_LOADING_QUEUE_SIZE = 15;   //max num of images loading simultaneously (loading from top to bottom)
+const LOADING_QUEUE_SIZE = 15;        //max num of elements loading simultaneously (loading from top to bottom)
 
-const repositionMethods = {             //resize & reposition methods for each layout option
+const repositionMethods = {           //resize & reposition methods for each layout option
   cascading: utils.repositionCascadingLayout,
   images:utils.repositionImagesLayout
 };
@@ -92,7 +92,7 @@ class InlineElement extends Component {
     this.props.elmData.getRenderedElm().then(elm=>{
       var newClassList = nextProps.className.trim().split(/\s+/g);
       ['forceVisible','autoTransition','draggingMode','fadeIn'].forEach(cname=>elm.classList
-                                                                        .toggle(cname, newClassList.indexOf(cname)>=0));
+        .toggle(cname, newClassList.indexOf(cname)>=0));
     });
   }
   render() {
@@ -135,105 +135,99 @@ class DynamicContent extends Component {
     }
   };
 
-  imgLoaded$ = new Rx.Subject();          //streams of image loadings events (successes or failures)
+  elmLoaded$ = new Rx.Subject();          //streams of elements loadings (onLoad) successes or failures
   elmEvent$ = new Rx.Subject();           //stream of mouse/tap events on elements
-  initialCss = {};                        //initial width/height of elements, to revert elms back before layout switch
+  initialCss = {};                        //initial css of elements, to revert back before layout switch
 
   componentWillMount(){
-    //stream of sequences of loaded image refs
-    const nextLoadedElements$ =  this.imgLoaded$
-        .scan((acc,elm)=>acc.concat(elm),[])
-        .map(arr=>this.newLoadedElements(arr))
-        .filter(arr=>arr.length)
-        .shareReplay(1);
+    //stream of sequences of loaded element refs
+    const nextLoadedElements$ =  this.elmLoaded$
+      .scan((acc,elm)=>acc.concat(elm),[])
+      .map(arr=>this.getFirstLoadedElements(arr))
+      .filter(arr=>arr.length)
+      .shareReplay(1);
 
-    //flow of making loaded images visible and queuing next images for to loading queue
+    //flow of making loaded elements visible and queuing next elements for to loading queue
     nextLoadedElements$
-        .buffer(nextLoadedElements$.debounce(150))  //nextLoadedElements$ debounced and buffered
-        .map(arrs=>_.uniq(_.flatten(arrs)))
-        .map(arr=>this.setElementsState(this.state.data, arr, imgState.NOT_POSITIONED, imgState.FAILED))
-        .map(data=>this.queueNext(data))
-        .subscribe(data=>this.setState({data}));
+      .buffer(nextLoadedElements$.debounce(150))  //nextLoadedElements$ debounced and buffered
+      .map(arrs=>_.uniq(_.flatten(arrs)))
+      .map(arr=>this.setElementsStateAferLoaded(this.state.data, arr, imgState.NOT_POSITIONED, imgState.FAILED))
+      .map(data=>this.queueNext(data))
+      .subscribe(data=>this.setState({data}));
 
     //stream of results of confirmElementDrag(event) applied on events from this.elmEvent$
     const event2resultOfConfirmDrag$ = this.elmEvent$
-        .do(({e})=>e.preventDefault())
-        .map(({e, ref})=> {
-          var elmDataIndex = _.findIndex(this.state.data,elm=>elm.ref===ref);
-          return {
-            data:{ e:_.extend({}, e), ref },
-            res:(this.props.confirmElementDrag || (e=>e.type ==="mousedown" || e.type ==="touchstart"))(e, elmDataIndex)
-          };
-        })
-        .shareReplay(1);
+      .do(({e})=>e.preventDefault())
+      .map(({e, ref})=> {
+        var elmDataIndex = _.findIndex(this.state.data,elm=>elm.ref===ref);
+        return {
+          data:{ e:_.extend({}, e), ref },
+          res:(this.props.confirmElementDrag || (e=>e.type ==="mousedown" || e.type ==="touchstart"))(e, elmDataIndex)
+        };
+      })
+      .shareReplay(1);
 
     //stream for dragging elements after drag confirmation received
     event2resultOfConfirmDrag$
-        .startWith({res:false})
+      .startWith({res:false})
       //first we need to receive confirmation
-        .flatMap(({data, res})=>(utils.isPromise(res)
+      .flatMap(({data, res})=>(utils.isPromise(res)
+        ?Rx.Observable.fromPromise(res
+        .then(promRes=>({data, res:promRes}))
+        .catch(()=>false))
+        :Rx.Observable.from([{data, res}]))
+        //all later results (that were pushed after) should cancel all deferring (promise) results that were pushed before
+        .takeUntil(event2resultOfConfirmDrag$
+          .flatMap(({data, res})=>utils.isPromise(res)
             ?Rx.Observable.fromPromise(res
-            .then(promRes=>({data, res:promRes}))
             .catch(()=>false))
-            :Rx.Observable.from([{data, res}]))
-      //all later results (that were pushed after) should cancel all deferring (promise) results that were pushed before
-            .takeUntil(event2resultOfConfirmDrag$
-                .flatMap(({data, res})=>utils.isPromise(res)
-                    ?Rx.Observable.fromPromise(res
-                    .catch(()=>false))
-                    :Rx.Observable.from([res]))
-                .filter(x=>!x)))
-        .pairwise()
-        .filter(arr=>!arr[0].res && arr[1].res)
-        .map(arr=>arr[1])
-      //from here we received confirmation and need to start dragging the elm
-        .map(({data})=>{
-          var elm = this.findDOMNode(data.ref);
-          var initOffset = utils.getWindowOffset(elm);
-          return {
-            initOffset,
-            initClick:data.e,
-            ref:data.ref
-          };
-        })
-        .do(({ref})=>{
-          var elmDataIndex = _.findIndex(this.state.data,elm=>elm.ref===ref);
-          this.setState({
-            data:update(this.state.data,{
-              [elmDataIndex]:{isDragging:{$set:true}}
-            })
-          });
-        })
-        .flatMap(({ref, initClick, initOffset})=>mouseMoves$
-            .do(e=>e.preventDefault())
-            .startWith(initClick)
-            .do(evt=>{
-              //forcefully place element under cursor to prevent misplacement in case of scroll change or delay
-              var elm = this.findDOMNode(ref);
-              var currOffset = utils.getWindowOffset(elm);
-              var diffX = currOffset.left - initOffset.left - ( evt.clientX - initClick.clientX );
-              var diffY = currOffset.top - initOffset.top - ( evt.clientY - initClick.clientY );
-              elm.style.left = (elm.offsetLeft - diffX)+"px";
-              elm.style.top = (elm.offsetTop - diffY)+"px";
-            })
-            .takeUntil(mouseUp$
-                .withLatestFrom(mouseMoves$.startWith(initClick),(upEvt, mvEvt)=>mvEvt)
-                .do(e=>this.onElementDrop(e))
-        ))
-        .subscribe(()=>{});
+            :Rx.Observable.from([res]))
+          .filter(x=>!x)))
+      .pairwise()
+      .filter(arr=>!arr[0].res && arr[1].res)
+      .map(arr=>arr[1])
+      .do(({data})=>this.onElementDown(data))
+      .flatMap(({data})=>mouseMoves$
+        .do(e=>this.onElementMove(e, data))
+        .takeUntil(mouseUp$
+          .withLatestFrom(mouseMoves$.startWith(data.e),(upEvt, mvEvt)=>mvEvt)
+          .do(data=>this.onElementDrop(data))))
+      .subscribe(()=>{});
 
     var data = this.props.elements.map(el=>new WrappingElement(el));
     this.setState({data:this.queueNext(data)});
   }
 
+  onElementDown(data){
+    var elmDataIndex = _.findIndex(this.state.data,elm=>elm.ref===data.ref);
+    var initOffset = utils.getWindowOffset(this.findDOMNode(data.ref));
+    data.initOffset=initOffset;
+    this.setState({
+      data:update(this.state.data,{
+        [elmDataIndex]:{isDragging:{$set:true}}
+      })
+    });
+  }
+
+  //forcefully place element under cursor to prevent misplacement in case of scroll change or delay
+  onElementMove(evt, data){
+    var elm = this.findDOMNode(data.ref);
+    var currOffset = utils.getWindowOffset(elm);
+    var diffX = currOffset.left - data.initOffset.left - ( evt.clientX - data.e.clientX );
+    var diffY = currOffset.top - data.initOffset.top - ( evt.clientY - data.e.clientY );
+    elm.style.left = (elm.offsetLeft - diffX)+"px";
+    elm.style.top = (elm.offsetTop - diffY)+"px";
+  }
+
   onElementDrop(evt){
+    if(_.findIndex(this.state.data,elm=>elm.isDragging)===-1){return;}
     var elmInd = _.findIndex(this.state.data,elm=>elm.isDragging),
-        elmRecent = this.state.data[elmInd], data = this.state.data, otherRef=null;
+      elmRecent = this.state.data[elmInd], data = this.state.data, otherRef=null;
     _.each(this.state.data, elm=>{
       if(!elm.isDragging && elm.isVisible()){
         var offs = utils.getWindowOffset(elm.renderedElmResult);
         if(elm.renderedElmResult.offsetHeight+offs.top>evt.clientY && offs.top<evt.clientY
-            && elm.renderedElmResult.offsetWidth+offs.left>evt.clientX && offs.left<evt.clientX){
+          && elm.renderedElmResult.offsetWidth+offs.left>evt.clientX && offs.left<evt.clientX){
           otherRef=elm.ref;
         }
       }
@@ -259,21 +253,11 @@ class DynamicContent extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps){
-    if(!_.isEqual(this.props.elements, nextProps.elements)){
-      var data = nextProps.elements.map(elm=> {
-        var found = _.find(this.state.data, elm2=>elm2.elm===elm);
-        return found?found:new WrappingElement(elm);
-      });
-      this.setState({data:this.queueNext(data)});
-    }
-  }
-
-  newLoadedElements(arr) {
+  getFirstLoadedElements(arr) {
     var result=[];
     _.takeWhile(this.state.data, (elm,ind)=> {
       if(elm.state!==imgState.LOADING){
-        return true
+        return true;
       }
       var data = _.find(arr, d=>d.ref===this.state.data[ind].ref);
       if (data) {
@@ -286,7 +270,7 @@ class DynamicContent extends Component {
 
   queueNext(data){
     var current = _.filter(data, e=>e.state==imgState.LOADING).length
-    var toQueueSize = IMAGES_LOADING_QUEUE_SIZE - current;
+    var toQueueSize = LOADING_QUEUE_SIZE - current;
     var updateStatement={};
     _.takeWhile(data, (elm,ind)=>{
       if(elm.state===imgState.PENDING){
@@ -298,7 +282,7 @@ class DynamicContent extends Component {
     return update(data, updateStatement);
   }
 
-  setElementsState(data, arr, successState, failedState){
+  setElementsStateAferLoaded(data, arr, successState, failedState){
     var updateStatement={};
     _.each(arr, elm=>{
       var index = _.findIndex(data, e=>e.ref === elm.ref);
@@ -314,13 +298,13 @@ class DynamicContent extends Component {
 
   reposition() {
     var wrapper = findDOMNode(this.refs.wrapper), renderedElms={},
-        props = _.extend({ parentWidth: wrapper.offsetWidth }, _.pick(this.props, propsPassed2positionMethods));
+      props = _.extend({ parentWidth: wrapper.offsetWidth }, _.pick(this.props, propsPassed2positionMethods));
     this.state.data
-        .forEach((elmData, elmInd)=> {
-          if(elmData.isPresent() && !elmData.isDragging){
-            renderedElms[elmInd] = elmData.renderedElmResult;
-          }
-        });
+      .forEach((elmData, elmInd)=> {
+        if(elmData.isPresent() && !elmData.isDragging){
+          renderedElms[elmInd] = elmData.renderedElmResult;
+        }
+      });
     if(this.props.layout!=='custom'){
       repositionMethods[this.props.layout](renderedElms, props);
     }
@@ -333,17 +317,17 @@ class DynamicContent extends Component {
   makeNotPositionedFinished() {
     var updateStatement = {};
     this.state.data
-        .forEach((elmData, elmInd)=> {
-          if(elmData.isPresent() && !elmData.isDragging){
-            if(elmData.state===imgState.NOT_POSITIONED){
-              updateStatement[elmInd]={
-                state:{$set:imgState.FINISHED},
-                startRenderAt:{$set:new Date()}
-              };
-              setTimeout(()=>this.state.data[elmInd].renderedElmResult.classList.toggle('autoTransition',true),1)
-            }
+      .forEach((elmData, elmInd)=> {
+        if(elmData.isPresent() && !elmData.isDragging){
+          if(elmData.state===imgState.NOT_POSITIONED){
+            updateStatement[elmInd]={
+              state:{$set:imgState.FINISHED},
+              startRenderAt:{$set:new Date()}
+            };
+            setTimeout(()=>this.state.data[elmInd].renderedElmResult.classList.toggle('autoTransition',true),1)
           }
-        });
+        }
+      });
     if(_.keys(updateStatement).length>0){
       this.setState({data: update(this.state.data, updateStatement)});
     }
@@ -361,31 +345,41 @@ class DynamicContent extends Component {
     console.debug("render");
     return <div ref="wrapper" className="CustomContentWrapper">{
       this.state.data
-          .filter(elm=>elm.state!==imgState.PENDING)
-          .map((elm,index)=><InlineElement elmData={elm} key={elm.ref}
-                                           onLoad={()=>this.imgLoaded$.onNext({ref:elm.ref, success:true})}
-                                           onError={()=>this.imgLoaded$.onNext({ref:elm.ref, success:false})}
-                                           onEventDesktop={e=>this.elmEventDesktop(e, elm)}
-                                           onEventMobile={e=>this.elmEventMobile(e, elm)}
-                                           className={`${ elm.isVisible() && 'forceVisible' }
+        .filter(elm=>elm.state!==imgState.PENDING)
+        .map((elm,index)=><InlineElement elmData={elm} key={elm.ref}
+                                         onLoad={()=>this.elmLoaded$.onNext({ref:elm.ref, success:true})}
+                                         onError={()=>this.elmLoaded$.onNext({ref:elm.ref, success:false})}
+                                         onEventDesktop={e=>this.elmEventDesktop(e, elm)}
+                                         onEventMobile={e=>this.elmEventMobile(e, elm)}
+                                         className={`${ elm.isVisible() && 'forceVisible' }
                                 ${ (new Date() - elm.startRenderAt<1000) && 'fadeIn' }
                                 ${ elm.isDragging
                                 ? 'draggingMode'
                                 : (new Date() - elm.startRenderAt > 200) && 'autoTransition' }`}>
-          </InlineElement>)}</div>;
+        </InlineElement>)}</div>;
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(!_.isEqual(this.props.elements, nextProps.elements)){
+      var data = nextProps.elements.map(elm=> {
+        var found = _.find(this.state.data, elm2=>elm2.elm===elm);
+        return found?found:new WrappingElement(elm);
+      });
+      this.setState({data:this.queueNext(data)});
+    }
   }
 
   componentDidUpdate(prevProps, prevState){
     if(this.shouldReposition(prevProps, prevState)){
       if(this.props.layout!==prevProps.layout){   //if layout switch then reset height/width to initial
         this.state.data
-            .filter(elm=>elm.isVisible())
-            .forEach(({ref})=>{
-              var elm = this.findDOMNode(ref)
-              elm.style.height = this.initialCss[ref].height;
-              elm.style.width = this.initialCss[ref].width;
-              elm.style.position = this.initialCss[ref].position;
-            });
+          .filter(elm=>elm.isVisible())
+          .forEach(({ref})=>{
+            var elm = this.findDOMNode(ref)
+            elm.style.height = this.initialCss[ref].height;
+            elm.style.width = this.initialCss[ref].width;
+            elm.style.position = this.initialCss[ref].position;
+          });
       }
       this.repositionThrottled();
     }
@@ -395,26 +389,24 @@ class DynamicContent extends Component {
   assignRenderedElms(){
     var children = findDOMNode(this.refs.wrapper).children;
     this.state.data
-        .filter(elm=>elm.state!==imgState.PENDING)
-        .forEach((elmData, ind)=>{
-          if(!elmData.renderedElmResult){
-            elmData.assignRenderedElm(children[ind]);
-            this.initialCss[elmData.ref]={
-              height:children[ind].style.height,
-              width:children[ind].style.width,
-              position:children[ind].style.position
-            };
-          }
-        });
+      .filter(elm=>elm.state!==imgState.PENDING)
+      .forEach((elmData, ind)=>{
+        if(!elmData.renderedElmResult){
+          elmData.assignRenderedElm(children[ind]);
+          this.initialCss[elmData.ref]={
+            height:children[ind].style.height,
+            width:children[ind].style.width,
+            position:children[ind].style.position
+          };
+        }
+      });
   }
 
   elmEventDesktop(e, elm){
-    if(_.findIndex(this.state.data,elm=>elm.isDragging)>=0){return;}
     this.props.allowDraggingDesktop? this.elmEvent$.onNext({e, ref:elm.ref}) : null;
   }
 
   elmEventMobile(e, elm){
-    if(_.findIndex(this.state.data,elm=>elm.isDragging)>=0){return;}
     this.props.allowDraggingMobile? this.elmEvent$.onNext({e:_.extend(e,e.touches[0]), ref:elm.ref}) : null;
   }
 
@@ -422,16 +414,16 @@ class DynamicContent extends Component {
     var should=false;
     _.each(prevState.data, (elmData, ind)=>{
       should = should  ||
-          (   this.state.data[ind]
-              && (this.state.data[ind].ref !== prevState.data[ind].ref
-              || (this.state.data[ind].state !== prevState.data[ind].state
-                && !( prevState.data[ind].state===imgState.NOT_POSITIONED
-                && this.state.data[ind].state===imgState.FINISHED ) )
-              || (this.state.data[ind].isDragging !== prevState.data[ind].isDragging))
-          ) || !this.state.data[ind];
+        (   this.state.data[ind]
+          && (this.state.data[ind].ref !== prevState.data[ind].ref
+          || (this.state.data[ind].state !== prevState.data[ind].state
+          && !( prevState.data[ind].state===imgState.NOT_POSITIONED
+          && this.state.data[ind].state===imgState.FINISHED ) )
+          || (this.state.data[ind].isDragging !== prevState.data[ind].isDragging))
+        ) || !this.state.data[ind];
     });
     should = should || prevState.data.length !== this.state.data.length
-        || !_.isEqual(_.pick(prevProps, propsThatTriggerRender), _.pick(this.props, propsThatTriggerRender));
+      || !_.isEqual(_.pick(prevProps, propsThatTriggerRender), _.pick(this.props, propsThatTriggerRender));
     console.debug("shouldReposition : ",should);
     return should;
   }

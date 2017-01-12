@@ -242,8 +242,12 @@
 	      React.createElement(
 	        'span',
 	        { className: 'currentDrags' },
-	        'currently starting drags with ',
-	        dragConfirmationsNames[this.state.dragConfIndex % dragConfirmations.length],
+	        React.createElement(
+	          'u',
+	          null,
+	          'currently starting drags with ',
+	          dragConfirmationsNames[this.state.dragConfIndex % dragConfirmations.length]
+	        ),
 	        React.createElement(
 	          'button',
 	          { className: 'switchBtn', onClick: function onClick() {
@@ -20086,16 +20090,16 @@
 	        u(this, t);var n = a(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e));return q.call(n), n.state = { data: [] }, n;
 	      }return s(t, e), l(t, [{ key: "componentWillMount", value: function value() {
 	          var e = this,
-	              t = this.imgLoaded$.scan(function (e, t) {
+	              t = this.elmLoaded$.scan(function (e, t) {
 	            return e.concat(t);
 	          }, []).map(function (t) {
-	            return e.newLoadedElements(t);
+	            return e.getFirstLoadedElements(t);
 	          }).filter(function (e) {
 	            return e.length;
 	          }).shareReplay(1);t.buffer(t.debounce(150)).map(function (e) {
 	            return h.default.uniq(h.default.flatten(e));
 	          }).map(function (t) {
-	            return e.setElementsState(e.state.data, t, N.NOT_POSITIONED, N.FAILED);
+	            return e.setElementsStateAferLoaded(e.state.data, t, N.NOT_POSITIONED, N.FAILED);
 	          }).map(function (t) {
 	            return e.queueNext(t);
 	          }).subscribe(function (t) {
@@ -20127,26 +20131,12 @@
 	            return !e[0].res && e[1].res;
 	          }).map(function (e) {
 	            return e[1];
-	          }).map(function (t) {
-	            var n = t.data,
-	                r = e.findDOMNode(n.ref),
-	                i = g.getWindowOffset(r);return { initOffset: i, initClick: n.e, ref: n.ref };
 	          }).do(function (t) {
-	            var n = t.ref,
-	                r = h.default.findIndex(e.state.data, function (e) {
-	              return e.ref === n;
-	            });e.setState({ data: (0, y.default)(e.state.data, o({}, r, { isDragging: { $set: !0 } })) });
+	            var n = t.data;return e.onElementDown(n);
 	          }).flatMap(function (t) {
-	            var n = t.ref,
-	                r = t.initClick,
-	                i = t.initOffset;return O.do(function (e) {
-	              return e.preventDefault();
-	            }).startWith(r).do(function (t) {
-	              var o = e.findDOMNode(n),
-	                  a = g.getWindowOffset(o),
-	                  s = a.left - i.left - (t.clientX - r.clientX),
-	                  u = a.top - i.top - (t.clientY - r.clientY);o.style.left = o.offsetLeft - s + "px", o.style.top = o.offsetTop - u + "px";
-	            }).takeUntil(x.withLatestFrom(O.startWith(r), function (e, t) {
+	            var n = t.data;return O.do(function (t) {
+	              return e.onElementMove(t, n);
+	            }).takeUntil(x.withLatestFrom(O.startWith(n.e), function (e, t) {
 	              return t;
 	            }).do(function (t) {
 	              return e.onElementDrop(t);
@@ -20154,34 +20144,40 @@
 	          }).subscribe(function () {});var r = this.props.elements.map(function (e) {
 	            return new L(e);
 	          });this.setState({ data: this.queueNext(r) });
-	        } }, { key: "onElementDrop", value: function value(e) {
-	          var t = h.default.findIndex(this.state.data, function (e) {
-	            return e.isDragging;
+	        } }, { key: "onElementDown", value: function value(e) {
+	          var t = h.default.findIndex(this.state.data, function (t) {
+	            return t.ref === e.ref;
 	          }),
-	              n = this.state.data[t],
-	              r = this.state.data,
-	              i = null;if (h.default.each(this.state.data, function (t) {
-	            if (!t.isDragging && t.isVisible()) {
-	              var n = g.getWindowOffset(t.renderedElmResult);t.renderedElmResult.offsetHeight + n.top > e.clientY && n.top < e.clientY && t.renderedElmResult.offsetWidth + n.left > e.clientX && n.left < e.clientX && (i = t.ref);
-	            }
-	          }), i) {
-	            r = (0, y.default)(r, { $splice: [[t, 1]] });var a = h.default.findIndex(r, function (e) {
-	              return e.ref === i;
-	            });r = (0, y.default)(r, { $splice: [[a, 0, n]] });
-	          }var s = h.default.findIndex(r, function (e) {
+	              n = g.getWindowOffset(this.findDOMNode(e.ref));e.initOffset = n, this.setState({ data: (0, y.default)(this.state.data, o({}, t, { isDragging: { $set: !0 } })) });
+	        } }, { key: "onElementMove", value: function value(e, t) {
+	          var n = this.findDOMNode(t.ref),
+	              r = g.getWindowOffset(n),
+	              i = r.left - t.initOffset.left - (e.clientX - t.e.clientX),
+	              o = r.top - t.initOffset.top - (e.clientY - t.e.clientY);n.style.left = n.offsetLeft - i + "px", n.style.top = n.offsetTop - o + "px";
+	        } }, { key: "onElementDrop", value: function value(e) {
+	          if (h.default.findIndex(this.state.data, function (e) {
 	            return e.isDragging;
-	          });r = (0, y.default)(r, o({}, s, { isDragging: { $set: !1 } })), n.renderedElmResult.classList.toggle("draggingMode", !1), n.renderedElmResult.classList.toggle("autoTransition", !0), this.setState({ data: r }), i && this.props.onChange(r.map(function (e) {
-	            return e.elm;
-	          }));
-	        } }, { key: "componentWillReceiveProps", value: function value(e) {
-	          var t = this;if (!h.default.isEqual(this.props.elements, e.elements)) {
-	            var n = e.elements.map(function (e) {
-	              var n = h.default.find(t.state.data, function (t) {
-	                return t.elm === e;
-	              });return n ? n : new L(e);
-	            });this.setState({ data: this.queueNext(n) });
+	          }) !== -1) {
+	            var t = h.default.findIndex(this.state.data, function (e) {
+	              return e.isDragging;
+	            }),
+	                n = this.state.data[t],
+	                r = this.state.data,
+	                i = null;if (h.default.each(this.state.data, function (t) {
+	              if (!t.isDragging && t.isVisible()) {
+	                var n = g.getWindowOffset(t.renderedElmResult);t.renderedElmResult.offsetHeight + n.top > e.clientY && n.top < e.clientY && t.renderedElmResult.offsetWidth + n.left > e.clientX && n.left < e.clientX && (i = t.ref);
+	              }
+	            }), i) {
+	              r = (0, y.default)(r, { $splice: [[t, 1]] });var a = h.default.findIndex(r, function (e) {
+	                return e.ref === i;
+	              });r = (0, y.default)(r, { $splice: [[a, 0, n]] });
+	            }var s = h.default.findIndex(r, function (e) {
+	              return e.isDragging;
+	            });r = (0, y.default)(r, o({}, s, { isDragging: { $set: !1 } })), n.renderedElmResult.classList.toggle("draggingMode", !1), n.renderedElmResult.classList.toggle("autoTransition", !0), this.setState({ data: r }), i && this.props.onChange && this.props.onChange(r.map(function (e) {
+	              return e.elm;
+	            }));
 	          }
-	        } }, { key: "newLoadedElements", value: function value(e) {
+	        } }, { key: "getFirstLoadedElements", value: function value(e) {
 	          var t = this,
 	              n = [];return h.default.takeWhile(this.state.data, function (r, i) {
 	            if (r.state !== N.LOADING) return !0;var o = h.default.find(e, function (e) {
@@ -20196,7 +20192,7 @@
 	              r = {};return h.default.takeWhile(e, function (e, t) {
 	            return e.state === N.PENDING && (n--, r[t] = { state: { $set: N.LOADING } }), n;
 	          }), (0, y.default)(e, r);
-	        } }, { key: "setElementsState", value: function value(e, t, n, r) {
+	        } }, { key: "setElementsStateAferLoaded", value: function value(e, t, n, r) {
 	          var i = {};return h.default.each(t, function (t) {
 	            var o = h.default.findIndex(e, function (e) {
 	              return e.ref === t.ref;
@@ -20224,15 +20220,23 @@
 	            return e.state !== N.PENDING;
 	          }).map(function (t, n) {
 	            return d.default.createElement(T, { elmData: t, key: t.ref, onLoad: function onLoad() {
-	                return e.imgLoaded$.onNext({ ref: t.ref, success: !0 });
+	                return e.elmLoaded$.onNext({ ref: t.ref, success: !0 });
 	              }, onError: function onError() {
-	                return e.imgLoaded$.onNext({ ref: t.ref, success: !1 });
+	                return e.elmLoaded$.onNext({ ref: t.ref, success: !1 });
 	              }, onEventDesktop: function onEventDesktop(n) {
 	                return e.elmEventDesktop(n, t);
 	              }, onEventMobile: function onEventMobile(n) {
 	                return e.elmEventMobile(n, t);
 	              }, className: (t.isVisible() && "forceVisible") + "\n                                " + (new Date() - t.startRenderAt < 1e3 && "fadeIn") + "\n                                " + (t.isDragging ? "draggingMode" : new Date() - t.startRenderAt > 200 && "autoTransition") });
 	          }));
+	        } }, { key: "componentWillReceiveProps", value: function value(e) {
+	          var t = this;if (!h.default.isEqual(this.props.elements, e.elements)) {
+	            var n = e.elements.map(function (e) {
+	              var n = h.default.find(t.state.data, function (t) {
+	                return t.elm === e;
+	              });return n ? n : new L(e);
+	            });this.setState({ data: this.queueNext(n) });
+	          }
 	        } }, { key: "componentDidUpdate", value: function value(e, t) {
 	          var n = this;this.shouldReposition(e, t) && (this.props.layout !== e.layout && this.state.data.filter(function (e) {
 	            return e.isVisible();
@@ -20248,13 +20252,9 @@
 	            n.renderedElmResult || (n.assignRenderedElm(t[r]), e.initialCss[n.ref] = { height: t[r].style.height, width: t[r].style.width, position: t[r].style.position });
 	          });
 	        } }, { key: "elmEventDesktop", value: function value(e, t) {
-	          h.default.findIndex(this.state.data, function (e) {
-	            return e.isDragging;
-	          }) >= 0 || (this.props.allowDraggingDesktop ? this.elmEvent$.onNext({ e: e, ref: t.ref }) : null);
+	          this.props.allowDraggingDesktop ? this.elmEvent$.onNext({ e: e, ref: t.ref }) : null;
 	        } }, { key: "elmEventMobile", value: function value(e, t) {
-	          h.default.findIndex(this.state.data, function (e) {
-	            return e.isDragging;
-	          }) >= 0 || (this.props.allowDraggingMobile ? this.elmEvent$.onNext({ e: h.default.extend(e, e.touches[0]), ref: t.ref }) : null);
+	          this.props.allowDraggingMobile ? this.elmEvent$.onNext({ e: h.default.extend(e, e.touches[0]), ref: t.ref }) : null;
 	        } }, { key: "shouldReposition", value: function value(e, t) {
 	          var n = this,
 	              r = !1;return h.default.each(t.data, function (e, i) {
@@ -20270,7 +20270,7 @@
 	          return d.default.isValidElement(t) ? e : new Error('"elements" prop arr must have only react elements');
 	        }, void 0);
 	      } };var q = function q() {
-	      this.imgLoaded$ = new E.default.Subject(), this.elmEvent$ = new E.default.Subject(), this.initialCss = {}, this.repositionThrottled = h.default.throttle(this.reposition, 100), this.repositionDebounced = h.default.debounce(this.reposition, 100);
+	      this.elmLoaded$ = new E.default.Subject(), this.elmEvent$ = new E.default.Subject(), this.initialCss = {}, this.repositionThrottled = h.default.throttle(this.reposition, 100), this.repositionDebounced = h.default.debounce(this.reposition, 100);
 	    };t.default = W, e.exports = t.default;
 	  }, function (t, n) {
 	    t.exports = e;

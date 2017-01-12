@@ -115,7 +115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  FINISHED: 'FINISHED' //final phase (positioned and is should be displayed)
 	};
 
-	var IMAGES_LOADING_QUEUE_SIZE = 15; //max num of images loading simultaneously (loading from top to bottom)
+	var LOADING_QUEUE_SIZE = 15; //max num of elements loading simultaneously (loading from top to bottom)
 
 	var repositionMethods = { //resize & reposition methods for each layout option
 	  cascading: utils.repositionCascadingLayout,
@@ -243,32 +243,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	      data: []
 	    };
 	    return _this4;
-	  } //streams of image loadings events (successes or failures)
+	  } //streams of elements loadings (onLoad) successes or failures
 	  //stream of mouse/tap events on elements
 
 
 	  _createClass(DynamicContent, [{
 	    key: 'componentWillMount',
-	    //initial width/height of elements, to revert elms back before layout switch
+	    //initial css of elements, to revert back before layout switch
 
 	    value: function componentWillMount() {
 	      var _this5 = this;
 
-	      //stream of sequences of loaded image refs
-	      var nextLoadedElements$ = this.imgLoaded$.scan(function (acc, elm) {
+	      //stream of sequences of loaded element refs
+	      var nextLoadedElements$ = this.elmLoaded$.scan(function (acc, elm) {
 	        return acc.concat(elm);
 	      }, []).map(function (arr) {
-	        return _this5.newLoadedElements(arr);
+	        return _this5.getFirstLoadedElements(arr);
 	      }).filter(function (arr) {
 	        return arr.length;
 	      }).shareReplay(1);
 
-	      //flow of making loaded images visible and queuing next images for to loading queue
+	      //flow of making loaded elements visible and queuing next elements for to loading queue
 	      nextLoadedElements$.buffer(nextLoadedElements$.debounce(150)) //nextLoadedElements$ debounced and buffered
 	      .map(function (arrs) {
 	        return _lodash2.default.uniq(_lodash2.default.flatten(arrs));
 	      }).map(function (arr) {
-	        return _this5.setElementsState(_this5.state.data, arr, imgState.NOT_POSITIONED, imgState.FAILED);
+	        return _this5.setElementsStateAferLoaded(_this5.state.data, arr, imgState.NOT_POSITIONED, imgState.FAILED);
 	      }).map(function (data) {
 	        return _this5.queueNext(data);
 	      }).subscribe(function (data) {
@@ -319,45 +319,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return !arr[0].res && arr[1].res;
 	      }).map(function (arr) {
 	        return arr[1];
-	      })
-	      //from here we received confirmation and need to start dragging the elm
-	      .map(function (_ref5) {
+	      }).do(function (_ref5) {
 	        var data = _ref5.data;
-
-	        var elm = _this5.findDOMNode(data.ref);
-	        var initOffset = utils.getWindowOffset(elm);
-	        return {
-	          initOffset: initOffset,
-	          initClick: data.e,
-	          ref: data.ref
-	        };
-	      }).do(function (_ref6) {
-	        var ref = _ref6.ref;
-
-	        var elmDataIndex = _lodash2.default.findIndex(_this5.state.data, function (elm) {
-	          return elm.ref === ref;
-	        });
-	        _this5.setState({
-	          data: (0, _reactAddonsUpdate2.default)(_this5.state.data, _defineProperty({}, elmDataIndex, { isDragging: { $set: true } }))
-	        });
-	      }).flatMap(function (_ref7) {
-	        var ref = _ref7.ref,
-	            initClick = _ref7.initClick,
-	            initOffset = _ref7.initOffset;
+	        return _this5.onElementDown(data);
+	      }).flatMap(function (_ref6) {
+	        var data = _ref6.data;
 	        return mouseMoves$.do(function (e) {
-	          return e.preventDefault();
-	        }).startWith(initClick).do(function (evt) {
-	          //forcefully place element under cursor to prevent misplacement in case of scroll change or delay
-	          var elm = _this5.findDOMNode(ref);
-	          var currOffset = utils.getWindowOffset(elm);
-	          var diffX = currOffset.left - initOffset.left - (evt.clientX - initClick.clientX);
-	          var diffY = currOffset.top - initOffset.top - (evt.clientY - initClick.clientY);
-	          elm.style.left = elm.offsetLeft - diffX + "px";
-	          elm.style.top = elm.offsetTop - diffY + "px";
-	        }).takeUntil(mouseUp$.withLatestFrom(mouseMoves$.startWith(initClick), function (upEvt, mvEvt) {
+	          return _this5.onElementMove(e, data);
+	        }).takeUntil(mouseUp$.withLatestFrom(mouseMoves$.startWith(data.e), function (upEvt, mvEvt) {
 	          return mvEvt;
-	        }).do(function (e) {
-	          return _this5.onElementDrop(e);
+	        }).do(function (data) {
+	          return _this5.onElementDrop(data);
 	        }));
 	      }).subscribe(function () {});
 
@@ -367,8 +339,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.setState({ data: this.queueNext(data) });
 	    }
 	  }, {
+	    key: 'onElementDown',
+	    value: function onElementDown(data) {
+	      var elmDataIndex = _lodash2.default.findIndex(this.state.data, function (elm) {
+	        return elm.ref === data.ref;
+	      });
+	      var initOffset = utils.getWindowOffset(this.findDOMNode(data.ref));
+	      data.initOffset = initOffset;
+	      this.setState({
+	        data: (0, _reactAddonsUpdate2.default)(this.state.data, _defineProperty({}, elmDataIndex, { isDragging: { $set: true } }))
+	      });
+	    }
+
+	    //forcefully place element under cursor to prevent misplacement in case of scroll change or delay
+
+	  }, {
+	    key: 'onElementMove',
+	    value: function onElementMove(evt, data) {
+	      var elm = this.findDOMNode(data.ref);
+	      var currOffset = utils.getWindowOffset(elm);
+	      var diffX = currOffset.left - data.initOffset.left - (evt.clientX - data.e.clientX);
+	      var diffY = currOffset.top - data.initOffset.top - (evt.clientY - data.e.clientY);
+	      elm.style.left = elm.offsetLeft - diffX + "px";
+	      elm.style.top = elm.offsetTop - diffY + "px";
+	    }
+	  }, {
 	    key: 'onElementDrop',
 	    value: function onElementDrop(evt) {
+	      if (_lodash2.default.findIndex(this.state.data, function (elm) {
+	        return elm.isDragging;
+	      }) === -1) {
+	        return;
+	      }
 	      var elmInd = _lodash2.default.findIndex(this.state.data, function (elm) {
 	        return elm.isDragging;
 	      }),
@@ -408,24 +410,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
+	    key: 'getFirstLoadedElements',
+	    value: function getFirstLoadedElements(arr) {
 	      var _this6 = this;
-
-	      if (!_lodash2.default.isEqual(this.props.elements, nextProps.elements)) {
-	        var data = nextProps.elements.map(function (elm) {
-	          var found = _lodash2.default.find(_this6.state.data, function (elm2) {
-	            return elm2.elm === elm;
-	          });
-	          return found ? found : new WrappingElement(elm);
-	        });
-	        this.setState({ data: this.queueNext(data) });
-	      }
-	    }
-	  }, {
-	    key: 'newLoadedElements',
-	    value: function newLoadedElements(arr) {
-	      var _this7 = this;
 
 	      var result = [];
 	      _lodash2.default.takeWhile(this.state.data, function (elm, ind) {
@@ -433,7 +420,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return true;
 	        }
 	        var data = _lodash2.default.find(arr, function (d) {
-	          return d.ref === _this7.state.data[ind].ref;
+	          return d.ref === _this6.state.data[ind].ref;
 	        });
 	        if (data) {
 	          result.push(data);
@@ -448,7 +435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var current = _lodash2.default.filter(data, function (e) {
 	        return e.state == imgState.LOADING;
 	      }).length;
-	      var toQueueSize = IMAGES_LOADING_QUEUE_SIZE - current;
+	      var toQueueSize = LOADING_QUEUE_SIZE - current;
 	      var updateStatement = {};
 	      _lodash2.default.takeWhile(data, function (elm, ind) {
 	        if (elm.state === imgState.PENDING) {
@@ -460,8 +447,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return (0, _reactAddonsUpdate2.default)(data, updateStatement);
 	    }
 	  }, {
-	    key: 'setElementsState',
-	    value: function setElementsState(data, arr, successState, failedState) {
+	    key: 'setElementsStateAferLoaded',
+	    value: function setElementsStateAferLoaded(data, arr, successState, failedState) {
 	      var updateStatement = {};
 	      _lodash2.default.each(arr, function (elm) {
 	        var index = _lodash2.default.findIndex(data, function (e) {
@@ -496,7 +483,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'makeNotPositionedFinished',
 	    value: function makeNotPositionedFinished() {
-	      var _this8 = this;
+	      var _this7 = this;
 
 	      var updateStatement = {};
 	      this.state.data.forEach(function (elmData, elmInd) {
@@ -507,7 +494,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	              startRenderAt: { $set: new Date() }
 	            };
 	            setTimeout(function () {
-	              return _this8.state.data[elmInd].renderedElmResult.classList.toggle('autoTransition', true);
+	              return _this7.state.data[elmInd].renderedElmResult.classList.toggle('autoTransition', true);
 	            }, 1);
 	          }
 	        }
@@ -527,7 +514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this9 = this;
+	      var _this8 = this;
 
 	      console.debug("render");
 	      return _react2.default.createElement(
@@ -538,20 +525,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }).map(function (elm, index) {
 	          return _react2.default.createElement(InlineElement, { elmData: elm, key: elm.ref,
 	            onLoad: function onLoad() {
-	              return _this9.imgLoaded$.onNext({ ref: elm.ref, success: true });
+	              return _this8.elmLoaded$.onNext({ ref: elm.ref, success: true });
 	            },
 	            onError: function onError() {
-	              return _this9.imgLoaded$.onNext({ ref: elm.ref, success: false });
+	              return _this8.elmLoaded$.onNext({ ref: elm.ref, success: false });
 	            },
 	            onEventDesktop: function onEventDesktop(e) {
-	              return _this9.elmEventDesktop(e, elm);
+	              return _this8.elmEventDesktop(e, elm);
 	            },
 	            onEventMobile: function onEventMobile(e) {
-	              return _this9.elmEventMobile(e, elm);
+	              return _this8.elmEventMobile(e, elm);
 	            },
 	            className: (elm.isVisible() && 'forceVisible') + '\n                                ' + (new Date() - elm.startRenderAt < 1000 && 'fadeIn') + '\n                                ' + (elm.isDragging ? 'draggingMode' : new Date() - elm.startRenderAt > 200 && 'autoTransition') });
 	        })
 	      );
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var _this9 = this;
+
+	      if (!_lodash2.default.isEqual(this.props.elements, nextProps.elements)) {
+	        var data = nextProps.elements.map(function (elm) {
+	          var found = _lodash2.default.find(_this9.state.data, function (elm2) {
+	            return elm2.elm === elm;
+	          });
+	          return found ? found : new WrappingElement(elm);
+	        });
+	        this.setState({ data: this.queueNext(data) });
+	      }
 	    }
 	  }, {
 	    key: 'componentDidUpdate',
@@ -563,8 +565,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          //if layout switch then reset height/width to initial
 	          this.state.data.filter(function (elm) {
 	            return elm.isVisible();
-	          }).forEach(function (_ref8) {
-	            var ref = _ref8.ref;
+	          }).forEach(function (_ref7) {
+	            var ref = _ref7.ref;
 
 	            var elm = _this10.findDOMNode(ref);
 	            elm.style.height = _this10.initialCss[ref].height;
@@ -598,21 +600,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'elmEventDesktop',
 	    value: function elmEventDesktop(e, elm) {
-	      if (_lodash2.default.findIndex(this.state.data, function (elm) {
-	        return elm.isDragging;
-	      }) >= 0) {
-	        return;
-	      }
 	      this.props.allowDraggingDesktop ? this.elmEvent$.onNext({ e: e, ref: elm.ref }) : null;
 	    }
 	  }, {
 	    key: 'elmEventMobile',
 	    value: function elmEventMobile(e, elm) {
-	      if (_lodash2.default.findIndex(this.state.data, function (elm) {
-	        return elm.isDragging;
-	      }) >= 0) {
-	        return;
-	      }
 	      this.props.allowDraggingMobile ? this.elmEvent$.onNext({ e: _lodash2.default.extend(e, e.touches[0]), ref: elm.ref }) : null;
 	    }
 	  }, {
@@ -673,7 +665,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	var _initialiseProps = function _initialiseProps() {
-	  this.imgLoaded$ = new _rx2.default.Subject();
+	  this.elmLoaded$ = new _rx2.default.Subject();
 	  this.elmEvent$ = new _rx2.default.Subject();
 	  this.initialCss = {};
 	  this.repositionThrottled = _lodash2.default.throttle(this.reposition, 100);
