@@ -1,9 +1,9 @@
 # React Dynamic Content
 
 ## Live Demo
-Live demo: [`http://financial-controller-bear-31776.bitballoon.com`](http://financial-controller-bear-31776.bitballoon.com)
+Live demo: [`http://react-dynamic-content-31776.bitballoon.com`](financial-controller-bear-31776.bitballoon.com)
 
-![demo gif](http://financial-controller-bear-31776.bitballoon.com/imgs/sample.gif)
+![demo gif](http://react-dynamic-content-31776.bitballoon.com/imgs/sample.gif)
 
 React dynamic content is a component to organize custom html content using layouts and reposition by dragging.
 
