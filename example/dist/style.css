@@ -5,8 +5,8 @@ body{
 }
 
 .currentDrags{
-  color:magenta;
-  font-size:20px;
+  color:black !important;
+  font-size:17px;
   color:magenta;
   font-family:arial;
   margin-left:15px;
@@ -36,7 +36,7 @@ body{
   display: inline-block;
   overflow:scroll;
   -webkit-overflow-scrolling: touch;
-  top:110px;
+  top:120px;
   bottom:0px;
   left:10%;
   right:10%;

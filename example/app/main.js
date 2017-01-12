@@ -86,9 +86,9 @@ const swipe = e=>{
   }
 };
 
-var dragConfirmations = [mousedown, clickAndMouseDown, longHold, swipe,];
+var dragConfirmations = [mousedown, longHold, swipe, clickAndMouseDown];
 
-var dragConfirmationsNames = ["mousedown", "click & mousedown", "long hold",  "swipe",];
+var dragConfirmationsNames = ["mousedown", "long hold",  "swipe", "click and mousedown"];
 
 var Content = React.createClass({
   getInitialState: function () {
@@ -132,7 +132,7 @@ var Content = React.createClass({
 
             <span className="currentDrags">
 
-              <u>currently starting drags with {dragConfirmationsNames[(this.state.dragConfIndex)%dragConfirmations.length]}</u>
+              CURRENTLY STARTS DRAGGING WITH <u>{dragConfirmationsNames[(this.state.dragConfIndex)%dragConfirmations.length].toUpperCase()} AND MOVE</u>
 
 
               <button className="switchBtn"  onClick={()=>{

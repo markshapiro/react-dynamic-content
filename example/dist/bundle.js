@@ -193,9 +193,9 @@
 	  }
 	};
 
-	var dragConfirmations = [mousedown, clickAndMouseDown, longHold, swipe];
+	var dragConfirmations = [mousedown, longHold, swipe, clickAndMouseDown];
 
-	var dragConfirmationsNames = ["mousedown", "click & mousedown", "long hold", "swipe"];
+	var dragConfirmationsNames = ["mousedown", "long hold", "swipe", "click and mousedown"];
 
 	var Content = React.createClass({
 	  displayName: 'Content',
@@ -242,11 +242,12 @@
 	      React.createElement(
 	        'span',
 	        { className: 'currentDrags' },
+	        'CURRENTLY STARTS DRAGGING WITH ',
 	        React.createElement(
 	          'u',
 	          null,
-	          'currently starting drags with ',
-	          dragConfirmationsNames[this.state.dragConfIndex % dragConfirmations.length]
+	          dragConfirmationsNames[this.state.dragConfIndex % dragConfirmations.length].toUpperCase(),
+	          ' AND MOVE'
 	        ),
 	        React.createElement(
 	          'button',
