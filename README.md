@@ -1,23 +1,23 @@
 # React Dynamic Content
 
 ## Live Demo
-Live demo: [`__DEMO_LINK__`](__DEMO_LINK__)
+Live demo: [`http://professor-reviews-46875.bitballoon.com`](http://professor-reviews-46875.bitballoon.com)
 
-![demo gif](__GIF_LINK__)
+![demo gif](http://professor-reviews-46875.bitballoon.com/imgs/sample.gif)
 
-React dynamic content is a React component to organize custom html content using layouts and reposition by dragging.
+React dynamic content is a component to organize custom html content using layouts and reposition by dragging.
 
 Features of `react-dynamic-content`
+* Content organization using "cascading" or "google images" layouts that **resize** elements to fit columns and rows
 * Support for any kind of content and not just images (can be text, video, complex elements)
-* Organization using "cascading" or "google images" layouts that **resize** elements to fit rows or columns
 * Customization of layout method (you can provide you own layout positioning method)
-* Elements reposition from place to place using mouse/touch drags
-* Customization of drag initiation (for exampe if you want drag start with long click/swipe)
+* Changing order of elements by moving them with mouse/touch events, and receiving callback with new setting
+* Customization of drag initiation (for example if you want to start drag with swipe or long click)
 * Mobile friendly
 
-**NOTE #1**: it is recomended that you provide responsive content, and if you plan using "google images" layout then please provide content that maintains aspect ratio within inner width/height (client width/height), for example plain `<img>`, you can still provide any margins/borders you want regardless of aspect ratio.
+**NOTE #1**: it is recomended that you provide responsive content, and if you plan using "google images" layout then please provide content that maintains aspect ratio within inner width/height (client width/height), for example plain `<img>`, you can still provide any margins/borders you like regardless of aspect ratio.
 
-**NOTE #2**: the component does not include scroller but only content, you can wrap it in your own one.
+**NOTE #2**: the component does not include scroller, only renders content, you can wrap it into scroller.
 
 ### Getting Started
 
@@ -28,16 +28,16 @@ npm install --save react-dynamic-content
 ### Style import
 
 ```
-import "react-image-gallery/styles/style.css";    //for css
-import "react-image-gallery/styles/style.scss";   //for scss
-import "react-image-gallery/styles/style.less";   //for less
+import "react-dynamic-content/styles/style.css";    //for css
+import "react-dynamic-content/styles/style.scss";   //for scss
+import "react-dynamic-content/styles/style.less";   //for less
 ```
 
 ### Example
 
 ```jsx
 import DynamicContent from 'react-dynamic-content';
-import "react-image-gallery/styles/style.css"; 
+import "react-dynamic-content/styles/style.css"; 
 
 class MyComponent extends React.Component {
   render() {
