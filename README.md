@@ -1,7 +1,7 @@
 # React Dynamic Content
 
 ## Live Demo
-Live demo: [`http://react-dynamic-content-31776.bitballoon.com`](http://financial-controller-bear-31776.bitballoon.com)
+Live demo: [`http://react-dynamic-content-31776.bitballoon.com`](http://react-dynamic-content-31776.bitballoon.com)
 
 ![demo gif](http://react-dynamic-content-31776.bitballoon.com/imgs/sample.gif)
 
