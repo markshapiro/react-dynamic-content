@@ -79,14 +79,14 @@ Property|Type|Default|mandatory|Description
 :-------|:---|:------|:--------|:----------
 elements | array | null | yes | input of elements to display, **must be array of react elements**
 layout | string | null  | yes | name of layout method:<br/>`"cascading"` for cascading,<br/>`"images"` for google images,<br/>`"custom"` to provide your own layout method with `"customLayoutMethod"`
-customLayoutMethod | bool |	null | only if layout=`"custom"` | custom layout method when layout=`"custom"`<br/>see [`Providing custom layout method`](/#providing-custom-layout-method)
+customLayoutMethod | bool |	null | only if layout=`"custom"` | custom layout method when layout=`"custom"`<br/>see [`Providing custom layout method`](#providing-custom-layout-method)
 numOfColumns | number |	null | only if layout=`"cascading"`<br/>AND columnWidth absent | num of columns for `"cascading"` layout
 columnWidth |	number |	null | only if layout=`"cascading"`<br/>AND numOfColumns absent | column width for `"cascading"` layout
 maxHeight |	number | null	| only if layout=`"images"` | max height of row for `"images"` layout
 horizontalCellSpacing | number |	0 | no | horizontal spacing between elements
 verticalCellSpacing | number |	0 | no | vertical spacing between elements
 onChange | function|	null | no | this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag
-confirmElementDrag | function |	starts drags after<br/> mousedown/touchstart | no | method to provide confirmation for drag to customize drag start<br/>see [`Providing custom drag initiator`](/#providing-custom-drag-initiator)
+confirmElementDrag | function |	starts drags<br/>after mousedown<br/>or touchstart | no | method to provide confirmation for drag to customize drag start<br/>see [`Providing custom drag initiator`](#providing-custom-drag-initiator)
 allowDraggingMobile |	bool |	false	| no | ability to drag elements in desktop
 allowDraggingDesktop | bool |	false	| no  | ability to drag elements in mobile
 
@@ -102,7 +102,7 @@ allowDraggingDesktop | bool |	false	| no  | ability to drag elements in mobile
   */
   customLayoutMethod (elements, props){
     //you should provide css styles top, left, width or height or both for each each element for each value of elements obj
-    //you can see implementations for `cascading` and `images` layouts in `/src/utils.js`
+    //you can see example implementations for `cascading` and `images` layouts in `/src/utils.js`
     ...
   }
 ```
@@ -115,7 +115,7 @@ if you want your own way to start dragging elements (long click, swipe, double c
   /**
     arguments:
       event: event fired on element, can be mousedown, mousemove, mouseup, and same with touchevents
-      index: index of clicked element from `'elements'` array
+      index: index of clicked element from 'elements' array
     output:
       true or NOT true (false/null/undefined), or deferred promise that yields the same.
   */
@@ -131,10 +131,9 @@ A false result of confirmElementDrag cancels any true results that came before, 
 once a drag started, it can be canceled only with mouseup/touchstart event that comes after the drag initiation, regardless of confirmElementDrag implementation.
 this is a bit complicated but once understood it can simplify the implementation. 
 
-lets see examples:
+lets see some examples:
 
 a drag resulting from mousedown/touchstart (which is also the default setting) will be:
-
 ```js
   //returns true if mosuedown or touchstart and starts dragging immediately
   const press = (e, index) => e.type === "mousedown" || e.type === "touchstart";
@@ -144,9 +143,7 @@ a drag resulting from mousedown/touchstart (which is also the default setting) w
       ...
       ></DynamicContent>
 ```
-
 a drag resulting from long press (600ms press) will be:
-
 ```js 
   const longpress = (e, index) => {
     if(e.type === "mousedown" || e.type === "touchstart"){
@@ -154,7 +151,8 @@ a drag resulting from long press (600ms press) will be:
         setTimeout(()=>resolve(true), 600)
       });
     }
-    //same as returning false here, will cancel out the previous promise and prevent drag if press was not long enough (600ms)
+    //same as returning false here, will cancel out the previous promise and prevent drag
+    //if press was not long enough (600ms)
   };
    <DynamicContent
       ...
@@ -162,9 +160,7 @@ a drag resulting from long press (600ms press) will be:
       ...
       ></DynamicContent>
 ```
-
 a drag resulting from simplified swipe (400ms continuous mousemove after mousedown) will be:
-
 ```js 
   const swipe = (e, index) =>{
     if(e.type !== "mouseup" && e.type !== "touchend"){
@@ -172,7 +168,8 @@ a drag resulting from simplified swipe (400ms continuous mousemove after mousedo
         setTimeout(()=>resolve(true), 400)
       });
     }
-    //else if event = mouseup/touchend, will cancel out the previous promise and prevent drag if swipe was not long enough (400ms)
+    //else if event = mouseup/touchend, will cancel out the previous promise and prevent drag
+    //if swipe was not long enough (400ms)
   };
    <DynamicContent
       ...
@@ -180,13 +177,12 @@ a drag resulting from simplified swipe (400ms continuous mousemove after mousedo
       ...
       ></DynamicContent>
 ```
-
 a drag resulting from click and then press, with less than 400ms interval, will be:
-
 ```js 
   var lastClickTime=0;
   const clickAndPress = (e, index) => {
-    //first mosuedown/touchstart time will be remembered, second will trigger drag if interval less than 400ms
+    //first mosuedown/touchstart time will be remembered
+    //second will trigger drag if interval less than 400ms
     if(e.type === "mousedown" || e.type === "touchstart"){
       if(new Date() - lastClickTime < 400){ return true; }
       lastClickTime = new Date();
