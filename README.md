@@ -81,5 +81,5 @@ class MyComponent extends React.Component {
 
 Property	|	Type		|	Default		|	Description
 :-----------------------|:--------------|:--------------|:--------------------------------
-aaaa	|	bool	|	false	| bbbbb
-ccccc	|	bool	|	false	| dddd
+...	|	bool	|	false	| ...
+...	|	bool	|	false	| ...
