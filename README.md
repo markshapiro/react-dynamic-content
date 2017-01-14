@@ -92,7 +92,7 @@ allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 
 ## Providing custom layout method
 
-if you want to provide your own layout way of organization, you should provide implementation of `confirmElementDrag`:
+if you want to provide your own layout to organizate, you should provide implementation of `confirmElementDrag`:
 
 ```js
   /**
@@ -133,7 +133,7 @@ if you want your own way to start dragging elements (long click, swipe, double c
 ```
 
 to understand how to implement it to serve your needs, consider stream (pipe) of events (like RxJS stream) fired on your elements,
-then consider a new stream of results of confirmElementDrag(event,i) for each event in previous stream, such that if confirmElementDrag() returned a promise,
+then consider a new stream of results of confirmElementDrag(event,i) for each event from previous stream, such that if confirmElementDrag() returned a promise,
 then the result will also be deferred, meaning if you have 2 events: A and event B that fires immediately after A,
 if confirmElementDrag(A, i) returns a promise after 100ms and B returns result immediately,
 then confirmElementDrag(A, i) will be yielded 100ms after B in second stream.
