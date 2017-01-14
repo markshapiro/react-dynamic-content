@@ -86,7 +86,7 @@ maxHeight |	number | null	| only if layout=`"images"` | max height of row for `"
 horizontalCellSpacing | number |	0 | no | horizontal spacing between elements
 verticalCellSpacing | number |	0 | no | vertical spacing between elements
 onChange | function|	null | no | this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag
-confirmElementDrag | function |	null | no | method to provide confirmation for drag to customize drag start<br/>see [`Providing custom drag initiator`](/#providing-custom-drag-initiator)
+confirmElementDrag | function |	starts drags after<br/> mousedown/touchstart | no | method to provide confirmation for drag to customize drag start<br/>see [`Providing custom drag initiator`](/#providing-custom-drag-initiator)
 allowDraggingMobile |	bool |	false	| no | ability to drag elements in desktop
 allowDraggingDesktop | bool |	false	| no  | ability to drag elements in mobile
 
@@ -94,5 +94,109 @@ allowDraggingDesktop | bool |	false	| no  | ability to drag elements in mobile
 
 
 
+```js
+  /**
+    arguments:
+      elements: object of keys and values: key = index of element from `"elements"` array, value = rendered element for element at this index
+      props: relevant props to assist you with organizing: maxHeight, numOfColumns, columnWidth, verticalCellSpacing, horizontalCellSpacing
+  */
+  customLayoutMethod (elements, props){
+    //you should provide css styles top, left, width or height or both for each each element for each value of elements obj
+    //you can see implementations for `cascading` and `images` layouts in `/src/utils.js`
+    ...
+  }
+```
+
 ## Providing custom drag initiator
 
+if you want your own way to start dragging elements (long click, swipe, double click, drag by handle element ...) you should implement `confirmElementDrag`:
+
+```js
+  /**
+    arguments:
+      event: event fired on element, can be mousedown, mousemove, mouseup, and same with touchevents
+      index: index of clicked element from `'elements'` array
+    output:
+      true or NOT true (false/null/undefined), or deferred promise that yields the same.
+  */
+  confirmElementDrag (event, index){
+    ...
+    return result;
+  }
+```
+
+to understand how to implement it to serve your needs, consider stream of results of confirmElementDrag(event) on each mouse/touch event fired on your elements,
+such that if confirmElementDrag returned deferred promise then the result will be also deferred and may be yielded after immediate confirmElementDrag results of events that came after current event.
+A false result of confirmElementDrag cancels any true results that came before, even if deferred.
+once a drag started, it can be canceled only with mouseup/touchstart event that comes after the drag initiation, regardless of confirmElementDrag implementation.
+this is a bit complicated but once understood it can simplify the implementation. 
+
+lets see examples:
+
+a drag resulting from mousedown/touchstart (which is also the default setting) will be:
+
+```js
+  //returns true if mosuedown or touchstart and starts dragging immediately
+  const press = (e, index) => e.type === "mousedown" || e.type === "touchstart";
+   <DynamicContent
+      ...
+      confirmElementDrag={press}
+      ...
+      ></DynamicContent>
+```
+
+a drag resulting from long press (600ms press) will be:
+
+```js 
+  const longpress = (e, index) => {
+    if(e.type === "mousedown" || e.type === "touchstart"){
+      return new Promise((resolve, reject) => {
+        setTimeout(()=>resolve(true), 600)
+      });
+    }
+    //same as returning false here, will cancel out the previous promise and prevent drag if press was not long enough (600ms)
+  };
+   <DynamicContent
+      ...
+      confirmElementDrag={longpress}
+      ...
+      ></DynamicContent>
+```
+
+a drag resulting from simplified swipe (400ms continuous mousemove after mousedown) will be:
+
+```js 
+  const swipe = (e, index) =>{
+    if(e.type !== "mouseup" && e.type !== "touchend"){
+      return new Promise((resolve, reject) => {
+        setTimeout(()=>resolve(true), 400)
+      });
+    }
+    //else if event = mouseup/touchend, will cancel out the previous promise and prevent drag if swipe was not long enough (400ms)
+  };
+   <DynamicContent
+      ...
+      confirmElementDrag={swipe}
+      ...
+      ></DynamicContent>
+```
+
+a drag resulting from click and then press, with less than 400ms interval, will be:
+
+```js 
+  var lastClickTime=0;
+  const clickAndPress = (e, index) => {
+    //first mosuedown/touchstart time will be remembered, second will trigger drag if interval less than 400ms
+    if(e.type === "mousedown" || e.type === "touchstart"){
+      if(new Date() - lastClickTime < 400){ return true; }
+      lastClickTime = new Date();
+    }
+  };
+   <DynamicContent
+      ...
+      confirmElementDrag={clickAndPress}
+      ...
+      ></DynamicContent>
+```
+
+you can use e.target to detect sub-element in case you want to drag by handle

@@ -172,6 +172,9 @@
 	};
 
 	var longHold = function longHold(e) {
+
+	  console.log(e);
+
 	  if (e.type === "mousedown" || e.type === "touchstart") {
 	    return new Promise(function (resolve, reject) {
 	      return setTimeout(function () {
