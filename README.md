@@ -79,37 +79,44 @@ Property|Type|Default|mandatory|Description
 :-------|:---|:------|:--------|:--------------------
 elements|array|null|yes|input of elements to display, **must be array of react elements**
 layout|string|null|yes|name of layout method:<br/>`"cascading"` for cascading,<br/>`"images"` for google images,<br/>`"custom"` to provide your own layout method with `"customLayoutMethod"`
-customLayoutMethod|bool|null|only if layout=`"custom"`|custom layout method when layout=`"custom"`<br/>see [`Providing custom layout method`](#providing-custom-layout-method)
+customLayoutMethod|bool|null|only if layout=`"custom"`|custom layout method when layout = `"custom"`<br/>see section [`Providing custom layout method`](#providing-custom-layout-method)
 numOfColumns|number|null|only if layout=`"cascading"`<br/>AND columnWidth absent|num of columns for `"cascading"` layout
-columnWidth|number|null|only if layout=`"cascading"`<br/>AND numOfColumns absent|column width for `"cascading"` layout
+columnWidth|number|null|only if layout = `"cascading"`<br/>AND numOfColumns absent|column width for `"cascading"` layout
 maxHeight|number|null|only if layout=`"images"`|max height of row for `"images"` layout
 horizontalCellSpacing|number|0|no|horizontal spacing between elements
 verticalCellSpacing|number|0|no|vertical spacing between elements
 onChange|function|null|no|this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag
-confirmElementDrag|function|starts drags<br/>after mousedown<br/>/ touchstart|no|method to provide confirmation for drag to customize drag start<br/>see [`Providing custom drag initiator`](#providing-custom-drag-initiator)
+confirmElementDrag|function|starts drags<br/>after mousedown<br/>/ touchstart|no|method to provide confirmation for drag to customize drag start<br/>see section [`Providing custom drag initiator`](#providing-custom-drag-initiator)
 allowDraggingMobile|bool|false|no|ability to drag elements in desktop
 allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 
 ## Providing custom layout method
 
-
+if you want your own layout method you should provide implementation of `confirmElementDrag`:
 
 ```js
   /**
     arguments:
-      elements: object of keys and values: key = index of element from `"elements"` array, value = rendered element for element at this index
-      props: relevant props to assist you with organizing: maxHeight, numOfColumns, columnWidth, verticalCellSpacing, horizontalCellSpacing
+      elements: object of keys and values where: 
+        key = index of element from 'elements' array,
+        value = rendered element (that is rendered) for element at this index
+      props: relevant props to assist you with organizing:
+        maxHeight, numOfColumns, columnWidth, verticalCellSpacing, horizontalCellSpacing
   */
   customLayoutMethod (elements, props){
-    //you should provide css styles top, left, width or height or both for each each element for each value of elements obj
+    //you should provide css styles top, left, width or height or both
+    //for each each element for each value of elements obj
     //you can see example implementations for `cascading` and `images` layouts in `/src/utils.js`
     ...
   }
 ```
 
+your job here is to set css styles `left`, `top`, `width`, `height` (can specify only width or height if element is responsive),
+to each element from values of `"elements"` obj, remember that component sets `position: absolute;` to all of its elements.
+
 ## Providing custom drag initiator
 
-if you want your own way to start dragging elements (long click, swipe, double click, drag by handle element ...) you should implement `confirmElementDrag`:
+if you want your own way to start dragging elements (long click, swipe, double click, drag by handle element ...) you should provide implementation of `confirmElementDrag`:
 
 ```js
   /**
