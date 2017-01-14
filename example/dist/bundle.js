@@ -20266,7 +20266,7 @@
 	        } }, { key: "componentWillUnmount", value: function value() {
 	          "undefined" != typeof window && window.removeEventListener("resize", this.repositionDebounced.bind(this));
 	        } }]), t;
-	    }(f.Component);W.propTypes = { elements: d.default.PropTypes.array, layout: d.default.PropTypes.string, numOfColumns: d.default.PropTypes.number, columnWidth: d.default.PropTypes.number, maxHeight: d.default.PropTypes.number, verticalMargin: d.default.PropTypes.number, horizontalMargin: d.default.PropTypes.number, onChange: d.default.PropTypes.func, confirmElementDrag: d.default.PropTypes.func, allowDraggingMobile: d.default.PropTypes.bool, allowDraggingDesktop: d.default.PropTypes.bool, custom: function custom(e) {
+	    }(f.Component);W.propTypes = { elements: d.default.PropTypes.array, layout: d.default.PropTypes.string, customLayoutMethod: d.default.PropTypes.func, numOfColumns: d.default.PropTypes.number, columnWidth: d.default.PropTypes.number, maxHeight: d.default.PropTypes.number, verticalMargin: d.default.PropTypes.number, horizontalMargin: d.default.PropTypes.number, onChange: d.default.PropTypes.func, confirmElementDrag: d.default.PropTypes.func, allowDraggingMobile: d.default.PropTypes.bool, allowDraggingDesktop: d.default.PropTypes.bool, custom: function custom(e) {
 	        return "cascading" === e.layout && void 0 === e.numOfColumns && void 0 === e.columnWidth ? new Error('either numOfColumns or columnWidth required with "cacading" layout') : "images" === e.layout && void 0 === e.maxHeight ? new Error('maxHeight required with "images" layout') : e.elements.reduce(function (e, t) {
 	          return d.default.isValidElement(t) ? e : new Error('"elements" prop arr must have only react elements');
 	        }, void 0);
