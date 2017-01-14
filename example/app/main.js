@@ -165,8 +165,8 @@ var Content = React.createClass({
                 //columnWidth={250}
                 maxHeight={180}
                 confirmElementDrag={dragConfirmations[this.state.dragConfIndex]}
-                verticalMargin={10}
-                horizontalMargin={10}></DynamicContent>
+                verticalCellSpacing={10}
+                horizontalCellSpacing={10}></DynamicContent>
             </div>
           </div>
         );

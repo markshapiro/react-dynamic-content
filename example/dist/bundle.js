@@ -285,8 +285,8 @@
 	          //columnWidth={250}
 	          , maxHeight: 180,
 	          confirmElementDrag: dragConfirmations[this.state.dragConfIndex],
-	          verticalMargin: 10,
-	          horizontalMargin: 10 })
+	          verticalCellSpacing: 10,
+	          horizontalCellSpacing: 10 })
 	      )
 	    );
 	  }
@@ -20046,8 +20046,8 @@
 	        N = { PENDING: "PENDING", LOADING: "LOADING", FAILED: "FAILED", NOT_POSITIONED: "NOT_POSITIONED", FINISHED: "FINISHED" },
 	        P = 15,
 	        I = { cascading: g.repositionCascadingLayout, images: g.repositionImagesLayout },
-	        k = ["layout", "numOfColumns", "columnWidth", "maxHeight", "verticalMargin", "horizontalMargin"],
-	        M = ["maxHeight", "numOfColumns", "columnWidth", "verticalMargin", "horizontalMargin"],
+	        k = ["layout", "numOfColumns", "columnWidth", "maxHeight", "verticalCellSpacing", "horizontalCellSpacing"],
+	        S = ["maxHeight", "numOfColumns", "columnWidth", "verticalCellSpacing", "horizontalCellSpacing"],
 	        L = function () {
 	      function e(t) {
 	        var n = this;u(this, e), this.elm = t, this.ref = h.default.uniqueId(), this.state = N.PENDING, this._renderedElm = new Promise(function (e, t) {
@@ -20063,7 +20063,7 @@
 	          return this.state === N.FINISHED;
 	        } }]), e;
 	    }(),
-	        T = function (e) {
+	        C = function (e) {
 	      function t(e) {
 	        return u(this, t), a(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e));
 	      }return s(t, e), l(t, [{ key: "componentWillMount", value: function value() {
@@ -20086,9 +20086,9 @@
 	          return this.props.elmData.elm;
 	        } }]), t;
 	    }(f.Component),
-	        W = function (e) {
+	        T = function (e) {
 	      function t(e) {
-	        u(this, t);var n = a(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e));return q.call(n), n.state = { data: [] }, n;
+	        u(this, t);var n = a(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e));return M.call(n), n.state = { data: [] }, n;
 	      }return s(t, e), l(t, [{ key: "componentWillMount", value: function value() {
 	          var e = this,
 	              t = this.elmLoaded$.scan(function (e, t) {
@@ -20202,7 +20202,7 @@
 	        } }, { key: "reposition", value: function value() {
 	          var e = (0, c.findDOMNode)(this.refs.wrapper),
 	              t = {},
-	              n = h.default.extend({ parentWidth: e.offsetWidth }, h.default.pick(this.props, M));this.state.data.forEach(function (e, n) {
+	              n = h.default.extend({ parentWidth: e.offsetWidth }, h.default.pick(this.props, S));this.state.data.forEach(function (e, n) {
 	            e.isPresent() && !e.isDragging && (t[n] = e.renderedElmResult);
 	          }), "custom" !== this.props.layout ? I[this.props.layout](t, n) : this.props.customLayoutMethod(t, n), this.makeNotPositionedFinished();
 	        } }, { key: "makeNotPositionedFinished", value: function value() {
@@ -20220,7 +20220,7 @@
 	          var e = this;return console.debug("render"), d.default.createElement("div", { ref: "wrapper", className: "CustomContentWrapper" }, this.state.data.filter(function (e) {
 	            return e.state !== N.PENDING;
 	          }).map(function (t, n) {
-	            return d.default.createElement(T, { elmData: t, key: t.ref, onLoad: function onLoad() {
+	            return d.default.createElement(C, { elmData: t, key: t.ref, onLoad: function onLoad() {
 	                return e.elmLoaded$.onNext({ ref: t.ref, success: !0 });
 	              }, onError: function onError() {
 	                return e.elmLoaded$.onNext({ ref: t.ref, success: !1 });
@@ -20266,13 +20266,13 @@
 	        } }, { key: "componentWillUnmount", value: function value() {
 	          "undefined" != typeof window && window.removeEventListener("resize", this.repositionDebounced.bind(this));
 	        } }]), t;
-	    }(f.Component);W.propTypes = { elements: d.default.PropTypes.array, layout: d.default.PropTypes.string, customLayoutMethod: d.default.PropTypes.func, numOfColumns: d.default.PropTypes.number, columnWidth: d.default.PropTypes.number, maxHeight: d.default.PropTypes.number, verticalMargin: d.default.PropTypes.number, horizontalMargin: d.default.PropTypes.number, onChange: d.default.PropTypes.func, confirmElementDrag: d.default.PropTypes.func, allowDraggingMobile: d.default.PropTypes.bool, allowDraggingDesktop: d.default.PropTypes.bool, custom: function custom(e) {
+	    }(f.Component);T.propTypes = { elements: d.default.PropTypes.array, layout: d.default.PropTypes.string, customLayoutMethod: d.default.PropTypes.func, numOfColumns: d.default.PropTypes.number, columnWidth: d.default.PropTypes.number, maxHeight: d.default.PropTypes.number, verticalCellSpacing: d.default.PropTypes.number, horizontalCellSpacing: d.default.PropTypes.number, onChange: d.default.PropTypes.func, confirmElementDrag: d.default.PropTypes.func, allowDraggingMobile: d.default.PropTypes.bool, allowDraggingDesktop: d.default.PropTypes.bool, custom: function custom(e) {
 	        return "cascading" === e.layout && void 0 === e.numOfColumns && void 0 === e.columnWidth ? new Error('either numOfColumns or columnWidth required with "cacading" layout') : "images" === e.layout && void 0 === e.maxHeight ? new Error('maxHeight required with "images" layout') : e.elements.reduce(function (e, t) {
 	          return d.default.isValidElement(t) ? e : new Error('"elements" prop arr must have only react elements');
 	        }, void 0);
-	      } };var q = function q() {
+	      } };var M = function M() {
 	      this.elmLoaded$ = new E.default.Subject(), this.elmEvent$ = new E.default.Subject(), this.initialCss = {}, this.repositionThrottled = h.default.throttle(this.reposition, 100), this.repositionDebounced = h.default.debounce(this.reposition, 100);
-	    };t.default = W, e.exports = t.default;
+	    };t.default = T, e.exports = t.default;
 	  }, function (t, n) {
 	    t.exports = e;
 	  }, function (e, t, n) {
@@ -20285,7 +20285,7 @@
 	        n[e] = Number(t.getPropertyValue("padding-" + e).replace("px", "")) + Number(t.getPropertyValue("border-" + e + "-width").replace("px", "")), n.margin[e] = Number(t.getPropertyValue("margin-" + e).replace("px", ""));
 	      }), n.boxSizing = t.getPropertyValue("box-sizing"), n;
 	    }function o(e, t) {
-	      for (var n = t.verticalMargin || 0, r = t.horizontalMargin || 0, o = void 0 !== t.columnWidth ? t.columnWidth : (t.parentWidth - (t.numOfColumns - 1) * r) / t.numOfColumns - .3, a = 0, s = [], u = {}, l = void 0 !== t.numOfColumns ? t.numOfColumns : Math.floor((t.parentWidth + r) / (t.columnWidth + r)), f = 0; f < l; f++) {
+	      for (var n = t.verticalCellSpacing || 0, r = t.horizontalCellSpacing || 0, o = void 0 !== t.columnWidth ? t.columnWidth : (t.parentWidth - (t.numOfColumns - 1) * r) / t.numOfColumns - .3, a = 0, s = [], u = {}, l = void 0 !== t.numOfColumns ? t.numOfColumns : Math.floor((t.parentWidth + r) / (t.columnWidth + r)), f = 0; f < l; f++) {
 	        s.push(0);
 	      }d.default.each(e, function (e, t) {
 	        var f = 0,
@@ -20294,8 +20294,8 @@
 	        }), e.style.left = f * (o + r) + "px", e.style.top = s[f] + "px", s[f] += e.offsetHeight + n + u[t].margin.top + u[t].margin.left, a = (f + 1) % l;
 	      });
 	    }function a(e, t) {
-	      var n = t.verticalMargin || 0,
-	          r = t.horizontalMargin || 0;e = d.default.values(e);var o = [],
+	      var n = t.verticalCellSpacing || 0,
+	          r = t.horizontalCellSpacing || 0;e = d.default.values(e);var o = [],
 	          a = [],
 	          s = [];d.default.each(e, function (e) {
 	        var t = null;0 === e.clientWidth && (t = e.style.width, e.style.width = "300px", 0 === e.clientHeight && (e.style.width = t, e.style.height = "300px", 0 === e.clientWidth && console.error("element is not responsive when resized!"))), o.push(0 !== e.clientHeight ? e.clientWidth / e.clientHeight : 0);var n = i(e);a.push(n.left + n.margin.left), a.push(n.right + n.margin.right), s.push(n.top + n.margin.top), s.push(n.bottom + n.margin.bottom);
