@@ -132,15 +132,18 @@ if you want your own way to start dragging elements (long click, swipe, double c
   }
 ```
 
-to understand how to implement it to serve your needs, consider stream of events (like RxJS stream) on your elements,
-then consider a new stream of results of confirmElementDrag(event,i) for each event in previous stream, such that if confirmElementDrag returned a promise,
+to understand how to implement it to serve your needs, consider stream (pipe) of events (like RxJS stream) fired on your elements,
+then consider a new stream of results of confirmElementDrag(event,i) for each event in previous stream, such that if confirmElementDrag() returned a promise,
 then the result will also be deferred, meaning if you have 2 events: A and event B that fires immediately after A,
 if confirmElementDrag(A, i) returns a promise after 100ms and B returns result immediately,
 then confirmElementDrag(A, i) will be yielded 100ms after B in second stream.
-element dragging will start when:
+<br>element dragging will start in either of these 2 cases:
  * confirmElementDrag(E, i) returns true immediately (does not return promise)
- * confirmElementDrag(E, i) returns deferred promise that returns true, and there was no event that came after E for which confirmElementDrag returned false
- **NOTE** once dragging has started, its can be cancelled only with mouseup/touchend, regardless of confirmElementDrag implementation
+ * confirmElementDrag(E, i) returns deferred promise that returns true, and there was no event E2 that was fired after E
+ whose confirmElementDrag(E2) yielded false, and it yielded before confirmElementDrag() of E.
+ <br/>meaning false result for next events will cancel out the result of for previous events when their confirmElementDrag() results are yielded before the results of previous event
+ <br>
+ **NOTE:** once dragging has started, its can be cancelled only with mouseup/touchend, regardless of confirmElementDrag implementation
 
 lets see some examples:
 
