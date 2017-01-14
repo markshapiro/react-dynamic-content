@@ -122,8 +122,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  images: utils.repositionImagesLayout
 	};
 
-	var propsThatTriggerRender = ["layout", "numOfColumns", "columnWidth", "maxHeight", "verticalMargin", "horizontalMargin"];
-	var propsPassed2positionMethods = ["maxHeight", "numOfColumns", "columnWidth", "verticalMargin", "horizontalMargin"];
+	var propsThatTriggerRender = ["layout", "numOfColumns", "columnWidth", "maxHeight", "verticalCellSpacing", "horizontalCellSpacing"];
+	var propsPassed2positionMethods = ["maxHeight", "numOfColumns", "columnWidth", "verticalCellSpacing", "horizontalCellSpacing"];
 
 	var WrappingElement = function () {
 	  function WrappingElement(elm) {
@@ -643,8 +643,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  numOfColumns: _react2.default.PropTypes.number,
 	  columnWidth: _react2.default.PropTypes.number,
 	  maxHeight: _react2.default.PropTypes.number,
-	  verticalMargin: _react2.default.PropTypes.number,
-	  horizontalMargin: _react2.default.PropTypes.number,
+	  verticalCellSpacing: _react2.default.PropTypes.number,
+	  horizontalCellSpacing: _react2.default.PropTypes.number,
 	  onChange: _react2.default.PropTypes.func,
 	  confirmElementDrag: _react2.default.PropTypes.func,
 	  allowDraggingMobile: _react2.default.PropTypes.bool,
@@ -733,8 +733,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function repositionCascadingLayout(elements, props) {
-	    var mvert = props.verticalMargin || 0;
-	    var mhor = props.horizontalMargin || 0;
+	    var mvert = props.verticalCellSpacing || 0;
+	    var mhor = props.horizontalCellSpacing || 0;
 	    var columnWidth = props.columnWidth !== undefined ? props.columnWidth : (props.parentWidth - (props.numOfColumns - 1) * mhor) / props.numOfColumns - 0.3;
 	    var count = 0,
 	        sums = [],
@@ -763,8 +763,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function repositionImagesLayout(elements, props) {
-	    var mvert = props.verticalMargin || 0;
-	    var mhor = props.horizontalMargin || 0;
+	    var mvert = props.verticalCellSpacing || 0;
+	    var mhor = props.horizontalCellSpacing || 0;
 	    elements = _lodash2.default.values(elements);
 	    var aspectRatio = []; //initial asp ratio before changes
 	    var hMargins = [],

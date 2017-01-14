@@ -30,8 +30,8 @@ const repositionMethods = {           //resize & reposition methods for each lay
   images:utils.repositionImagesLayout
 };
 
-const propsThatTriggerRender = ["layout", "numOfColumns","columnWidth","maxHeight","verticalMargin","horizontalMargin"];
-const propsPassed2positionMethods = ["maxHeight","numOfColumns","columnWidth","verticalMargin","horizontalMargin"];
+const propsThatTriggerRender = ["layout", "numOfColumns","columnWidth","maxHeight","verticalCellSpacing","horizontalCellSpacing"];
+const propsPassed2positionMethods = ["maxHeight","numOfColumns","columnWidth","verticalCellSpacing","horizontalCellSpacing"];
 
 class WrappingElement{
   constructor(elm){
@@ -114,8 +114,8 @@ class DynamicContent extends Component {
     numOfColumns: React.PropTypes.number,
     columnWidth: React.PropTypes.number,
     maxHeight: React.PropTypes.number,
-    verticalMargin: React.PropTypes.number,
-    horizontalMargin: React.PropTypes.number,
+    verticalCellSpacing: React.PropTypes.number,
+    horizontalCellSpacing: React.PropTypes.number,
     onChange: React.PropTypes.func,
     confirmElementDrag: React.PropTypes.func,
     allowDraggingMobile: React.PropTypes.bool,

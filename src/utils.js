@@ -17,8 +17,8 @@ function getWidthAndSpacing(elm){
 }
 
 export function repositionCascadingLayout(elements, props){
-    var mvert=props.verticalMargin || 0;
-    var mhor=props.horizontalMargin || 0;
+    var mvert=props.verticalCellSpacing || 0;
+    var mhor=props.horizontalCellSpacing || 0;
     var columnWidth = props.columnWidth !== undefined ? props.columnWidth : ((props.parentWidth-(props.numOfColumns-1)*mhor) / props.numOfColumns - 0.3);
     var count = 0, sums = [], spacings={},
         numOfColumns = props.numOfColumns !== undefined ? props.numOfColumns : Math.floor((props.parentWidth+mhor) / (props.columnWidth+mhor));
@@ -46,8 +46,8 @@ export function repositionCascadingLayout(elements, props){
 }
 
 export function repositionImagesLayout(elements, props){
-    var mvert=props.verticalMargin || 0;
-    var mhor=props.horizontalMargin || 0;
+    var mvert=props.verticalCellSpacing || 0;
+    var mhor=props.horizontalCellSpacing || 0;
     elements = _.values(elements);
     var aspectRatio=[];                     //initial asp ratio before changes
     var hMargins = [], vMargins = [];
