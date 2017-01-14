@@ -61,7 +61,6 @@ class MyComponent extends React.Component {
       
       <img src="http://lorempixel.com/600/500" />
     ]
-
     return (
       <DynamicContent
         elements={content}
@@ -71,15 +70,22 @@ class MyComponent extends React.Component {
         allowDraggingDesktop={true}/>
     );
   }
-
 }
 ```
 
-
-
 ## Options
 
-Property	|	Type		|	Default		|	Description
-:-----------------------|:--------------|:--------------|:--------------------------------
-...	|	bool	|	false	| ...
-...	|	bool	|	false	| ...
+Property|Type|Default|mandatory|Description
+:-------|:---|:------|:--------|:----------
+elements |	array of react elements	|	null | yes |  input of react elements to display
+layout |	ENUM STRING <br/> ('cascading', 'images', 'custom') |	null  | yes | layout method to organize elements
+customLayoutMethod | bool |	null | yes if layout='custom' | custom layout method in case layout='custom'
+numOfColumns | number |	null | yes if layout='cascading' <br/>AND columnWidth = null | num of columns for 'cascading' layout
+columnWidth |	number |	null | yes if layout='cascading' <br/>AND numOfColumns = null | column width for 'cascading' layout
+maxHeight |	number | null	| yes if layout='images' | max height of row to set for 'google images' layout
+verticalMargin | number |	0 | no | margin between elements
+horizontalMargin | number  |	0 | no | margin between elements
+onChange |	function|	null	| no | 
+confirmElementDrag | function|	null | no | 
+allowDraggingMobile |	bool |	false	| no | ability to drag elements in desktop
+allowDraggingDesktop | bool |	false	| no  | ability to drag elements in mobile

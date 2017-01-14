@@ -110,6 +110,7 @@ class DynamicContent extends Component {
   static propTypes = {
     elements: React.PropTypes.array,
     layout: React.PropTypes.string,
+    customLayoutMethod: React.PropTypes.func,
     numOfColumns: React.PropTypes.number,
     columnWidth: React.PropTypes.number,
     maxHeight: React.PropTypes.number,

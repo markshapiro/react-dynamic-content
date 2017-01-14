@@ -639,6 +639,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	DynamicContent.propTypes = {
 	  elements: _react2.default.PropTypes.array,
 	  layout: _react2.default.PropTypes.string,
+	  customLayoutMethod: _react2.default.PropTypes.func,
 	  numOfColumns: _react2.default.PropTypes.number,
 	  columnWidth: _react2.default.PropTypes.number,
 	  maxHeight: _react2.default.PropTypes.number,
