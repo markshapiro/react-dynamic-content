@@ -92,20 +92,20 @@ allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 
 ## Providing custom layout method
 
-if you want your own layout method you should provide implementation of `confirmElementDrag`:
+if you want to provide your own layout way of organization, you should provide implementation of `confirmElementDrag`:
 
 ```js
   /**
     arguments:
       elements: object of keys and values where: 
         key = index of element from 'elements' array,
-        value = rendered element (that is rendered) for element at this index
-      props: relevant props to assist you with organizing:
+        value = mounted element (that is rendered) for element at this index
+      props: relevant props passed to component to assist you with organizing:
         maxHeight, numOfColumns, columnWidth, verticalCellSpacing, horizontalCellSpacing
   */
   customLayoutMethod (elements, props){
     //you should provide css styles top, left, width or height or both
-    //for each each element for each value of elements obj
+    //for each each element of each value of elements obj
     //you can see example implementations for `cascading` and `images` layouts in `/src/utils.js`
     ...
   }
@@ -116,7 +116,7 @@ to each element from values of `"elements"` obj, remember that component sets `p
 
 ## Providing custom drag initiator
 
-if you want your own way to start dragging elements (long click, swipe, double click, drag by handle element ...) you should provide implementation of `confirmElementDrag`:
+if you want your own way to start dragging elements (long click, swipe, double click, drag by handle element ...)<br/>you should provide implementation of `confirmElementDrag`:
 
 ```js
   /**
@@ -132,11 +132,15 @@ if you want your own way to start dragging elements (long click, swipe, double c
   }
 ```
 
-to understand how to implement it to serve your needs, consider stream of results of confirmElementDrag(event) on each mouse/touch event fired on your elements,
-such that if confirmElementDrag returned deferred promise then the result will be also deferred and may be yielded after immediate confirmElementDrag results of events that came after current event.
-A false result of confirmElementDrag cancels any true results that came before, even if deferred.
-once a drag started, it can be canceled only with mouseup/touchstart event that comes after the drag initiation, regardless of confirmElementDrag implementation.
-this is a bit complicated but once understood it can simplify the implementation. 
+to understand how to implement it to serve your needs, consider stream of events (like RxJS stream) on your elements,
+then consider a new stream of results of confirmElementDrag(event,i) for each event in previous stream, such that if confirmElementDrag returned a promise,
+then the result will also be deferred, meaning if you have 2 events: A and event B that fires immediately after A,
+if confirmElementDrag(A, i) returns a promise after 100ms and B returns result immediately,
+then confirmElementDrag(A, i) will be yielded 100ms after B in second stream.
+element dragging will start when:
+ * confirmElementDrag(E, i) returns true immediately (does not return promise)
+ * confirmElementDrag(E, i) returns deferred promise that returns true, and there was no event that came after E for which confirmElementDrag returned false
+ **NOTE** once dragging has started, its can be cancelled only with mouseup/touchend, regardless of confirmElementDrag implementation
 
 lets see some examples:
 
@@ -202,4 +206,4 @@ a drag resulting from click and then press, with less than 400ms interval, will 
       ></DynamicContent>
 ```
 
-you can use e.target to detect sub-element in case you want to drag by handle
+you can use e.target to detect sub-element in case you want to drag by handle inside your elements
