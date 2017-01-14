@@ -76,19 +76,19 @@ class MyComponent extends React.Component {
 ## Options
 
 Property|Type|Default|mandatory|Description
-:-------|:---|:------|:--------|:----------
-elements | array | null | yes | input of elements to display, **must be array of react elements**
-layout | string | null  | yes | name of layout method:<br/>`"cascading"` for cascading,<br/>`"images"` for google images,<br/>`"custom"` to provide your own layout method with `"customLayoutMethod"`
-customLayoutMethod | bool |	null | only if layout=`"custom"` | custom layout method when layout=`"custom"`<br/>see [`Providing custom layout method`](#providing-custom-layout-method)
-numOfColumns | number |	null | only if layout=`"cascading"`<br/>AND columnWidth absent | num of columns for `"cascading"` layout
-columnWidth |	number |	null | only if layout=`"cascading"`<br/>AND numOfColumns absent | column width for `"cascading"` layout
-maxHeight |	number | null	| only if layout=`"images"` | max height of row for `"images"` layout
-horizontalCellSpacing | number |	0 | no | horizontal spacing between elements
-verticalCellSpacing | number |	0 | no | vertical spacing between elements
-onChange | function|	null | no | this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag
-confirmElementDrag | function |	starts drags<br/>after mousedown<br/>or touchstart | no | method to provide confirmation for drag to customize drag start<br/>see [`Providing custom drag initiator`](#providing-custom-drag-initiator)
-allowDraggingMobile |	bool |	false	| no | ability to drag elements in desktop
-allowDraggingDesktop | bool |	false	| no  | ability to drag elements in mobile
+:-------|:---|:------|:--------|:--------------------
+elements|array|null|yes|input of elements to display, **must be array of react elements**
+layout|string|null|yes|name of layout method:<br/>`"cascading"` for cascading,<br/>`"images"` for google images,<br/>`"custom"` to provide your own layout method with `"customLayoutMethod"`
+customLayoutMethod|bool|null|only if layout=`"custom"`|custom layout method when layout=`"custom"`<br/>see [`Providing custom layout method`](#providing-custom-layout-method)
+numOfColumns|number|null|only if layout=`"cascading"`<br/>AND columnWidth absent|num of columns for `"cascading"` layout
+columnWidth|number|null|only if layout=`"cascading"`<br/>AND numOfColumns absent|column width for `"cascading"` layout
+maxHeight|number|null|only if layout=`"images"`|max height of row for `"images"` layout
+horizontalCellSpacing|number|0|no|horizontal spacing between elements
+verticalCellSpacing|number|0|no|vertical spacing between elements
+onChange|function|null|no|this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag
+confirmElementDrag|function|starts drags<br/>after mousedown<br/>/ touchstart|no|method to provide confirmation for drag to customize drag start<br/>see [`Providing custom drag initiator`](#providing-custom-drag-initiator)
+allowDraggingMobile|bool|false|no|ability to drag elements in desktop
+allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 
 ## Providing custom layout method
 
