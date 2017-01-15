@@ -1,6 +1,6 @@
 {
   "name": "react-dynamic-content",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "dist/react-dynamic-content.min.js",
   "scripts": {
     "build": "npm run build-babel && npm run build-dist-dev && npm run build-dist-prod",
