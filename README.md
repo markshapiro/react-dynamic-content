@@ -161,11 +161,12 @@ then confirmElementDrag(A, i) will be yielded 100ms after B in second stream.
  * confirmElementDrag(E, i) returns deferred promise that returns true, and there was no event E2 that was fired after E
  whose confirmElementDrag(E2) yielded false, and it yielded before confirmElementDrag() of E.
  <br/>meaning false result for next events will cancel out the result of for previous events when their confirmElementDrag() results are yielded before the results of previous event
-<br><br>
-**NOTE:** once dragging has started, its can be cancelled only with mouseup/touchend, regardless of confirmElementDrag implementation
-<br/>lets see some examples:
+<br>
 
-to start dragging after mousedown/touchstart (which is also the default setting):
+**NOTE:** once dragging has started, its can be cancelled only with mouseup/touchend, regardless of confirmElementDrag implementation
+
+lets see some examples:
+<br/>to start dragging after mousedown/touchstart (which is also the default setting):
 ```js
   //returns true if mosuedown or touchstart and starts dragging immediately
   const mousedown = (e, index) => e.type === "mousedown" || e.type === "touchstart";
