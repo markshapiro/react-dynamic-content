@@ -100,7 +100,7 @@ Both layouts organize by ordering elements by their index in `"elements"` array,
 <br/>For elements in the same row, element with higher index will be on the right side from elements with lower,
 for elements in different rows, the element with higher index will be in lower rows.
 <br/>It is recommended to provide responsive elements that maintain aspect ratio between clientWidth/clientHeight (regardless of border/margin) because the library uses the ratio to fit elements into rows without leaving trailing edges,
-meaning that width change should automatically change height and maintain ratio, same with height change, the component will try resizing both ways and force initial asp. ratio of both fail.
+meaning that width change should automatically change height and maintain ratio, same with height change, the component will try resizing both ways and force initial ratio if both ways fail.
 <br/> see [`here`](https://css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin) how to make html elements that maintain raio (besides using `<img/>`'s).
 
 ## Reorder elements by dragging
