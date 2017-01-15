@@ -205,7 +205,7 @@ to start dragging after swipe (400ms continuous mousemove after mousedown):
         setTimeout(()=>resolve(true), 600)
       });
     }
-    //if mousedown/touchend then disable promise generated form mousemove if was
+    //if mousedown/touchend then disable promise generated from mousemove (if was)
     else{
       isDown = false;
     }
