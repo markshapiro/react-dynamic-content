@@ -93,17 +93,22 @@ allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 ## More on "cascading" and "images" layouts
 
 Both layouts organize by ordering elements by their index in `"elements"` array,
-<br/>'cascading' layout organizes elements like pinterest or tumblr do. (columns with cascading images)
-<br/>for "cascading", element with higher index will be located lower than element with lower index, may be in any column,
-<br/>'images' layout organizes like google images, (rows with elements with same height), but does not leave trailing edges.
-<br/>for "images" layout, for elements in the same row, element with higher index will be on the right side from elements with lower,
+<br/><br/>'cascading' layout organizes elements like pinterest or tumblr do. (columns with cascading images)
+<br/>element with higher index will be located lower than element with lower index, may be in any column.
+<br/>it is recommended to provide responsive elements for this layout because the component resizes width to fit the columns.
+
+<br/><br/>'images' layout organizes like google images, (rows with elements with same height), but does not leave trailing edges.
+<br/>for elements in the same row, element with higher index will be on the right side from elements with lower,
 for elements in different rows, the element with higher index will be in lower rows.
+<br/>it is recommended to provide responsive elements that maintain aspect ratio between clientWidth/clientHeight (regardless of border/margin) because the library uses the ratio to fit elements into rows without leaving trailing edges.
+meaning that width change should resize height to fit the ratio, or opposite, the component will try both ways each element.
+<br/>if you don't provide such elements, then the component will force initially seen aspect ratio
 
 ## Reorder elements by dragging
 
 Component supports reposition element by dragging (mousedown/touchstart and then move as default), make sure to enable by setting allowDraggingDesktop={'true'} or allowDraggingMobile={'true'}.
 <br/>To move element to a new place after you started dragging, you must move the cursor over some other element while dragging, and release mouse/tap (trigger mouseup/touchend), then your dragged element will be pushed before the other elment in `"elements"` array, and `"onChange"` will be called with new array setting.
-<br/> After this, component will be rendered anew with current layout method, 
+<br/> After this, component will be rerendered anew with current layout method.
 
 ## Providing custom layout method
 
