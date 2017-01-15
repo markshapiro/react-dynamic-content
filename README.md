@@ -93,7 +93,9 @@ allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 ## More on "cascading" and "images" layouts
 
 Both layouts organize by ordering elements by their index in `"elements"` array,
+<br/>'cascading' layout organizes elements like pinterest or tumblr do. (columns with cascading images)
 <br/>for "cascading", element with higher index will be located lower than element with lower index, may be in any column,
+<br/>'images' layout organizes like google images, (rows with elements with same height), but does not leave trailing edges.
 <br/>for "images" layout, for elements in the same row, element with higher index will be on the right side from elements with lower,
 for elements in different rows, the element with higher index will be in lower rows.
 
