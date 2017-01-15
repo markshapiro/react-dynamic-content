@@ -79,14 +79,15 @@ Property|Type|Default|mandatory|Description
 :-------|:---|:------|:--------|:--------------------
 elements|array|null|yes|input of elements to display, **must be array of react elements**
 layout|string|null|yes|name of layout method:<br/>`"cascading"` for cascading,<br/>`"images"` for google images,<br/>`"custom"` to provide your own layout method with `"customLayoutMethod"`
-customLayoutMethod|bool|null|only if layout=`"custom"`|custom layout method when layout = `"custom"`<br/>see section [`Providing custom layout method`](#providing-custom-layout-method)
+<br/>see [`More on "cascading" and "images" layouts`](#more-on-cascading-and-images-layouts)
+customLayoutMethod|bool|null|only if layout=`"custom"`|custom layout method when layout = `"custom"`<br/>see [`Providing custom layout method`](#providing-custom-layout-method)
 numOfColumns|number|null|only if layout=`"cascading"`<br/>AND columnWidth absent|num of columns for `"cascading"` layout
 columnWidth|number|null|only if layout = `"cascading"`<br/>AND numOfColumns absent|column width for `"cascading"` layout
 maxHeight|number|null|only if layout=`"images"`|max height of row for `"images"` layout
 horizontalCellSpacing|number|0|no|horizontal spacing between elements
 verticalCellSpacing|number|0|no|vertical spacing between elements
-onChange|function|null|no|this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag.<br/>see section [`Reorder elements by dragging`](#reorder-elements-by-dragging)
-confirmElementDrag|function|starts drags<br/>after mousedown<br/>/ touchstart|no|method to provide confirmation for drag to customize drag start<br/>see section [`Providing custom drag initiator`](#providing-custom-drag-initiator)
+onChange|function|null|no|this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag.<br/>see [`Reorder elements by dragging`](#reorder-elements-by-dragging)
+confirmElementDrag|function|starts drags<br/>after mousedown<br/>/ touchstart|no|method to provide confirmation for drag to customize drag start<br/>see [`Providing custom drag initiator`](#providing-custom-drag-initiator)
 allowDraggingMobile|bool|false|no|ability to drag elements in desktop
 allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 
@@ -101,6 +102,7 @@ for elements in different rows, the element with higher index will be in lower r
 
 Component supports reposition element by dragging (mousedown/touchstart and then move as default), make sure to enable by setting allowDraggingDesktop={'true'} or allowDraggingMobile={'true'}.
 <br/>To move element to a new place after you started dragging, you must move the cursor over some other element while dragging, and release mouse/tap (trigger mouseup/touchend), then your dragged element will be pushed before the other elment in `"elements"` array, and `"onChange"` will be called with new array setting.
+<br/> After this, component will be rendered anew with current layout method.
 
 ## Providing custom layout method
 
