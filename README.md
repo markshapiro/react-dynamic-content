@@ -85,25 +85,26 @@ columnWidth|number|null|only if layout = `"cascading"`<br/>AND numOfColumns abse
 maxHeight|number|null|only if layout=`"images"`|max height of row for `"images"` layout
 horizontalCellSpacing|number|0|no|horizontal spacing between elements
 verticalCellSpacing|number|0|no|vertical spacing between elements
-onChange|function|null|no|this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag
+onChange|function|null|no|this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag.<br/>see section [`Reorder elements by dragging`](#reorder-elements-by-dragging)
 confirmElementDrag|function|starts drags<br/>after mousedown<br/>/ touchstart|no|method to provide confirmation for drag to customize drag start<br/>see section [`Providing custom drag initiator`](#providing-custom-drag-initiator)
 allowDraggingMobile|bool|false|no|ability to drag elements in desktop
 allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 
-## More on existing layouts: "cascading" and "images"
+## More on "cascading" and "images" layouts
 
-both layouts organize by ordering elements by their index in `"elements"` array,
+Both layouts organize by ordering elements by their index in `"elements"` array,
 <br/>for "cascading", element with higher index will be located lower than element with lower index, may be in any column,
 <br/>for "images" layout, for elements in the same row, element with higher index will be on the right side from elements with lower,
 for elements in different rows, the element with higher index will be in lower rows.
 
-## Reorder (reposition) elements by dragging
+## Reorder elements by dragging
 
-
+Component supports reposition element by dragging (mousedown/touchstart and then move as default), make sure to enable by setting allowDraggingDesktop={'true'} or allowDraggingMobile={'true'}.
+<br/>To move element to a new place after you started dragging, you must move the cursor over some other element while dragging, then your dragged element will take index of that other element (will be inserted before the other elment in `"elements"` array), and then `"onChange"` will be called with new array.
 
 ## Providing custom layout method
 
-if you want to provide your own layout to organizate, you should provide implementation of `confirmElementDrag`:
+If you want to provide your own layout to organizate, you should provide implementation of `confirmElementDrag`:
 
 ```js
   /**
@@ -127,7 +128,7 @@ to each element from values of `"elements"` obj, remember that component sets `p
 
 ## Providing custom drag initiator
 
-if you want your own way to start dragging elements (long click, swipe, double click, drag by handle element ...)<br/>you should provide implementation of `confirmElementDrag`:
+If you want your own way to start dragging elements (long click, swipe, double click, drag by handle element ...)<br/>you should provide implementation of `confirmElementDrag`:
 
 ```js
   /**
