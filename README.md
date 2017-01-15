@@ -101,6 +101,7 @@ for elements in different rows, the element with higher index will be in lower r
 
 Component supports reposition element by dragging (mousedown/touchstart and then move as default), make sure to enable by setting allowDraggingDesktop={'true'} or allowDraggingMobile={'true'}.
 <br/>To move element to a new place after you started dragging, you must move the cursor over some other element while dragging, and release mouse/tap (trigger mouseup/touchend), then your dragged element will be pushed before the other elment in `"elements"` array, and `"onChange"` will be called with new array setting.
+<br/> After this, component will be rendered anew with current layout method, 
 
 ## Providing custom layout method
 
