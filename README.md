@@ -93,11 +93,10 @@ allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 ## More on "cascading" and "images" layouts
 
 Both layouts organize by ordering elements by their index in `"elements"` array,
-<br/><br/>'cascading' layout organizes elements like pinterest or tumblr do. (columns with cascading images)
+<br/>'cascading' layout organizes elements like pinterest or tumblr do. (columns with cascading images)
 <br/>element with higher index will be located lower than element with lower index, may be in any column.
 <br/>it is recommended to provide responsive elements for this layout because the component resizes width to fit the columns.
-
-<br/><br/>'images' layout organizes like google images, (rows with elements with same height), but does not leave trailing edges.
+<br/>'images' layout organizes like google images, (rows with elements with same height), but does not leave trailing edges.
 <br/>for elements in the same row, element with higher index will be on the right side from elements with lower,
 for elements in different rows, the element with higher index will be in lower rows.
 <br/>it is recommended to provide responsive elements that maintain aspect ratio between clientWidth/clientHeight (regardless of border/margin) because the library uses the ratio to fit elements into rows without leaving trailing edges.
