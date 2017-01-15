@@ -1,4 +1,5 @@
-# React Dynamic Content
+React Dynamic Content
+===
 
 ## Live Demo
 Live demo: [`react-dynamic-content-31776.bitballoon.com`](http://react-dynamic-content-31776.bitballoon.com)
