@@ -166,6 +166,7 @@ then confirmElementDrag(A, i) will be yielded 100ms after B in second stream.
 **NOTE:** once dragging has started, its can be cancelled only with mouseup/touchend, regardless of confirmElementDrag implementation
 
 lets see some examples:
+
 <br/>to start dragging after mousedown/touchstart (which is also the default setting):
 ```js
   //returns true if mosuedown or touchstart and starts dragging immediately
