@@ -78,7 +78,7 @@ class MyComponent extends React.Component {
 Property|Type|Default|mandatory|Description
 :-------|:---|:------|:--------|:--------------------
 elements|array|null|yes|input of elements to display, **must be array of react elements**
-layout|string|null|yes|name of layout method:<br/>`"cascading"` for cascading,<br/>`"images"` for google images,<br/>`"custom"` to provide your own layout method with `"customLayoutMethod"`
+layout|string|null|yes|name of layout method:<br/>`"cascading"` for cascading,<br/>`"images"` for google images,<br/>`"custom"` to provide your own layout method with `"customLayoutMethod"`<br/>see [`More on "cascading" and "images" layouts`](#more-on-cascading-and-images-layouts)
 customLayoutMethod|bool|null|only if layout=`"custom"`|custom layout method when layout = `"custom"`<br/>see [`Providing custom layout method`](#providing-custom-layout-method)
 numOfColumns|number|null|only if layout=`"cascading"`<br/>AND columnWidth absent|num of columns for `"cascading"` layout
 columnWidth|number|null|only if layout = `"cascading"`<br/>AND numOfColumns absent|column width for `"cascading"` layout
