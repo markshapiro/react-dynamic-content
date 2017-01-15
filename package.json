@@ -15,7 +15,9 @@
   "keywords": [
     "layout",
     "gallery",
-    "organization"
+    "organization",
+    "custom",
+    "images"
   ],
   "author": "Mark Shapiro",
   "devDependencies": {
