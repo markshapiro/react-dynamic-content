@@ -90,6 +90,17 @@ confirmElementDrag|function|starts drags<br/>after mousedown<br/>/ touchstart|no
 allowDraggingMobile|bool|false|no|ability to drag elements in desktop
 allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 
+## More on existing layouts: "cascading" and "images"
+
+both layouts organize by ordering elements by their index in `"elements"` array,
+<br/>for "cascading", element with higher index will be located lower than element with lower index, may be in any column,
+<br/>for "images" layout, for elements in the same row, element with higher index will be on the right side from elements with lower,
+for elements in different rows, the element with higher index will be in lower rows.
+
+## Reorder (reposition) elements by dragging
+
+
+
 ## Providing custom layout method
 
 if you want to provide your own layout to organizate, you should provide implementation of `confirmElementDrag`:
@@ -146,19 +157,19 @@ then confirmElementDrag(A, i) will be yielded 100ms after B in second stream.
 **NOTE:** once dragging has started, its can be cancelled only with mouseup/touchend, regardless of confirmElementDrag implementation
 lets see some examples:
 
-a drag resulting from mousedown/touchstart (which is also the default setting) will be:
+to start dragging after mousedown/touchstart (which is also the default setting):
 ```js
   //returns true if mosuedown or touchstart and starts dragging immediately
-  const press = (e, index) => e.type === "mousedown" || e.type === "touchstart";
+  const mousedown = (e, index) => e.type === "mousedown" || e.type === "touchstart";
    <DynamicContent
       ...
-      confirmElementDrag={press}
+      confirmElementDrag={mousedown}
       ...
       ></DynamicContent>
 ```
-a drag resulting from long press (600ms press) will be:
+to start dragging after long press (600ms press):
 ```js 
-  const longpress = (e, index) => {
+  const longPress = (e, index) => {
     if(e.type === "mousedown" || e.type === "touchstart"){
       return new Promise((resolve, reject) => {
         setTimeout(()=>resolve(true), 600)
@@ -169,20 +180,26 @@ a drag resulting from long press (600ms press) will be:
   };
    <DynamicContent
       ...
-      confirmElementDrag={longpress}
+      confirmElementDrag={longPress}
       ...
       ></DynamicContent>
 ```
-a drag resulting from simplified swipe (400ms continuous mousemove after mousedown) will be:
+to start dragging after swipe (400ms continuous mousemove after mousedown):
 ```js 
+  let isDown = false; //is pressing (whether moving or not)
   const swipe = (e, index) =>{
-    if(e.type !== "mouseup" && e.type !== "touchend"){
+    if(e.type === "mousedown" || e.type === "touchstart"){
+      isDown=true;
+    }
+    else if(isDown && (e.type === "mousemove" || e.type === "touchmove")){
       return new Promise((resolve, reject) => {
-        setTimeout(()=>resolve(true), 400)
+        setTimeout(()=>resolve(true), 600)
       });
     }
-    //else if event = mouseup/touchend, will cancel out the previous promise and prevent drag
-    //if swipe was not long enough (400ms)
+    //if mousedown/touchend then disable promise generated form mousemove if was
+    else{
+      isDown = false;
+    }
   };
    <DynamicContent
       ...
@@ -190,10 +207,10 @@ a drag resulting from simplified swipe (400ms continuous mousemove after mousedo
       ...
       ></DynamicContent>
 ```
-a drag resulting from click and then press, with less than 400ms interval, will be:
+to start dragging after click and then mousedown, with less than 400ms interval:
 ```js 
-  var lastClickTime=0;
-  const clickAndPress = (e, index) => {
+  let lastClickTime=0;
+  const clickAndMouseDown = (e, index) => {
     //first mosuedown/touchstart time will be remembered
     //second will trigger drag if interval less than 400ms
     if(e.type === "mousedown" || e.type === "touchstart"){
@@ -203,7 +220,7 @@ a drag resulting from click and then press, with less than 400ms interval, will 
   };
    <DynamicContent
       ...
-      confirmElementDrag={clickAndPress}
+      confirmElementDrag={clickAndMDown}
       ...
       ></DynamicContent>
 ```

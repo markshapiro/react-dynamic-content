@@ -63,32 +63,44 @@ var randomBorder = (src)=>{
 
 const mousedown = e=>e.type==="mousedown" || e.type ==="touchstart";
 
-var lastClick=0;
-const clickAndMouseDown = (e,ind)=>{
-  if(e.type==="mousedown" || e.type==="touchstart"){
-    if(new Date() - lastClick <400){ return true; }
-    lastClick=new Date();
+var lastClickTime=0;
+const clickAndMousedown = (e, index) => {
+  //first mosuedown/touchstart time will be remembered
+  //second will trigger drag if interval less than 400ms
+  if(e.type === "mousedown" || e.type === "touchstart"){
+    if(new Date() - lastClickTime < 400){ return true; }
+    lastClickTime = new Date();
   }
 };
 
-const longHold = e=>{
-  if(e.type==="mousedown" || e.type==="touchstart"){
-    return new Promise((resolve, reject)=> setTimeout(()=>resolve(true), 600));
+const longPress = (e, index) => {
+  if(e.type === "mousedown" || e.type === "touchstart"){
+    return new Promise((resolve, reject) => {
+      setTimeout(()=>resolve(true), 600)
+    });
+  }
+  //same as returning false here, will cancel out the previous promise and prevent drag
+  //if press was not long enough (600ms)
+};
+
+let isDown = false;
+const swipe = (e, index) =>{
+  if(e.type === "mousedown" || e.type === "touchstart"){
+    isDown=true;
+  }
+  else if(isDown && (e.type === "mousemove" || e.type === "touchmove")){
+    return new Promise((resolve, reject) => {
+      setTimeout(()=>resolve(true), 600)
+    });
+  }
+  else{
+    isDown = false;
   }
 };
 
-var isMouseDown=false;
-const swipe = e=>{
-  isMouseDown = (e.type==="mousedown" || e.type==="touchstart")
-    ?true:((e.type==="mouseup" || e.type==="touchend")?false:isMouseDown);
-  if((e.type==="mousemove" || e.type==="touchmove") && isMouseDown){
-    return new Promise((resolve, reject)=> setTimeout(()=>resolve(true), 400));
-  }
-};
+var dragConfirmations = [mousedown, longPress, swipe, clickAndMousedown];
 
-var dragConfirmations = [mousedown, longHold, swipe, clickAndMouseDown];
-
-var dragConfirmationsNames = ["mousedown", "long hold",  "swipe", "click and mousedown"];
+var dragConfirmationsNames = ["mousedown", "long press",  "swipe", "click and mousedown"];
 
 var Content = React.createClass({
   getInitialState: function () {
