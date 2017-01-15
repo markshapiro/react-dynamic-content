@@ -218,7 +218,7 @@ to start dragging after swipe (400ms continuous mousemove after mousedown):
 to start dragging after click and then mousedown, with less than 400ms interval:
 ```js 
   let lastClickTime=0;
-  const clickAndMouseDown = (e, index) => {
+  const clickAndMousedown = (e, index) => {
     //first mosuedown/touchstart time will be remembered
     //second will trigger drag if interval less than 400ms
     if(e.type === "mousedown" || e.type === "touchstart"){
@@ -228,7 +228,7 @@ to start dragging after click and then mousedown, with less than 400ms interval:
   };
    <DynamicContent
       ...
-      confirmElementDrag={clickAndMDown}
+      confirmElementDrag={clickAndMousedown}
       ...
       ></DynamicContent>
 ```
