@@ -94,7 +94,7 @@ allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
 
 Both layouts organize by ordering elements by their index in `"elements"` array,
 <br/><br/>**Cascading layout:** organizes elements like pinterest or tumblr do (columns with cascading images).
-<br/>Rlement with higher index will be located lower than element with lower index, may be in any column.
+<br/>Element with higher index will be located lower than element with lower index, may be in any column.
 <br/>It is recommended to provide responsive elements for this layout because the component resizes width to fit the columns.
 <br/><br/>**Images layout:** organizes like google images, (rows with elements with same height).
 <br/>For elements in the same row, element with higher index will be on the right side from elements with lower,
