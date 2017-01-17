@@ -87,8 +87,8 @@ horizontalCellSpacing|number|0|no|horizontal spacing between elements
 verticalCellSpacing|number|0|no|vertical spacing between elements
 onChange|function|null|no|this method is called with new order setting of `"elements"` array once some element is reordered after being moved with drag.<br/>see [`Reorder elements by dragging`](#reorder-elements-by-dragging)
 confirmElementDrag|function|starts drags<br/>after mousedown<br/>/ touchstart|no|method to provide confirmation for drag to customize drag start<br/>see [`Providing custom drag initiator`](#providing-custom-drag-initiator)
-allowDraggingMobile|bool|false|no|ability to drag elements in desktop
-allowDraggingDesktop|bool|false|no|ability to drag elements in mobile
+allowDraggingMobile|bool|false|no|ability to drag elements in mobile
+allowDraggingDesktop|bool|false|no|ability to drag elements in desktop
 
 ## More on "cascading" and "images" layouts
 
