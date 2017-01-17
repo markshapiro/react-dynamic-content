@@ -17,7 +17,9 @@
     "gallery",
     "organization",
     "custom",
-    "images"
+    "images",
+    "drag",
+    "reposition"
   ],
   "author": "Mark Shapiro",
   "devDependencies": {
