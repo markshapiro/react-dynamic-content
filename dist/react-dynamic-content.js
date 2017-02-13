@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("react"), require("react-dom"), require("lodash"), require("react-addons-update"), require("react-addons-css-transition-group"), require("rx"), require("jquery"), require("jquery.waitforimages"));
+		module.exports = factory(require("react"), require("react-dom"), require("lodash"), require("react-addons-update"), require("rx"), require("jquery"), require("react-addons-css-transition-group"), require("jquery.waitforimages"));
 	else if(typeof define === 'function' && define.amd)
-		define("DynamicContent", ["react", "react-dom", "lodash", "react-addons-update", "react-addons-css-transition-group", "rx", "jquery", "jquery.waitforimages"], factory);
+		define("DynamicContent", ["react", "react-dom", "lodash", "react-addons-update", "rx", "jquery", "react-addons-css-transition-group", "jquery.waitforimages"], factory);
 	else if(typeof exports === 'object')
-		exports["DynamicContent"] = factory(require("react"), require("react-dom"), require("lodash"), require("react-addons-update"), require("react-addons-css-transition-group"), require("rx"), require("jquery"), require("jquery.waitforimages"));
+		exports["DynamicContent"] = factory(require("react"), require("react-dom"), require("lodash"), require("react-addons-update"), require("rx"), require("jquery"), require("react-addons-css-transition-group"), require("jquery.waitforimages"));
 	else
-		root["DynamicContent"] = factory(root["react"], root["react-dom"], root["lodash"], root["react-addons-update"], root["react-addons-css-transition-group"], root["rx"], root["jquery"], root["jquery.waitforimages"]);
+		root["DynamicContent"] = factory(root["react"], root["react-dom"], root["lodash"], root["react-addons-update"], root["rx"], root["jquery"], root["react-addons-css-transition-group"], root["jquery.waitforimages"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -80,17 +80,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 
-	var _reactAddonsCssTransitionGroup = __webpack_require__(6);
-
-	var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
-
-	var _rx = __webpack_require__(7);
+	var _rx = __webpack_require__(6);
 
 	var _rx2 = _interopRequireDefault(_rx);
 
-	var _jquery = __webpack_require__(8);
+	var _jquery = __webpack_require__(7);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _reactAddonsCssTransitionGroup = __webpack_require__(8);
+
+	var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -184,6 +184,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this3 = this;
 
 	      this.props.elmData.getRenderedElm().then(function (elm) {
+	        elm.classList.toggle('displayNone', true);
 	        var failed = false;
 	        (0, _jquery2.default)(elm).waitForImages({
 	          each: function each(loaded, count, success) {
@@ -192,8 +193,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	          },
 	          finished: function finished() {
-	            elm.classList.toggle('displayNone', true);
-	            failed ? _this3.props.onError() : _this3.props.onLoad();
+	            return failed ? _this3.props.onError() : _this3.props.onLoad();
 	          },
 	          waitForAll: true
 	        });

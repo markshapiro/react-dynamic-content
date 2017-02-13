@@ -51052,13 +51052,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         g = r(m),
         v = n(7),
         y = i(v),
-        b = n(6),
+        b = n(9),
         E = i(b),
-        O = n(9),
+        O = n(3),
         D = i(O),
-        x = n(3),
-        w = i(x);n(4);var N = D.default.Observable.merge(D.default.Observable.fromEvent(document, "mouseup"), D.default.Observable.fromEvent(document, "touchend")),
-        P = D.default.Observable.merge(D.default.Observable.fromEvent(document, "mousemove"), D.default.Observable.fromEvent(document, "touchmove").map(function (e) {
+        x = n(6),
+        w = i(x);n(4);var N = E.default.Observable.merge(E.default.Observable.fromEvent(document, "mouseup"), E.default.Observable.fromEvent(document, "touchend")),
+        P = E.default.Observable.merge(E.default.Observable.fromEvent(document, "mousemove"), E.default.Observable.fromEvent(document, "touchmove").map(function (e) {
       return h.default.extend(e, e.touches[0]);
     })),
         I = { PENDING: "PENDING", LOADING: "LOADING", FAILED: "FAILED", NOT_POSITIONED: "NOT_POSITIONED", FINISHED: "FINISHED" },
@@ -51086,10 +51086,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return u(this, t), a(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, e));
       }return s(t, e), l(t, [{ key: "componentWillMount", value: function value() {
           var e = this;this.props.elmData.getRenderedElm().then(function (t) {
-            var n = !1;(0, w.default)(t).waitForImages({ each: function each(e, t, r) {
+            t.classList.toggle("displayNone", !0);var n = !1;(0, D.default)(t).waitForImages({ each: function each(e, t, r) {
                 r || (n = !0);
               }, finished: function finished() {
-                t.classList.toggle("displayNone", !0), n ? e.props.onError() : e.props.onLoad();
+                return n ? e.props.onError() : e.props.onLoad();
               }, waitForAll: !0 }), t.addEventListener("mouseup", e.props.onEventDesktop), t.addEventListener("mousemove", e.props.onEventDesktop), t.addEventListener("mousedown", e.props.onEventDesktop), t.addEventListener("touchstart", e.props.onEventMobile), t.addEventListener("touchmove", e.props.onEventMobile), t.addEventListener("touchend", e.props.onEventMobile);
           });
         } }, { key: "shouldComponentUpdate", value: function value(e, t) {
@@ -51135,14 +51135,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
               })(n, i) };
           }).shareReplay(1);n.startWith({ res: !1 }).flatMap(function (e) {
             var t = e.data,
-                r = e.res;return (g.isPromise(r) ? D.default.Observable.fromPromise(r.then(function (e) {
+                r = e.res;return (g.isPromise(r) ? E.default.Observable.fromPromise(r.then(function (e) {
               return { data: t, res: e };
             }).catch(function () {
               return !1;
-            })) : D.default.Observable.from([{ data: t, res: r }])).takeUntil(n.flatMap(function (e) {
-              var t = (e.data, e.res);return g.isPromise(t) ? D.default.Observable.fromPromise(t.catch(function () {
+            })) : E.default.Observable.from([{ data: t, res: r }])).takeUntil(n.flatMap(function (e) {
+              var t = (e.data, e.res);return g.isPromise(t) ? E.default.Observable.fromPromise(t.catch(function () {
                 return !1;
-              })) : D.default.Observable.from([t]);
+              })) : E.default.Observable.from([t]);
             }).filter(function (e) {
               return !e;
             }));
@@ -51232,7 +51232,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             return t.ref === e;
           });return t && t.renderedElmResult;
         } }, { key: "render", value: function value() {
-          var e = this;return console.debug("render"), d.default.createElement(E.default, { transitionAppear: !0, transitionEnterTimeout: 0, transitionLeaveTimeout: 0, transitionName: "fadeInOut", ref: "wrapper", className: "CustomContentWrapper" }, this.state.data.filter(function (e) {
+          var e = this;return console.debug("render"), d.default.createElement(w.default, { transitionAppear: !0, transitionEnterTimeout: 0, transitionLeaveTimeout: 0, transitionName: "fadeInOut", ref: "wrapper", className: "CustomContentWrapper" }, this.state.data.filter(function (e) {
             return e.state !== I.PENDING;
           }).map(function (t, n) {
             return d.default.createElement(q, { elmData: t, key: t.ref, onLoad: function onLoad() {
@@ -51286,7 +51286,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
           return d.default.isValidElement(t) ? e : new Error('"elements" prop arr must have only react elements');
         }, void 0);
       } };var M = function M() {
-      this.elmLoaded$ = new D.default.Subject(), this.elmEvent$ = new D.default.Subject(), this.initialCss = {}, this.repositionThrottled = h.default.throttle(this.reposition, 100), this.repositionDebounced = h.default.debounce(this.reposition, 100);
+      this.elmLoaded$ = new E.default.Subject(), this.elmEvent$ = new E.default.Subject(), this.initialCss = {}, this.repositionThrottled = h.default.throttle(this.reposition, 100), this.repositionDebounced = h.default.debounce(this.reposition, 100);
     };t.default = W, e.exports = t.default;
   }, function (t, n) {
     t.exports = e;

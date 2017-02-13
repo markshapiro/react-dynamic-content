@@ -3,10 +3,11 @@ import { findDOMNode } from 'react-dom';
 import _ from 'lodash';
 import * as utils from './utils';
 import update from 'react-addons-update';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Rx from 'rx';
 import $ from 'jquery';
 require('jquery.waitforimages');
+
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const mouseUp$ = Rx.Observable.merge(
     Rx.Observable.fromEvent(document, "mouseup"),
@@ -64,6 +65,7 @@ class InlineElement extends Component {
   }
   componentWillMount() {
     this.props.elmData.getRenderedElm().then(elm=>{
+      elm.classList.toggle('displayNone',true);
       var failed=false;
       $(elm).waitForImages({
         each: (loaded, count, success) => {
@@ -71,10 +73,7 @@ class InlineElement extends Component {
             failed=true
           }
         },
-        finished: ()=>{
-          elm.classList.toggle('displayNone',true);
-          failed?this.props.onError():this.props.onLoad();
-        },
+        finished: ()=>failed?this.props.onError():this.props.onLoad(),
         waitForAll: true
       });
       elm.addEventListener("mouseup", this.props.onEventDesktop);
