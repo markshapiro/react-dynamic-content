@@ -36,6 +36,7 @@ const config = {
       'react-dom': 'react-dom',
       'lodash': 'lodash',
       'react-addons-update': 'react-addons-update',
+      'react-addons-css-transition-group':'react-addons-css-transition-group',
       'rx': 'rx',
       'jquery': 'jquery',
       'jquery.waitforimages': 'jquery.waitforimages'

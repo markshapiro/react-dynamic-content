@@ -3,6 +3,7 @@ import { findDOMNode } from 'react-dom';
 import _ from 'lodash';
 import * as utils from './utils';
 import update from 'react-addons-update';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Rx from 'rx';
 import $ from 'jquery';
 require('jquery.waitforimages');
@@ -65,12 +66,15 @@ class InlineElement extends Component {
     this.props.elmData.getRenderedElm().then(elm=>{
       var failed=false;
       $(elm).waitForImages({
-        each: function(loaded, count, success) {
+        each: (loaded, count, success) => {
           if(!success){
             failed=true
           }
         },
-        finished: ()=>failed?this.props.onError():this.props.onLoad(),
+        finished: ()=>{
+          elm.classList.toggle('displayNone',true);
+          failed?this.props.onError():this.props.onLoad();
+        },
         waitForAll: true
       });
       elm.addEventListener("mouseup", this.props.onEventDesktop);
@@ -81,6 +85,7 @@ class InlineElement extends Component {
       elm.addEventListener("touchend", this.props.onEventMobile);
     });
   }
+
   shouldComponentUpdate(nextProps, nextState){
     if(!this.renderedOnce){
       this.renderedOnce=true;
@@ -91,7 +96,7 @@ class InlineElement extends Component {
   componentWillReceiveProps(nextProps){
     this.props.elmData.getRenderedElm().then(elm=>{
       var newClassList = nextProps.className.trim().split(/\s+/g);
-      ['forceVisible','autoTransition','draggingMode','fadeIn'].forEach(cname=>elm.classList
+      ['dragging','visible'].forEach(cname=>elm.classList
         .toggle(cname, newClassList.indexOf(cname)>=0));
     });
   }
@@ -152,7 +157,7 @@ class DynamicContent extends Component {
     nextLoadedElements$
       .buffer(nextLoadedElements$.debounce(150))  //nextLoadedElements$ debounced and buffered
       .map(arrs=>_.uniq(_.flatten(arrs)))
-      .map(arr=>this.setElementsStateAferLoaded(this.state.data, arr, imgState.NOT_POSITIONED, imgState.FAILED))
+      .map(arr=>this.setElementsStateAfterLoaded(this.state.data, arr, imgState.NOT_POSITIONED, imgState.FAILED))
       .map(data=>this.queueNext(data))
       .subscribe(data=>this.setState({data}));
 
@@ -246,8 +251,7 @@ class DynamicContent extends Component {
     data = update(data,{
       [newElmInd]:{isDragging:{$set:false}}
     });
-    elmRecent.renderedElmResult.classList.toggle('draggingMode',false);
-    elmRecent.renderedElmResult.classList.toggle('autoTransition',true);
+    elmRecent.renderedElmResult.classList.toggle('dragging',false);
     this.setState({data});
     if(otherRef && this.props.onChange){
       this.props.onChange(data.map(w=>w.elm));
@@ -283,7 +287,7 @@ class DynamicContent extends Component {
     return update(data, updateStatement);
   }
 
-  setElementsStateAferLoaded(data, arr, successState, failedState){
+  setElementsStateAfterLoaded(data, arr, successState, failedState){
     var updateStatement={};
     _.each(arr, elm=>{
       var index = _.findIndex(data, e=>e.ref === elm.ref);
@@ -299,11 +303,15 @@ class DynamicContent extends Component {
 
   reposition() {
     var wrapper = findDOMNode(this.refs.wrapper), renderedElms={},
-      props = _.extend({ parentWidth: wrapper.offsetWidth }, _.pick(this.props, propsPassed2positionMethods));
+      props = _.extend({ parentWidth: wrapper.clientWidth }, _.pick(this.props, propsPassed2positionMethods));
     this.state.data
       .forEach((elmData, elmInd)=> {
         if(elmData.isPresent() && !elmData.isDragging){
           renderedElms[elmInd] = elmData.renderedElmResult;
+          if(elmData.state === imgState.NOT_POSITIONED){
+            renderedElms[elmInd].classList.toggle('displayNone',false);
+            renderedElms[elmInd].classList.toggle('positionAbsolute',true);
+          }
         }
       });
     if(this.props.layout!=='custom'){
@@ -322,10 +330,8 @@ class DynamicContent extends Component {
         if(elmData.isPresent() && !elmData.isDragging){
           if(elmData.state===imgState.NOT_POSITIONED){
             updateStatement[elmInd]={
-              state:{$set:imgState.FINISHED},
-              startRenderAt:{$set:new Date()}
+              state:{$set:imgState.FINISHED}
             };
-            setTimeout(()=>this.state.data[elmInd].renderedElmResult.classList.toggle('autoTransition',true),1)
           }
         }
       });
@@ -344,7 +350,9 @@ class DynamicContent extends Component {
 
   render() {
     console.debug("render");
-    return <div ref="wrapper" className="CustomContentWrapper">{
+    return <ReactCSSTransitionGroup transitionAppear={true}
+                                    transitionEnterTimeout={0} transitionLeaveTimeout={0}
+                                    transitionName="fadeInOut" ref="wrapper" className="CustomContentWrapper">{
       this.state.data
         .filter(elm=>elm.state!==imgState.PENDING)
         .map((elm,index)=><InlineElement elmData={elm} key={elm.ref}
@@ -352,12 +360,8 @@ class DynamicContent extends Component {
                                          onError={()=>this.elmLoaded$.onNext({ref:elm.ref, success:false})}
                                          onEventDesktop={e=>this.elmEventDesktop(e, elm)}
                                          onEventMobile={e=>this.elmEventMobile(e, elm)}
-                                         className={`${ elm.isVisible() && 'forceVisible' }
-                                ${ (new Date() - elm.startRenderAt<1000) && 'fadeIn' }
-                                ${ elm.isDragging
-                                ? 'draggingMode'
-                                : (new Date() - elm.startRenderAt > 200) && 'autoTransition' }`}>
-        </InlineElement>)}</div>;
+                                         className={`${ elm.isDragging && 'dragging' } ${ elm.isVisible() && 'visible' }`}/>)}
+    </ReactCSSTransitionGroup>;
   }
 
   componentWillReceiveProps(nextProps){
