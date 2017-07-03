@@ -22,7 +22,7 @@ const imgState={
   LOADING:        'LOADING',          //loading (invisible) (before onLoad or onError call)
   FAILED:         'FAILED',           //failed to load (after onError call)
   NOT_POSITIONED: 'NOT_POSITIONED',   //loaded (and still invisible) but not positioned yet (directly after onLoad call)
-  FINISHED:       'FINISHED'          //final phase (positioned and is should be displayed)
+  FINISHED:       'FINISHED'          //final phase (positioned and it should be displayed)
 };
 
 const LOADING_QUEUE_SIZE = 15;        //max num of elements loading simultaneously (loading from top to bottom)
